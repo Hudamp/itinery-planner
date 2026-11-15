@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uzbekistan Trip Planner, 12–18 Dec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Palette from Samarkand tilework: lapis, turquoise, saffron on a cool plaster ground */
+  --bg:#f3f5f7;
+  --surface:#ffffff;
+  --ink:#16202c;
+  --muted:#5a6675;
+  --line:#dde3ea;
+  --lapis:#1f3f8f;
+  --turq:#127f86;
+  --saffron:#b9770e;
+  --saffron-soft:#fff3dc;
+  --turq-soft:#e2f4f4;
+  --lapis-soft:#e7ecf9;
+  --warn:#a5461a;
+  --warn-soft:#fdebe2;
+  --good:#1d7a45;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* Layout: sticky day rail on top, one day at a time below, tools in a side column on wide screens */
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f151d; --surface:#17202b; --ink:#e6ebf1; --muted:#9aa7b6; --line:#2a3644;
+    --lapis:#8ea8ec; --turq:#5cc6cc; --saffron:#e9b45a;
+    --saffron-soft:#2e2414; --turq-soft:#12292b; --lapis-soft:#1a2440;
+    --warn:#f0936a; --warn-soft:#331d14; --good:#6fd39a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f151d; --surface:#17202b; --ink:#e6ebf1; --muted:#9aa7b6; --line:#2a3644;
+  --lapis:#8ea8ec; --turq:#5cc6cc; --saffron:#e9b45a;
+  --saffron-soft:#2e2414; --turq-soft:#12292b; --lapis-soft:#1a2440;
+  --warn:#f0936a; --warn-soft:#331d14; --good:#6fd39a;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+a{color:var(--lapis)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{padding:28px 0 18px;border-bottom:1px solid var(--line);background:var(--surface)}
+.top .kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--turq);font-weight:700}
+.top h1{font-size:clamp(28px,4.4vw,42px);margin-top:4px}
+.route{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px;font-weight:600}
+.route .city{padding:4px 12px;border-radius:999px;background:var(--lapis-soft);color:var(--lapis)}
+.route .leg{font-size:13px;color:var(--muted);font-weight:400}
+.verdict{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700}
+.pill.good{background:var(--turq-soft);color:var(--turq)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.info{background:var(--saffron-soft);color:var(--saffron)}
+
+nav.days{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.dayrail{display:flex;gap:6px;overflow-x:auto;padding:10px 0;scrollbar-width:thin}
+.dayrail button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left;min-width:112px}
+.dayrail button .d{display:block;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dayrail button .c{display:block;font-weight:700}
+.dayrail button[aria-selected="true"]{border-color:var(--lapis);background:var(--lapis);color:#fff}
+.dayrail button[aria-selected="true"] .d{color:#dfe6ff}
+.dayrail button .bar{display:block;height:3px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
+.dayrail button .bar i{display:block;height:100%;background:var(--saffron);width:0}
+
+main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;padding:24px 0 60px}
+@media (max-width:960px){main{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.dayhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start}
+.dayhead h2{font-size:28px}
+.dayhead .sub{color:var(--muted);margin-top:4px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0}
+.fact{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.callout{border-left:4px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0}
+.callout.tip{border-color:var(--turq);background:var(--turq-soft)}
+.callout strong{display:block}
+
+.timeline{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:0}
+.stop{display:grid;grid-template-columns:64px 28px minmax(0,1fr);gap:10px;padding:12px 0;border-top:1px dashed var(--line)}
+.stop:first-child{border-top:0}
+.stop .time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--lapis);padding-top:2px}
+.stop input[type=checkbox]{width:20px;height:20px;margin-top:3px;accent-color:var(--turq);cursor:pointer}
+.stop .name{font-weight:700}
+.stop.done .name{text-decoration:line-through;color:var(--muted)}
+.stop .note{color:var(--muted);margin-top:2px}
+.stop .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:14px}
+.tag{padding:2px 8px;border-radius:6px;background:var(--lapis-soft);color:var(--lapis);font-weight:600;font-variant-numeric:tabular-nums}
+.tag.fee{background:var(--saffron-soft);color:var(--saffron)}
+.tag.free{background:var(--turq-soft);color:var(--turq)}
+.tag.alert{background:var(--warn-soft);color:var(--warn)}
+.stop a.map{font-size:14px;font-weight:600}
+.stop.kind-move .time{color:var(--saffron)}
+.daynav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--lapis)}
+.btn.primary{background:var(--lapis);border-color:var(--lapis);color:#fff}
+.btn:disabled{opacity:.4;cursor:default}
+
+aside{display:grid;gap:16px;align-content:start}
+aside h3{font-size:19px;margin-bottom:10px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:-4px 0 14px}
+.tabs button{border:0;background:none;padding:8px 10px;cursor:pointer;font-weight:700;color:var(--muted);border-bottom:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--lapis);border-color:var(--lapis)}
+.field{display:grid;grid-template-columns:1fr 110px;gap:8px;align-items:center;margin-bottom:8px;font-size:15px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--bg);text-align:right;font-variant-numeric:tabular-nums}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);padding-top:10px;margin-top:10px}
+.total .big{font-family:var(--display);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.rows{display:grid;gap:4px;font-size:15px;font-variant-numeric:tabular-nums}
+.rows div{display:flex;justify-content:space-between;gap:8px}
+.rows span:last-child{font-weight:600}
+.small{font-size:13px;color:var(--muted)}
+.checklist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.checklist label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.checklist input{width:18px;height:18px;margin-top:3px;accent-color:var(--turq);flex:0 0 auto}
+.checklist .when{font-size:13px;color:var(--muted);display:block}
+.conv{display:grid;gap:8px}
+.conv .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.conv label{font-size:13px;color:var(--muted);display:grid;gap:4px}
+.conv input{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);font-variant-numeric:tabular-nums;width:100%}
+.quick{display:flex;flex-wrap:wrap;gap:6px}
+.quick button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:4px 8px;cursor:pointer;font-size:13px;font-variant-numeric:tabular-nums}
+.plancheck{display:grid;gap:10px}
+.plancheck .row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.plancheck .row p{margin:2px 0 0;color:var(--muted);font-size:15px}
+.stays{width:100%;border-collapse:collapse;font-size:15px}
+.stays th,.stays td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.stays th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+.stays-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
+.stay{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:6px;align-content:start}
+.stay h4{margin:0;font-family:var(--display);font-size:17px}
+.stay p{margin:0;color:var(--muted);font-size:15px}
+.stay .tags{display:flex;flex-wrap:wrap;gap:6px}
+.stay.pick{border-color:var(--turq);box-shadow:inset 4px 0 0 var(--turq)}
+.citytabs{display:flex;gap:6px;margin-top:4px}
+.citytabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:700}
+.citytabs button[aria-pressed="true"]{background:var(--lapis);border-color:var(--lapis);color:#fff}
+.asklist{margin:12px 0 0;padding-left:18px;color:var(--muted);font-size:15px}
+footer{color:var(--muted);font-size:13px;padding:0 0 40px}
+@media (prefers-reduced-motion:no-preference){.stop{transition:opacity .2s}}
+@media (max-width:480px){.stop{grid-template-columns:52px 24px minmax(0,1fr)}.dayhead h2{font-size:24px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">2 couples · 4 adults · 12–18 December 2026</div>
+    <h1>Uzbekistan: Tashkent, Samarkand, Bukhara</h1>
+    <div class="route" aria-label="Route">
+      <span class="city">Tashkent</span><span class="leg">drive ~290 km</span>
+      <span class="city">Samarkand</span><span class="leg">drive ~280 km</span>
+      <span class="city">Bukhara</span><span class="leg">night train</span>
+      <span class="city">Tashkent</span>
+    </div>
+    <div class="verdict">
+      <span class="pill good">Plan works</span>
+      <span class="pill warn">Daylight-only driving</span><span class="pill info">2 canyon stops</span>
+      <span class="pill info">Prices in som and AED (editable rate)</span>
+    </div>
+  </div>
+</header>
+
+<nav class="days" aria-label="Days">
+  <div class="wrap"><div class="dayrail" id="dayrail" role="tablist"></div></div>
+</nav>
+
+<div class="wrap">
+<main>
+  <section>
+    <article class="card" id="daycard" aria-live="polite"></article>
+
+    <div class="card" style="margin-top:16px">
+      <h3 style="font-size:20px;margin-bottom:12px">What I changed in your plan, and why</h3>
+      <div class="plancheck">
+        <div class="row"><span class="pill warn">Fix</span><div><b>15 Dec: leave Samarkand at 10 am, not in the evening.</b><p>Daylight in December is only about 8 am to 5 pm, and the highway outside cities is unlit. All driving now fits in daylight, and you reach Bukhara around 2 pm.</p></div></div>
+        <div class="row"><span class="pill warn">Fix</span><div><b>Siab Bazaar moved from 14 Dec to 15 Dec morning.</b><p>14 Dec is a Monday, and Siab Bazaar is closed on Mondays.</p></div></div>
+        <div class="row"><span class="pill warn">Fix</span><div><b>You land at 2 am on 12 Dec: book the Tashkent hotel from the night of 11 Dec.</b><p>Otherwise you'd wait until about 2 pm for a room. Day 1 now starts late, around 10–11 am.</p></div></div>
+        <div class="row"><span class="pill good">OK</span><div><b>Canyons added.</b><p>Tamerlane’s Gate (Sanzar Gorge) on the 13th drive, and the Amankutan gorge on the afternoon of the 14th. The Sarmishsay petroglyph gorge near Navoi is an option on the 15th if you leave early.</p></div></div>
+        <div class="row"><span class="pill good">OK</span><div><b>17 Dec night train saves a hotel night.</b><p>Book one 4-berth coupé compartment, so the four of you have it to yourselves. You arrive in Tashkent early on the 18th.</p></div></div>
+        <div class="row"><span class="pill info">Check</span><div><b>Car 13–17 Dec: Tashkent pickup, Bukhara drop on the 17th before dark.</b><p>Get the one-way fee, the daily km limit (about 300 km on each long driving day), the drop-off point, whether dirt roads are allowed, the deposit and the refund timing in writing.</p></div></div>
+        <div class="row"><span class="pill info">Check</span><div><b>18 Dec depends on your flight time.</b><p>The day plan assumes an evening flight. If you fly earlier, keep just the morning stops.</p></div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3 style="font-size:20px;margin-bottom:12px">Where you sleep</h3>
+      <div class="tablewrap">
+      <table class="stays">
+        <thead><tr><th>Night of</th><th>Where</th><th>Suggested area / type</th></tr></thead>
+        <tbody>
+          <tr><td>Fri 11 – Sat 12 Dec</td><td>Tashkent (2 nights)</td><td><b>Book from the night of 11 Dec</b>, since you land at 2 am on the 12th. Near Kosmonavtlar metro or Amir Timur Square. Ask for an airport pickup and car delivery on the 13th.</td></tr>
+          <tr><td>Sun 13 – Mon 14 Dec</td><td>Samarkand (2 nights)</td><td>Walking distance of Registan, with parking. Picks: Rabat Boutique, Hanifa Boutique, or QAMAR (budget). <a href="#homestays">See homestays</a></td></tr>
+          <tr><td>Tue 15 – Wed 16 Dec</td><td>Bukhara (2 nights)</td><td>Courtyard guesthouse near Lyabi-Hauz. Picks: Mahbubakhon, Nazira &amp; Azizbek, or Rahmat. Ask to keep bags until the evening of the 17th. <a href="#homestays">See homestays</a></td></tr>
+          <tr><td>Thu 17 Dec</td><td>Night train</td><td>4-berth coupé, Bukhara → Tashkent.</td></tr>
+          <tr><td>Fri 18 Dec</td><td>Tashkent / fly out</td><td>Book a day-use room or early check-in if you want a shower after the train.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px" id="homestays">
+      <h3 style="font-size:20px;margin-bottom:6px">Homestays: best and affordable</h3>
+      <p class="small" style="margin:0">Family-run guesthouses in the old towns, walking distance to the sights, with home-cooked breakfast. Most guesthouse doubles run about USD 30–70 a night (about AED 110–260). Check your dates on Booking.com or by WhatsApp.</p>
+      <div class="citytabs" role="group" aria-label="City">
+        <button type="button" data-city="sam" aria-pressed="true">Samarkand, 13–14 Dec</button>
+        <button type="button" data-city="buk" aria-pressed="false">Bukhara, 15–16 Dec</button>
+      </div>
+      <div class="stays-grid" id="stays-sam">
+        <div class="stay pick"><h4>Rabat Boutique</h4><p>A historic courtyard house with only about 8 rooms, a few minutes’ walk from Registan. Personal breakfasts that change daily, and tea in the courtyard at night.</p><div class="tags"><span class="tag">Best atmosphere</span><span class="tag fee">Mid-range</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Rabat%20Boutique%20Samarkand" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>Hanifa Boutique</h4><p>New, clean rooms in a quiet alley minutes from Registan. Well-liked breakfast. Some guests find the beds firm. Taxis drop off at Hotel Asia nearby.</p><div class="tags"><span class="tag">Closest to Registan</span><span class="tag fee">Mid-range</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Hanifa%20Boutique%20Samarkand" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>QAMAR family guest house</h4><p>A true homestay run by a family. Home-cooked local breakfast, tea and pastries on arrival, spotless bathrooms. Short walk to Registan.</p><div class="tags"><span class="tag free">Budget pick</span><span class="tag">Homestay feel</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=QAMAR%20family%20guest%20house%20Samarkand" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>Sole Family Guesthouse</h4><p>Warm hosts, spacious clean rooms, simple breakfast. About 15 min on foot to Registan and Shah-i-Zinda. The hosts help arrange tours.</p><div class="tags"><span class="tag free">Budget</span><span class="tag">Quiet</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Sole%20Family%20Guesthouse%20Samarkand" target="_blank" rel="noopener">Open in Maps</a></div>
+      </div>
+      <div class="stays-grid" id="stays-buk" hidden>
+        <div class="stay pick"><h4>Mahbubakhon family guest house</h4><p>Family-run, with big clean rooms and generous breakfasts in the courtyard. About 4 min walk to Lyabi-Hauz. The lane is narrow, so car drop-off is 1–2 min away.</p><div class="tags"><span class="tag free">Best value</span><span class="tag">Good with a car</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Mahbubakhon%20family%20guest%20house%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>Hotel Nazira &amp; Azizbek</h4><p>A rustic courtyard house a few steps from the old-city sights. Quiet, friendly hosts, fruit-filled breakfasts, and hot showers.</p><div class="tags"><span class="tag">Courtyard charm</span><span class="tag free">Affordable</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Hotel%20Nazira%20Azizbek%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>Family guest house Rahmat</h4><p>Authentic decor and an old-town balcony view, right in the centre. Known to keep bags after check-out, which is handy before your night train.</p><div class="tags"><span class="tag">Bag storage</span><span class="tag free">Affordable</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Family%20guest%20house%20Rahmat%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>Uzbegim Family guest house</h4><p>Good value, one street from the centre, with freshly cooked breakfast. A guest fitted four people in one room, so ask about a family room.</p><div class="tags"><span class="tag free">Budget</span><span class="tag">Family rooms</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Uzbegim%20Family%20guest%20house%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay"><h4>Lyabi House Hotel (splurge)</h4><p>A 19th-century house right on Lyabi-Hauz, with a beautiful dining hall. Pricier, and rooms beside the restaurant can be noisy.</p><div class="tags"><span class="tag fee">Upper mid-range</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Lyabi%20House%20Hotel%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
+      </div>
+      <ul class="asklist">
+        <li><b>Parking:</b> you have a car, and old-town lanes are narrow. Ask where to park overnight.</li>
+        <li><b>Heating and hot water:</b> confirm both for December.</li>
+        <li><b>Two rooms</b> for two couples, or one family room.</li>
+        <li><b>Bukhara:</b> late bag pickup on the 17th, and help booking the station taxi.</li>
+        <li><b>Payment:</b> some take only cash in som or USD.</li>
+      </ul>
+    </div>
+  </section>
+
+  <aside>
+    <div class="card">
+      <div class="tabs" role="tablist" aria-label="Tools">
+        <button role="tab" id="t-budget" aria-selected="true" data-panel="p-budget">Budget</button>
+        <button role="tab" id="t-convert" aria-selected="false" data-panel="p-convert">Converter</button>
+        <button role="tab" id="t-book" aria-selected="false" data-panel="p-book">To book</button>
+      </div>
+
+      <div id="p-budget" role="tabpanel" aria-labelledby="t-budget">
+        <h3>Group budget estimate</h3>
+        <div class="field"><label for="b-rooms">Rooms per night</label><input id="b-rooms" type="number" min="1" value="2"></div>
+        <div class="field"><label for="b-tas">Tashkent room / night (AED), 2 nights</label><input id="b-tas" type="number" min="0" value="300"></div>
+        <div class="field"><label for="b-sam">Samarkand room / night (AED)</label><input id="b-sam" type="number" min="0" value="200"></div>
+        <div class="field"><label for="b-buk">Bukhara room / night (AED)</label><input id="b-buk" type="number" min="0" value="200"></div>
+        <div class="field"><label for="b-car">Car / day (AED), 5 days</label><input id="b-car" type="number" min="0" value="155"></div>
+        <div class="field"><label for="b-oneway">One-way drop fee (AED)</label><input id="b-oneway" type="number" min="0" value="200"></div>
+        <div class="field"><label for="b-fuel">Fuel, whole drive (AED)</label><input id="b-fuel" type="number" min="0" value="250"></div>
+        <div class="field"><label for="b-train">Night train / person (AED)</label><input id="b-train" type="number" min="0" value="75"></div>
+        <div class="field"><label for="b-food">Food / person / day (AED)</label><input id="b-food" type="number" min="0" value="50"></div>
+        <div class="field"><label for="b-taxi">Taxis &amp; metro, group (AED)</label><input id="b-taxi" type="number" min="0" value="300"></div>
+        <div class="rows" id="b-rows" style="margin-top:12px"></div>
+        <div class="total"><span>Total for 4</span><span class="big" id="b-total">–</span></div>
+        <div class="rows"><div><span>Per person</span><span id="b-pp">–</span></div></div>
+        <p class="small">Entry fees and the city tax are added automatically. Defaults are rough estimates, so change any number. Flights, visas and shopping are not included.</p>
+      </div>
+
+      <div id="p-convert" role="tabpanel" aria-labelledby="t-convert" hidden>
+        <h3>Som ↔ AED</h3>
+        <div class="conv">
+          <label for="c-rate">Som per 1 AED (updates every price on this page)
+            <input id="c-rate" type="number" min="1" value="3250">
+          </label>
+          <div class="pair">
+            <label for="c-uzs">Som (UZS)<input id="c-uzs" type="number" min="0" value="100000"></label>
+            <label for="c-aed">AED<input id="c-aed" type="number" min="0" step="0.01"></label>
+          </div>
+          <div class="quick" aria-label="Common amounts">
+            <button data-uzs="2500">Metro 2,500</button>
+            <button data-uzs="20000">20,000</button>
+            <button data-uzs="50000">50,000</button>
+            <button data-uzs="100000">100,000</button>
+            <button data-uzs="412000">Speed fine 412,000</button>
+            <button data-uzs="1000000">1,000,000</button>
+          </div>
+          <p class="small">Rule of thumb: 10,000 som ≈ AED 3. 100,000 som ≈ AED 31.</p>
+        </div>
+      </div>
+
+      <div id="p-book" role="tabpanel" aria-labelledby="t-book" hidden>
+        <h3>Booking checklist</h3>
+        <ul class="checklist" id="booklist"></ul>
+        <p class="small" id="bookcount"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Driving rules to remember</h3>
+      <ul class="checklist">
+        <li>Carry your licence, <b>International Driving Permit</b>, passport and rental papers. Police checkpoints are common.</li>
+        <li>Speed cameras are strict. One renter got four tickets of 412,000 som (about AED 127) each.</li>
+        <li>Zero alcohol. The legal limit is 0.0%.</li>
+        <li>Drive only in daylight outside cities. Fill up before long stretches.</li>
+        <li>Photograph and video the car at pickup and drop-off.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Cold-weather packing</h3>
+      <ul class="checklist" id="packlist"></ul>
+    </div>
+  </aside>
+</main>
+<footer>Prices and timetables change. Confirm train times on the official Uzbekistan Railways e-ticket site, and entry fees on the day. Ticks and budget numbers are saved in this browser only.</footer>
+</div>
+
+<script>
+(function(){
+  var store = {
+    get: function(k, d){ try { var v = localStorage.getItem('uzb-plan-'+k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
+    set: function(k, v){ try { localStorage.setItem('uzb-plan-'+k, JSON.stringify(v)); } catch(e){} }
+  };
+  var rate = store.get('rate', 3250);
+
+  function gmap(q){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
+  function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function aed(som){ var v = som / rate; return v < 10 ? v.toFixed(1) : fmt(v); }
+
+  var DAYS = [
+    { id:'day-1', date:'Sat 12 Dec', city:'Tashkent', title:'Arrive and see the old city',
+      stay:'Tashkent hotel (booked from the night of 11 Dec)', move:'Taxi + metro',
+      sunset:'~7:50 am – 5:00 pm',
+      note:{type:'warn', h:'You land at 2 am, so book the hotel from 11 Dec', t:'A room booked only for the 12th is usually not ready until 2 pm. Booking the night of the 11th means you can go straight to bed. Pre-arrange the airport pickup with the hotel. The day starts late, around 10:30.'},
+      stops:[
+        {time:'02:00', name:'Land at Tashkent airport', note:'Hotel pickup or Yandex Go (install it before you fly). Change a little cash if a bank desk is open. Otherwise use an ATM or exchange in the morning.', q:'Tashkent International Airport', kind:'move'},
+        {time:'03:00', name:'Check in and sleep', note:'Possible only if the room is booked from the night of 11 Dec.', kind:'move'},
+        {time:'10:00', name:'Late breakfast, buy a SIM', note:'Mobile shops are easy to find in the centre. Have your passport with you.'},
+        {time:'11:00', name:'Chorsu Bazaar', note:'The domed main market. Try fresh non bread, samsa, dried fruit and nuts. Ceramics upstairs.', q:'Chorsu Bazaar Tashkent', fee:0, dur:'1.5–2 h'},
+        {time:'12:30', name:'Kukeldash Madrasa', note:'16th-century madrasa right beside Chorsu.', q:'Kukeldash Madrasa Tashkent', fee:0, dur:'20 min'},
+        {time:'13:00', name:'Lunch at the bazaar', note:'Plov, shurpa or samsa at a busy stall.', q:'Chorsu Bazaar food Tashkent', dur:'45 min'},
+        {time:'14:00', name:'Hazrati Imam complex', note:'Mosques, madrasas and the library said to hold the Uthman Quran. Short taxi ride from Chorsu. Cover your head and shoulders.', q:'Hazrati Imam Complex Tashkent', fee:50000, feeNote:'Quran madrasa', dur:'1.5–2 h'},
+        {time:'16:00', name:'Metro station hop', note:'Taxi to Alisher Navoi station, then ride to Kosmonavtlar and Mustaqillik Maydoni. Each station has its own decor.', q:'Kosmonavtlar metro station Tashkent', fee:2500, feeNote:'per ride', dur:'1 h'},
+        {time:'17:30', name:'Amir Timur Square and Broadway', note:'The central square and the pedestrian street, lively in the evening.', q:'Amir Timur Square Tashkent', fee:0, dur:'1 h'},
+        {time:'19:00', name:'Dinner, then Minor Mosque lit up', note:'The white marble mosque by the canal is prettiest after dark.', q:'Minor Mosque Tashkent', fee:0},
+        {time:'Tonight', name:'Confirm car delivery for 8:00 am', note:'Send the hotel address. Confirm the one-way Bukhara drop, the km limit and the deposit on WhatsApp.', kind:'move'}
+      ]},
+    { id:'day-2', date:'Sun 13 Dec', city:'Samarkand', title:'Drive to Samarkand, Registan at sunset',
+      stay:'Samarkand, night 1 of 2', move:'Drive ~290 km, 4–5 h',
+      sunset:'~7:55 am – 5:10 pm',
+      note:{type:'warn', h:'Leave at first light, 8:00 am', t:'All the driving fits in daylight, and you arrive around 2 pm with three hours of light left for Gur-e-Amir and Registan. Canyon stop today: Tamerlane\u2019s Gate in the Sanzar Gorge. Keep under the speed limit everywhere, because cameras are frequent.'},
+      stops:[
+        {time:'07:30', name:'Car handover at the hotel', note:'Video the car all round, check the tyres, fuel level and spare, and save the company\u2019s WhatsApp.', kind:'move'},
+        {time:'08:00', name:'Depart on the M39 highway', note:'Fill up before leaving the city. Keep strictly to the speed limits.', q:'Tashkent to Samarkand', kind:'move', dur:'4–5 h with stops'},
+        {time:'09:15', name:'Pass Gulistan and the Hungry Steppe', note:'Flat, wide-open steppe scenery. No need to stop unless you want a break.', q:'Gulistan Uzbekistan', kind:'move'},
+        {time:'10:45', name:'Jizzakh: samsa lunch', note:'Try the local Jizzakh samsa. Tea and restroom break, and top up fuel here.', q:'Jizzakh samsa', kind:'move', dur:'45–60 min'},
+        {time:'12:00', name:'Canyon stop: Tamerlane\u2019s Gate, Sanzar Gorge', note:'The highway squeezes through a narrow rocky gorge. Stop only at a safe pull-off for photos.', q:'Tamerlane Gate Jizzakh', kind:'move', dur:'20–30 min'},
+        {time:'12:30', name:'Continue to Samarkand', kind:'move', dur:'~1.5 h'},
+        {time:'14:00', name:'Arrive in Samarkand, check in, rest', note:'Park at the hotel. The car stays with you until Bukhara.', kind:'move'},
+        {time:'15:00', name:'Gur-e-Amir Mausoleum', note:'Timur\u2019s tomb, with a fluted turquoise dome and a gold-leaf interior.', q:'Gur-e-Amir Mausoleum Samarkand', fee:75000, dur:'45 min'},
+        {time:'16:00', name:'Registan Square', note:'Three madrasas: Ulugh Beg, Sher-Dor and Tilya-Kori. Go in while it\u2019s light, watch the sunset at ~5:10, then stay to see it lit up.', q:'Registan Samarkand', fee:100000, dur:'2 h'},
+        {time:'19:00', name:'Dinner: Samarkand plov or manti', note:'Ask your hotel for a busy local place.'}
+      ]},
+    { id:'day-3', date:'Mon 14 Dec', city:'Samarkand', title:'Tilework, then a mountain gorge',
+      stay:'Samarkand, night 2 of 2', move:'Walk in the morning, car in the afternoon',
+      sunset:'~7:55 am – 5:10 pm',
+      note:{type:'warn', h:'Monday: Siab Bazaar is closed, and a canyon afternoon', t:'Siab moves to tomorrow morning. In the afternoon, drive about 40 km south to the Amankutan gorge. In winter it\u2019s open on weekdays from 12:00 to 17:00. Mountain roads can have snow or ice in December, so ask your hotel about conditions that morning and turn back if the road looks bad.'},
+      stops:[
+        {time:'08:30', name:'Shah-i-Zinda necropolis', note:'An avenue of tiled mausoleums, quietest early. It\u2019s an active shrine, so cover your knees and shoulders.', q:'Shah-i-Zinda Samarkand', fee:80000, dur:'1.5 h'},
+        {time:'10:15', name:'Bibi-Khanym Mosque', note:'Timur\u2019s giant mosque, a 10-minute walk away.', q:'Bibi-Khanym Mosque Samarkand', fee:65000, dur:'45 min'},
+        {time:'11:15', name:'Drive: Ulugh Beg Observatory', note:'Remains of the 15th-century observatory, plus a small museum. About 10 min by car.', q:'Ulugh Beg Observatory Samarkand', fee:75000, dur:'45 min'},
+        {time:'12:15', name:'Lunch, then fill up', note:'Quick lunch before the mountain drive.'},
+        {time:'13:00', name:'Canyon drive: Amankutan gorge', note:'Juniper-covered gorge in the hills south of Samarkand, about 40 km away on the road toward Kitab. A national park with tea houses. Weekday winter hours 12:00–17:00.', q:'Amankutan Samarkand', kind:'move', dur:'~1 h each way'},
+        {time:'14:00', name:'Walk and tea in the gorge', note:'Short walks only, in warm layers. Leave by 15:30 so you are back before dark.', q:'Amankutan National Park', dur:'1.5 h'},
+        {time:'16:30', name:'Back in Samarkand', note:'Optional instead of the gorge: the Meros paper workshop in Konigil, about 10 km out.', q:'Meros paper mill Konigil Samarkand', kind:'move'},
+        {time:'17:15', name:'Registan after dark', note:'The square is free to see from outside at night.', q:'Registan Samarkand', fee:0},
+        {time:'19:00', name:'Dinner', note:'Fuel the car tonight for an easy start tomorrow.'}
+      ]},
+    { id:'day-4', date:'Tue 15 Dec', city:'Bukhara', title:'Bazaar morning, drive to Bukhara',
+      stay:'Bukhara, night 1 of 2', move:'Drive ~280 km, about 4 h',
+      sunset:'~8:05 am – 5:20 pm',
+      note:{type:'warn', h:'Changed: leave Samarkand at 10:00, not in the evening', t:'An evening start would mean 4–5 hours of driving in the dark on unlit roads. Leaving at 10 gets you to Bukhara around 2 pm, with three hours of daylight to start exploring. Gijduvan moves to the 17th, when the car is free.'},
+      stops:[
+        {time:'07:45', name:'Siab Bazaar', note:'Samarkand\u2019s main market beside Bibi-Khanym. Fresh non bread, dried fruit, halva and spices.', q:'Siab Bazaar Samarkand', fee:0, dur:'1 h'},
+        {time:'09:00', name:'Check out, last photos', note:'Optional: Hazrat Khizr Mosque next to the bazaar, with a city view.', q:'Hazrat Khizr Mosque Samarkand'},
+        {time:'10:00', name:'Depart for Bukhara', note:'Fill up before you go. Keep to the limits. Tea break near Navoi, about halfway.', q:'Samarkand to Bukhara', kind:'move', dur:'~4 h'},
+        {time:'Option', name:'Canyon detour: Sarmishsay gorge (only if you leave by 8:00)', note:'A rocky gorge with thousands of ancient petroglyphs, about 30–45 km north-east of Navoi. The last stretch is a dirt road and a riverbed track, so check your rental rules allow it. It adds about 3 hours, so skip Siab Bazaar and leave Samarkand at 8:00 to stay in daylight.', q:'Sarmishsay petroglyphs', kind:'move', dur:'+3 h'},
+        {time:'14:15', name:'Arrive in Bukhara, park at the guesthouse', note:'Keep the car until the 17th. Old-town lanes are narrow and some are closed to cars, so ask the guesthouse where to park before you arrive.', kind:'move'},
+        {time:'15:00', name:'Lyabi-Hauz and Nodir Devonbegi Madrasa', note:'The pool square with madrasas and teahouses, plus the Afandi statue.', q:'Lyabi-Hauz Bukhara', fee:0, dur:'45 min'},
+        {time:'16:00', name:'Trading domes, first look', note:'Toqi Sarrofon, Telpak Furushon and Zargaron. Browse today and buy tomorrow.', q:'Toqi Zargaron Bukhara', fee:0, dur:'1 h'},
+        {time:'17:00', name:'Sunset at Po-i-Kalyan', note:'Walk to the Kalon Minaret for the last light.', q:'Kalon Minaret Bukhara', fee:0},
+        {time:'19:00', name:'Dinner at Lyabi-Hauz', note:'Plov, dimlama or shurpa.'}
+  ]},
+    { id:'day-5', date:'Wed 16 Dec', city:'Bukhara', title:'Old town: domes, minaret and fortress',
+      stay:'Bukhara, night 2 of 2', move:'On foot',
+      sunset:'~8:05 am – 5:20 pm',
+      note:{type:'tip', h:'On foot today, the car stays parked', t:'Outdoor sights in the morning light, shopping in the afternoon. Bargain politely, and ask for documentation for anything sold as antique.'},
+      stops:[
+        {time:'08:45', name:'Po-i-Kalyan complex in morning light', note:'The 47 m Kalon Minaret from 1127, Kalon Mosque, and the Mir-i-Arab Madrasa (outside only, it\u2019s an active seminary).', q:'Po-i-Kalyan Bukhara', dur:'1 h'},
+        {time:'10:00', name:'Ark Fortress', note:'The emirs\u2019 citadel, with museums inside.', q:'Ark of Bukhara', fee:60000, dur:'1.5 h'},
+        {time:'11:45', name:'Bolo-Hauz Mosque', note:'Tall carved wooden columns by the pool, opposite the Ark.', q:'Bolo Hauz Mosque Bukhara', fee:0, dur:'20 min'},
+        {time:'12:15', name:'Samanid Mausoleum and Chashma-Ayub', note:'A short walk west of the Ark. The 9th–10th century brick mausoleum is the oldest Islamic monument in Central Asia.', q:'Samanid Mausoleum Bukhara', fee:20000, dur:'45 min'},
+        {time:'13:15', name:'Lunch'},
+        {time:'14:30', name:'Magoki-Attori Mosque', note:'One of the oldest mosques in Central Asia, sunk below street level.', q:'Magoki Attori Mosque Bukhara', dur:'20 min'},
+        {time:'15:00', name:'Shopping in the trading domes', note:'Suzani, miniature paintings, ceramics, knives and scarves.', q:'Toqi Sarrofon Bukhara', fee:0, dur:'1.5 h'},
+        {time:'16:45', name:'Sunset from a rooftop caf\u00e9 near Po-i-Kalyan', note:'Ask your guesthouse which terrace is open in winter.', q:'Kalon Minaret Bukhara', fee:0},
+        {time:'19:00', name:'Dinner and lit-up old town walk'}
+  ]},
+    { id:'day-6', date:'Thu 17 Dec', city:'Bukhara', title:'Palace, pottery town, night train',
+      stay:'Night train to Tashkent', move:'Car until ~4:30 pm, then taxi',
+      sunset:'~8:05 am – 5:20 pm',
+      note:{type:'warn', h:'Last car day: return it before dark, around 4:30 pm', t:'Use the daylight for the sights outside town. Agree in advance where you hand the car back (guesthouse pickup, the company\u2019s Bukhara office or the station). Keep your bags at the guesthouse and take a taxi to Kogon station, about 15 km out, in the evening.'},
+      stops:[
+        {time:'08:30', name:'Check out, leave bags at the guesthouse', kind:'move'},
+        {time:'08:45', name:'Drive: Sitorai Mohi-Khosa Palace', note:'The last emir\u2019s summer palace, a mix of Russian and Oriental styles. About 15 min north.', q:'Sitorai Mohi Khosa Bukhara', dur:'1 h'},
+        {time:'10:15', name:'Drive: Bahauddin Naqshband complex', note:'A major Sufi pilgrimage site with peaceful courtyards. Dress modestly.', q:'Bahauddin Naqshband Mausoleum Bukhara', fee:0, dur:'1 h'},
+        {time:'11:45', name:'Drive: Gijduvan ceramics (optional)', note:'A well-known pottery town about 45 km away. Lunch there, and be back in Bukhara by 3 pm.', q:'Gijduvan ceramics', kind:'move', dur:'3 h round trip'},
+        {time:'15:00', name:'Chor Minor', note:'The four-domed gatehouse in a residential lane. Park nearby and walk in. Small fee for the roof.', q:'Chor Minor Bukhara', fee:0, dur:'30 min'},
+        {time:'16:00', name:'Refuel and return the car', note:'Hand it back before sunset (~5:20) with a full tank. Photograph it at drop-off and keep the fuel receipt.', kind:'move'},
+        {time:'17:00', name:'Rest or final shopping in the domes'},
+        {time:'19:00', name:'Farewell dinner, collect bags'},
+        {time:'21:30', name:'Taxi to Bukhara station (Kogon)', q:'Bukhara railway station Kogon', kind:'move'},
+        {time:'22:40', name:'Night train to Tashkent', note:'Timetables list a 22:40 departure arriving ~06:34, and a later sleeper at 00:05 arriving ~08:52. Check on the official site and book a 4-berth coupé.', kind:'move', dur:'~8 h'}
+      ]},
+    { id:'day-7', date:'Fri 18 Dec', city:'Tashkent', title:'Museums, plov and departure',
+      stay:'Fly out (or add a night)', move:'Taxi + metro',
+      sunset:'~7:50 am – 5:00 pm',
+      note:{type:'tip', h:'Friday', t:'Mosques get busy around midday prayers, so this day is built around museums and food. If your flight is before 3 pm, keep only the morning.'},
+      stops:[
+        {time:'06:30', name:'Arrive in Tashkent', note:'Taxi to your hotel for luggage storage, early check-in or a day room. Breakfast.', kind:'move'},
+        {time:'09:30', name:'Museum of Applied Arts', note:'In a carved old mansion, with suzani, ceramics and woodwork. Near Kosmonavtlar metro.', q:'State Museum of Applied Arts Tashkent', fee:30000, feeNote:'~USD 2.5', dur:'1.5 h'},
+        {time:'11:15', name:'Amir Timur Museum', note:'The blue-domed museum by the square. It has film of Timur’s tomb being opened, nice after Samarkand.', q:'Amir Timur Museum Tashkent', fee:40000, feeNote:'approx.', dur:'1 h'},
+        {time:'12:45', name:'Lunch at Besh Qozon (Plov Centre)', note:'Plov from giant cauldrons, next to the TV Tower. Go before plov runs out.', q:'Besh Qozon Tashkent', dur:'1 h'},
+        {time:'14:00', name:'Tashkent TV Tower', note:'Observation deck beside Besh Qozon.', q:'Tashkent TV Tower', dur:'1 h'},
+        {time:'15:30', name:'Alay Bazaar for food gifts', note:'Dried fruit, nuts and sweets to take home.', q:'Alay Bazaar Tashkent', fee:0, dur:'1 h'},
+        {time:'Evening', name:'Airport, with a generous buffer', note:'Keep passports and cash handy. Or, if you fly tomorrow, book an opera or ballet at the Navoi Theatre.', q:'Tashkent International Airport', kind:'move'}
+      ]}
+  ];
+
+  var BOOK = [
+    {id:'trainN', t:'Night train Bukhara → Tashkent, 17 Dec (4-berth coupé)', w:'As soon as sales open on the official Uzbekistan Railways e-ticket site'},
+    {id:'car', t:'Car 13–17 Dec, Tashkent pickup, Bukhara drop on the 17th', w:'Now. Get the one-way fee, km limit, drop-off point and deposit in writing'},
+    {id:'idp', t:'International Driving Permit for each driver', w:'Before you fly (MOI UAE app)'},
+    {id:'h1', t:'Tashkent hotel from 11 Dec (2 nights) + 2 am airport pickup', w:'Now. Also ask about car delivery at 8 am on the 13th'},
+    {id:'h2', t:'Samarkand hotel, 13–14 Dec, with parking', w:'Now'},
+    {id:'h3', t:'Bukhara guesthouse, 15–16 Dec, late bag pickup on 17th', w:'Now'},
+    {id:'h4', t:'Tashkent day room or early check-in, 18 Dec', w:'Once your flight time is fixed'},
+    {id:'visa', t:'Check entry rules for your passports', w:'Official sources, before booking'},
+    {id:'ins', t:'Travel insurance covering self-drive', w:'Before you fly'},
+    {id:'cash', t:'Clean US dollars plus some som on arrival', w:'Before you fly'},
+    {id:'apps', t:'Install Yandex Go and offline maps', w:'Before you fly'}
+  ];
+  var PACK = ['Thermal layers and a warm jacket','Gloves, hat and scarf (also for mosque visits)','Comfortable walking shoes with grip','Power bank and car phone charger','Headscarf, and clothes covering knees and shoulders','Small daypack and a reusable water bottle'];
+
+  var current = 0;
+  var done = store.get('done', {});
+
+  function feeTag(s){
+    if (s.fee === undefined) return '';
+    if (s.fee === 0) return '<span class="tag free">Free</span>';
+    return '<span class="tag fee">' + fmt(s.fee) + ' som · AED ' + aed(s.fee) + (s.feeNote ? ' · ' + s.feeNote : '') + '</span>';
+  }
+
+  function dayProgress(i){
+    var d = DAYS[i], n = d.stops.length, c = 0;
+    d.stops.forEach(function(s, j){ if (done[d.id+'-'+j]) c++; });
+    return n ? c / n : 0;
+  }
+
+  function renderRail(){
+    var rail = document.getElementById('dayrail');
+    rail.innerHTML = '';
+    DAYS.forEach(function(d, i){
+      var b = document.createElement('button');
+      b.setAttribute('role','tab');
+      b.id = 'tab-' + d.id;
+      b.setAttribute('aria-selected', i === current ? 'true' : 'false');
+      b.innerHTML = '<span class="d">' + d.date + '</span><span class="c">' + d.city + '</span><span class="bar"><i style="width:' + Math.round(dayProgress(i)*100) + '%"></i></span>';
+      b.addEventListener('click', function(){ go(i); });
+      rail.appendChild(b);
+    });
+  }
+
+  function renderDay(){
+    var d = DAYS[current];
+    var dayFee = d.stops.reduce(function(a, s){ return a + (s.fee || 0); }, 0);
+    var html = '<div class="dayhead"><div><div class="small">Day ' + (current+1) + ' of 7 · ' + d.date + '</div><h2>' + d.title + '</h2><div class="sub">' + d.city + '</div></div>' +
+      '<button class="btn" id="resetday" type="button">Clear ticks</button></div>' +
+      '<div class="facts">' +
+        '<div class="fact"><b>Sleep</b>' + d.stay + '</div>' +
+        '<div class="fact"><b>Getting around</b>' + d.move + '</div>' +
+        '<div class="fact"><b>Daylight (approx.)</b>' + d.sunset + '</div>' +
+        '<div class="fact"><b>Entry fees / person</b>' + (dayFee ? fmt(dayFee) + ' som · AED ' + aed(dayFee) : 'None or minor') + '</div>' +
+      '</div>';
+    if (d.note) html += '<div class="callout ' + (d.note.type === 'tip' ? 'tip' : '') + '"><strong>' + d.note.h + '</strong>' + d.note.t + '</div>';
+    html += '<ol class="timeline">';
+    d.stops.forEach(function(s, j){
+      var key = d.id + '-' + j, isDone = !!done[key], cid = 'chk-' + key;
+      html += '<li class="stop' + (isDone ? ' done' : '') + (s.kind === 'move' ? ' kind-move' : '') + '">' +
+        '<div class="time">' + s.time + '</div>' +
+        '<input type="checkbox" id="' + cid + '" data-key="' + key + '"' + (isDone ? ' checked' : '') + ' aria-label="Mark ' + s.name.replace(/"/g,'') + ' as done">' +
+        '<div><label for="' + cid + '" class="name">' + s.name + '</label>' +
+        (s.note ? '<div class="note">' + s.note + '</div>' : '') +
+        '<div class="meta">' + (s.dur ? '<span class="tag">' + s.dur + '</span>' : '') + feeTag(s) +
+        (s.q ? '<a class="map" href="' + gmap(s.q) + '" target="_blank" rel="noopener">Open in Maps</a>' : '') +
+        '</div></div></li>';
+    });
+    html += '</ol>';
+    html += '<div class="daynav"><button class="btn" type="button" id="prev"' + (current === 0 ? ' disabled' : '') + '>← Previous day</button>' +
+            '<button class="btn primary" type="button" id="next"' + (current === DAYS.length-1 ? ' disabled' : '') + '>Next day →</button></div>';
+    var card = document.getElementById('daycard');
+    card.innerHTML = html;
+    card.querySelectorAll('input[type=checkbox]').forEach(function(cb){
+      cb.addEventListener('change', function(){
+        done[cb.dataset.key] = cb.checked; store.set('done', done);
+        cb.closest('.stop').classList.toggle('done', cb.checked);
+        renderRail();
+      });
+    });
+    document.getElementById('prev').addEventListener('click', function(){ go(current-1); });
+    document.getElementById('next').addEventListener('click', function(){ go(current+1); });
+    document.getElementById('resetday').addEventListener('click', function(){
+      d.stops.forEach(function(s, j){ delete done[d.id+'-'+j]; }); store.set('done', done); renderDay(); renderRail();
+    });
+  }
+
+  function go(i, fromHash){
+    if (i < 0 || i >= DAYS.length) return;
+    current = i; renderRail(); renderDay();
+    if (!fromHash) { try { history.replaceState(null, '', '#' + DAYS[i].id); } catch(e){ location.hash = DAYS[i].id; } }
+    var t = document.getElementById('tab-' + DAYS[i].id); if (t && t.scrollIntoView) t.scrollIntoView({block:'nearest', inline:'center'});
+  }
+
+  function fromHash(){
+    var h = (location.hash || '').replace('#','');
+    var idx = DAYS.findIndex(function(d){ return d.id === h; });
+    return idx;
+  }
+
+  // Budget
+  var bIds = ['b-rooms','b-tas','b-sam','b-buk','b-car','b-oneway','b-fuel','b-train','b-food','b-taxi'];
+  var saved = store.get('budget', {});
+  bIds.forEach(function(id){ var el = document.getElementById(id); if (saved[id] !== undefined) el.value = saved[id]; el.addEventListener('input', calc); });
+  function v(id){ var n = parseFloat(document.getElementById(id).value); return isNaN(n) ? 0 : n; }
+  function calc(){
+    var s = {}; bIds.forEach(function(id){ s[id] = document.getElementById(id).value; }); store.set('budget', s);
+    var rooms = v('b-rooms'), people = 4;
+    var hotels = rooms * (v('b-tas')*2 + v('b-sam')*2 + v('b-buk')*2);
+    var car = v('b-car')*5 + v('b-oneway') + v('b-fuel');
+    var train = v('b-train') * people;
+    var food = v('b-food') * people * 7;
+    var taxi = v('b-taxi');
+    var feesSom = 0; DAYS.forEach(function(d){ d.stops.forEach(function(st){ if (st.fee && st.feeNote !== 'per ride') feesSom += st.fee; }); });
+    var fees = feesSom / rate * people;
+    var taxSom = 56250 * people * 6; var tax = taxSom / rate;
+    var total = hotels + car + train + food + taxi + fees + tax;
+    var rows = [['Hotels (6 nights)', hotels],['Car, one-way fee, fuel', car],['Night train', train],['Food (7 days)', food],['Taxis & metro', taxi],['Entry fees', fees],['City tourist tax', tax]];
+    document.getElementById('b-rows').innerHTML = rows.map(function(r){ return '<div><span>' + r[0] + '</span><span>AED ' + fmt(r[1]) + '</span></div>'; }).join('');
+    document.getElementById('b-total').textContent = 'AED ' + fmt(total);
+    document.getElementById('b-pp').textContent = 'AED ' + fmt(total/people);
+  }
+
+  // Converter
+  var rateEl = document.getElementById('c-rate'), uzsEl = document.getElementById('c-uzs'), aedEl = document.getElementById('c-aed');
+  rateEl.value = rate;
+  function fromUzs(){ aedEl.value = (parseFloat(uzsEl.value)||0) / rate ? ((parseFloat(uzsEl.value)||0) / rate).toFixed(2) : ''; }
+  function fromAed(){ uzsEl.value = Math.round((parseFloat(aedEl.value)||0) * rate); }
+  uzsEl.addEventListener('input', fromUzs);
+  aedEl.addEventListener('input', fromAed);
+  rateEl.addEventListener('input', function(){ var r = parseFloat(rateEl.value); if (r > 0) { rate = r; store.set('rate', r); fromUzs(); renderDay(); calc(); } });
+  document.querySelectorAll('.quick button').forEach(function(b){ b.addEventListener('click', function(){ uzsEl.value = b.dataset.uzs; fromUzs(); }); });
+  fromUzs();
+
+  // Tool tabs
+  document.querySelectorAll('.tabs button').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.tabs button').forEach(function(o){ o.setAttribute('aria-selected', o === t ? 'true' : 'false'); document.getElementById(o.dataset.panel).hidden = o !== t; });
+    });
+  });
+
+  // Checklists
+  var booked = store.get('booked', {});
+  function renderBook(){
+    var ul = document.getElementById('booklist'); ul.innerHTML = '';
+    var c = 0;
+    BOOK.forEach(function(b){
+      if (booked[b.id]) c++;
+      var li = document.createElement('li');
+      li.innerHTML = '<label for="bk-' + b.id + '"><input type="checkbox" id="bk-' + b.id + '"' + (booked[b.id] ? ' checked' : '') + '><span>' + b.t + '<span class="when">' + b.w + '</span></span></label>';
+      li.querySelector('input').addEventListener('change', function(e){ booked[b.id] = e.target.checked; store.set('booked', booked); renderBook(); });
+      ul.appendChild(li);
+    });
+    document.getElementById('bookcount').textContent = c + ' of ' + BOOK.length + ' done';
+  }
+  var packed = store.get('packed', {});
+  var pl = document.getElementById('packlist');
+  PACK.forEach(function(p, i){
+    var li = document.createElement('li');
+    li.innerHTML = '<label for="pk-' + i + '"><input type="checkbox" id="pk-' + i + '"' + (packed[i] ? ' checked' : '') + '><span>' + p + '</span></label>';
+    li.querySelector('input').addEventListener('change', function(e){ packed[i] = e.target.checked; store.set('packed', packed); });
+    pl.appendChild(li);
+  });
+
+  // City toggle for homestays
+  document.querySelectorAll('.citytabs button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.citytabs button').forEach(function(o){
+        var on = o === b; o.setAttribute('aria-pressed', on ? 'true' : 'false');
+        document.getElementById('stays-' + o.dataset.city).hidden = !on;
+      });
+    });
+  });
+
+  window.addEventListener('hashchange', function(){ var i = fromHash(); if (i >= 0 && i !== current) go(i, true); });
+  var start = fromHash(); current = start >= 0 ? start : 0;
+  renderRail(); renderDay(); calc(); renderBook();
+})();
+</script>
+</body>
+</html>
