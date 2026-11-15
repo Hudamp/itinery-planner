@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan vs Package · Uzbekistan Trip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Soft Silk Road palette, light only: sage for our plan, dusty rose for the package, gold accents on pale pistachio */
+  --stage:#e9efe4; --stage-ink:#2f3a2c;
+  --bg:#f5f7f1; --surface:#ffffff; --ink:#2f3a2c; --muted:#76806f; --line:#e3e8dc;
+  --us:#5c7f56; --us-soft:#e6efe1; --them:#b8606f; --them-soft:#f8e6e9; --tie:#a08a4f; --tie-soft:#f4eedd;
+  --gold:#c9a24a;
+  --display:"Fraunces",Georgia,serif;
+  --body:"DM Sans","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px}
+
+/* Stage */
+.stage{background:linear-gradient(135deg,#eef3e8 0%,#f7ece9 100%);color:var(--stage-ink);padding:30px 0 34px;border-bottom:1px solid var(--line)}
+.stage .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-top:14px}
+.fighter{border-radius:18px;padding:18px;display:grid;gap:4px}
+.fighter.us{background:#ffffffcc;border:1.5px solid var(--us);box-shadow:0 8px 24px rgba(92,127,86,.12)}
+.fighter.them{background:#ffffffcc;border:1.5px solid var(--them);text-align:right;box-shadow:0 8px 24px rgba(184,96,111,.12)}
+.fighter h2{font-size:clamp(20px,3vw,28px)}
+.fighter .meta{color:var(--muted);font-size:14px}
+.fighter .score{font-family:var(--display);font-size:clamp(40px,7vw,64px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.fighter.us .score{color:var(--us)}.fighter.them .score{color:var(--them)}
+.vsbadge{font-family:var(--display);font-style:italic;font-weight:700;font-size:22px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#fff;box-shadow:0 6px 16px rgba(201,162,74,.35)}
+.verdict{margin-top:16px;padding:12px 16px;border-radius:12px;background:#ffffffb3;border:1px solid var(--line);font-size:16px}
+@media (max-width:640px){.vs{grid-template-columns:1fr}.fighter.them{text-align:left}.vsbadge{margin:0 auto}}
+
+/* Filters */
+.filters{position:sticky;top:0;z-index:4;background:var(--bg);border-bottom:1px solid var(--line)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0}
+.chips button{flex:0 0 auto;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;cursor:pointer;font-weight:800;font-size:14px}
+.chips button[aria-pressed="true"]{background:var(--us);color:#fff;border-color:var(--us)}
+.chips .count{opacity:.6;font-weight:600;margin-left:4px}
+
+/* Rounds */
+main{padding:18px 0 50px}
+.rounds{display:grid;gap:10px}
+.round{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(47,58,44,.04)}
+.round summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr 110px 1fr;gap:10px;align-items:center;padding:12px 14px}
+.round summary::-webkit-details-marker{display:none}
+.side{font-size:15px}
+.side.them{text-align:right}
+.side b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
+.side.us b{color:var(--us)}.side.them b{color:var(--them)}
+.mid{text-align:center}
+.mid .topic{font-family:var(--display);font-weight:700;font-size:15px;line-height:1.2}
+.win{display:inline-block;margin-top:4px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:999px}
+.win.us{background:var(--us-soft);color:var(--us)}.win.them{background:var(--them-soft);color:var(--them)}.win.tie{background:var(--tie-soft);color:var(--tie)}
+.round.us-win{box-shadow:inset 5px 0 0 var(--us)}
+.round.them-win{box-shadow:inset -5px 0 0 var(--them)}
+.round .why{padding:0 16px 14px;color:var(--muted);font-size:15px;border-top:1px dashed var(--line);padding-top:10px;margin:0 14px}
+@media (max-width:640px){.round summary{grid-template-columns:1fr}.side.them{text-align:left}.mid{text-align:left;order:-1}}
+
+/* Bottom blocks */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h3{font-size:19px;margin-bottom:8px}
+.panel ol,.panel ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.money{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.mbox{border-radius:12px;padding:12px}
+.mbox.us{background:var(--us-soft)}.mbox.them{background:var(--them-soft)}
+.mbox b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
+.mbox.us b{color:var(--us)}.mbox.them b{color:var(--them)}
+.mbox .n{font-family:var(--display);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums}
+.inputs{display:flex;flex-wrap:wrap;gap:10px;font-size:14px;color:var(--muted)}
+.inputs label{display:grid;gap:3px}
+.inputs input{width:110px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--bg);font-variant-numeric:tabular-nums}
+.small{font-size:13px;color:var(--muted)}
+.sitenav{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.sitenav a{text-decoration:none;font-weight:700;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--ink);background:#ffffffb3}
+.sitenav a:hover{border-color:var(--us)}
+.sitenav a[aria-current="page"]{background:var(--us);border-color:var(--us);color:#fff}
+footer{color:var(--muted);font-size:13px;padding:0 0 40px}
+</style>
+</head>
+<body>
+<section class="stage">
+  <div class="wrap">
+    <nav class="sitenav" aria-label="Pages"><a href="index.html">Trip planner</a><a href="compare.html" aria-current="page">Plan vs package</a></nav>
+    <div class="eyebrow">Uzbekistan · head to head</div>
+    <div class="vs">
+      <div class="fighter us"><h2>Our self-drive plan</h2><div class="meta">12–18 Dec · 7 days · car + night train</div><div class="score" id="s-us">0</div><div class="meta">rounds won</div></div>
+      <div class="vsbadge" aria-hidden="true">VS</div>
+      <div class="fighter them"><h2>MediaOne package</h2><div class="meta">10–15 Oct · 6 days · guided, all meals</div><div class="score" id="s-them">0</div><div class="meta">rounds won</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+</section>
+
+<div class="filters">
+  <div class="wrap"><div class="chips" id="chips" role="group" aria-label="Filter rounds by category"></div></div>
+</div>
+
+<div class="wrap">
+<main>
+  <p class="small" style="margin:0 0 10px">Tap any round to see why it went that way. Rounds marked <b>Tie</b> are covered equally well by both.</p>
+  <div class="rounds" id="rounds"></div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>The money</h3>
+      <div class="money">
+        <div class="mbox us"><b>Our plan</b><div class="n" id="m-us"></div><div class="small">per person, planner estimate</div></div>
+        <div class="mbox them"><b>Package</b><div class="n" id="m-them"></div><div class="small">per person incl. GST+TCS*</div></div>
+      </div>
+      <div class="inputs">
+        <label for="i-us">Our plan (AED/person)<input id="i-us" type="number" min="0" value="1800"></label>
+        <label for="i-rate">₹ per 1 AED<input id="i-rate" type="number" min="1" step="0.1" value="24"></label>
+        <label for="i-tax">GST + TCS %<input id="i-tax" type="number" min="0" step="0.5" value="5"></label>
+      </div>
+      <p class="small" id="m-line" style="margin-top:10px"></p>
+      <p class="small">*Package listed at ₹64,900 + GST + TCS. Per person is assumed, so confirm with MediaOne. Both exclude flights.</p>
+    </div>
+    <div class="panel">
+      <h3>Borrow these from the package</h3>
+      <ol>
+        <li><b>Imam al-Bukhari complex</b>, about 25 km north of Samarkand. Make it a main stop on 13 or 14 Dec.</li>
+        <li><b>A Tashkent evening</b> on 12 Dec: Magic City and the Seoul Mun food street.</li>
+        <li><b>Registration slips:</b> ask each hotel or guesthouse for one, and confirm the rule before you travel.</li>
+        <li><b>A half-day local guide</b> in Samarkand or Bukhara for the stories.</li>
+        <li><b>Chimgan and Charvak</b> only if you add a day. Snow-dependent in December.</li>
+      </ol>
+    </div>
+  </div>
+</main>
+<footer>Package details from MediaOne Destinations’ Uzbekistan page (10–15 Oct 2026), read on 15 Nov 2026. Confirm prices and inclusions with the operator.</footer>
+</div>
+
+<script>
+(function(){
+  // [category, topic, our plan, package, winner us|them|tie, why]
+  var R = [
+    ['Sights','Samarkand coverage','Registan, Shah-i-Zinda, Gur-e-Amir, Bibi-Khanym, Ulugh Beg, Siab','Registan, Shah-i-Zinda, Siab, Hazrat Khizr','us','The package skips Gur-e-Amir (Timur’s tomb), Bibi-Khanym and the observatory.'],
+    ['Sights','Bukhara coverage','Ark, Kalon, Bolo-Hauz, Samanid, Chor Minor, Magoki-Attori, domes, Sitorai','Ark, Kalon, Mir-i-Arab, Chor Minor, Bolo-Hauz, Lyabi-Hauz, Chashma-Ayub','us','Both cover the core. Ours adds the Samanid Mausoleum, the summer palace and real shopping time.'],
+    ['Sights','Tashkent coverage','Chorsu, Hazrati Imam, metro, museums, Minor Mosque, Besh Qozon','Besh Qozon, TV Tower, Magic City, Seoul Mun, Hazrat Imam, Chorsu','tie','Ours is heritage-heavy, theirs has a fun evening. Different strengths.'],
+    ['Pace','Time in Samarkand','~2.5 days','~1 day','us','The package arrives at 11 am and leaves the next noon.'],
+    ['Pace','Time in Bukhara','~2.5 days','One afternoon + one morning','us','Bukhara is best slow. The package squeezes the full tour into a few hours.'],
+    ['Pace','Busiest day','Manageable days, daylight driving','Day 4: Konigil + Imam al-Bukhari + transfer + all of Bukhara','us','The package’s Day 4 is very crammed.'],
+    ['Faith','Imam al-Bukhari complex','Optional','Included','them','A major site for Muslim travellers. Worth adding to our plan.'],
+    ['Faith','Daily prayers and Juma','Prayer times every day, Juma at Hazrati Imam','Islamic sites, no prayer planning','us','Ours plans around Fajr to Isha and Friday prayer.'],
+    ['Faith','Sufi and heritage shrines','Bahauddin Naqshband, Chashma-Ayub, Hazrati Imam','Bahauddin Naqshband, Chashma-Ayub, Hazrat Imam, Hazrat Khizr','tie','Both cover the main shrines.'],
+    ['Nature','Mountains','None','Chimgan cable car, Charvak Lake, horse riding','them','The package has a whole mountain day.'],
+    ['Nature','Canyons and gorges','Tamerlane’s Gate, Amankutan, optional Sarmishsay','None','us','Our drives pass through canyon scenery the package doesn’t have.'],
+    ['Comfort','Guide','Self-guided','Malayalam / English guide','them','A guide explains each site and handles everything.'],
+    ['Comfort','Meals','Breakfast, plus your own choices','All lunches and dinners','them','Less planning, though less freedom.'],
+    ['Comfort','Effort and stress','You drive, book trains, handle the car deposit','Everything handled, 24/7 support','them','The biggest reason to pick the package.'],
+    ['Comfort','Airport pickup and registration','Arrange with the hotel, keep slips','Included, registration tax covered','them','Small but handy, especially with a 2 am arrival.'],
+    ['Money','Price per person','~AED 1,800 estimate','₹64,900 + GST + TCS','us','See the money box below. Ours is roughly AED 1,000 less per person.'],
+    ['Money','Cancellation','Mostly free-cancel bookings','50% more than 30 days out, 100% within 30 days','us','Our bookings are more flexible.'],
+    ['Freedom','Flexibility on the day','Change anything, any time','Fixed schedule','us','Weather, prayer or tiredness? You can adapt.']
+  ];
+  var CATS = ['All','Sights','Pace','Faith','Nature','Comfort','Money','Freedom'];
+  var cur = 'All';
+
+  function tally(list){
+    var u = 0, t = 0; list.forEach(function(r){ if (r[4]==='us') u++; else if (r[4]==='them') t++; });
+    document.getElementById('s-us').textContent = u;
+    document.getElementById('s-them').textContent = t;
+    var v = document.getElementById('verdict');
+    v.innerHTML = (cur === 'All' ? '' : '<b>' + cur + ':</b> ') + (u > t
+      ? 'Our plan wins <b>' + u + '–' + t + '</b>, with more time, more sights, prayer planning and a lower price. The package wins on comfort: a guide, meals and no driving.'
+      : (t > u ? 'The package wins <b>' + t + '–' + u + '</b> in this category.' : 'It’s even, <b>' + u + '–' + t + '</b>, in this category.'));
+  }
+
+  function renderChips(){
+    var el = document.getElementById('chips');
+    el.innerHTML = CATS.map(function(c){
+      var n = c === 'All' ? R.length : R.filter(function(r){ return r[0]===c; }).length;
+      return '<button type="button" data-c="' + c + '" aria-pressed="' + (c===cur) + '">' + c + '<span class="count">' + n + '</span></button>';
+    }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ cur = b.dataset.c; renderChips(); renderRounds(); }); });
+  }
+
+  function renderRounds(){
+    var list = R.filter(function(r){ return cur === 'All' || r[0] === cur; });
+    var label = {us:'Our plan', them:'Package', tie:'Tie'};
+    document.getElementById('rounds').innerHTML = list.map(function(r){
+      return '<details class="round ' + (r[4]==='us' ? 'us-win' : r[4]==='them' ? 'them-win' : '') + '"><summary>' +
+        '<div class="side us"><b>Our plan</b>' + r[2] + '</div>' +
+        '<div class="mid"><div class="topic">' + r[1] + '</div><span class="win ' + r[4] + '">' + label[r[4]] + '</span></div>' +
+        '<div class="side them"><b>Package</b>' + r[3] + '</div></summary>' +
+        '<p class="why">' + r[5] + '</p></details>';
+    }).join('');
+    tally(list);
+  }
+
+  function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+  function money(){
+    var us = parseFloat(document.getElementById('i-us').value) || 0;
+    var rate = parseFloat(document.getElementById('i-rate').value) || 24;
+    var tax = parseFloat(document.getElementById('i-tax').value) || 0;
+    var them = 64900 * (1 + tax/100) / rate;
+    document.getElementById('m-us').textContent = 'AED ' + fmt(us);
+    document.getElementById('m-them').textContent = 'AED ' + fmt(them);
+    var d = them - us;
+    document.getElementById('m-line').innerHTML = d >= 0
+      ? 'Our plan saves about <b>AED ' + fmt(d) + ' per person</b>, about AED ' + fmt(d*4) + ' for all four of you.'
+      : 'The package is about <b>AED ' + fmt(-d) + ' cheaper per person</b> at these numbers.';
+  }
+  ['i-us','i-rate','i-tax'].forEach(function(id){ document.getElementById(id).addEventListener('input', money); });
+
+  renderChips(); renderRounds(); money();
+})();
+</script>
+</body>
+</html>
