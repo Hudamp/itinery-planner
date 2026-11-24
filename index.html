@@ -281,7 +281,7 @@ main.split{grid-template-columns:minmax(0,1.48fr) minmax(0,1fr);gap:21px}
 .card,.right{border-radius:17px;box-shadow:var(--shadow)}
 .card{padding:clamp(15px,2.4vw,28px)}
 .right{background:var(--surface);padding:0 12px 14px;scroll-margin-top:var(--navh,118px)}
-.right .secbar{background:var(--surface);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;overflow:visible;padding:11px 0}
+.right .secbar{background:var(--surface);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;overflow:visible;padding:11px 0}
 .right .secbar button{border-radius:8px;padding:6px 4px;min-height:37px;line-height:1.15;font-size:.84rem;background:var(--bg)}
 .right .secbar button[aria-selected="true"]{background:var(--action);color:var(--on-action);border-color:var(--action)}
 .right .card{box-shadow:none}
@@ -372,6 +372,36 @@ header.top{padding-bottom:18px}
   .fact+.fact{border-top:1px dashed var(--line)}
 }
 @media(max-width:440px){.rail-route{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:12px}.rail-route li:nth-child(3)::before{content:none}.rail-route strong{font-size:.72rem}.rail-route small{font-size:.68rem}.rail-route li{padding-right:8px}}
+.expform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px}
+.expform label{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
+.expform label.wide{grid-column:1/-1}
+.expform input,.expform select{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink);font-size:15px;width:100%;min-width:0}
+.expform .seg{display:flex;gap:6px;flex-wrap:wrap}
+.expform .seg label{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink);font-weight:600;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--bg);cursor:pointer}
+.xstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr));gap:8px;margin-top:6px}
+.xstat{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg)}
+.xstat b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.xstat .n{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.xpeople{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;margin-top:12px}
+.xpeople th,.xpeople td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right}
+.xpeople th:first-child,.xpeople td:first-child{text-align:left}
+.xpeople th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.xpos{color:var(--good);font-weight:700}.xneg{color:var(--warn);font-weight:700}
+.xsettle{margin:10px 0 0;padding-left:18px;font-size:15px}
+.xfilter{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 4px}
+.xfilter button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px;cursor:pointer;font-weight:700;font-size:13px;color:var(--ink)}
+.xfilter button[aria-pressed="true"]{background:var(--action);border-color:var(--action);color:var(--on-action)}
+.xlist{list-style:none;margin:0;padding:0}
+.xitem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;padding:10px 0;border-top:1px dashed var(--line)}
+.xitem:first-child{border-top:0}
+.xitem .d{font-weight:700;overflow-wrap:anywhere}
+.xitem .m{font-size:13px;color:var(--muted)}
+.xitem .a{font-weight:700;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.xitem .x{grid-column:2;justify-self:end;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:2px 8px;font-size:12px;cursor:pointer;color:var(--muted)}
+.xitem .x.arm{border-color:var(--warn);color:var(--warn);font-weight:700}
+.xnames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.xnames input{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink);font-size:15px;width:100%;min-width:0}
+@media(max-width:480px){.expform,.xnames{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -443,6 +473,7 @@ header.top{padding-bottom:18px}
       <button role="tab" id="st-prayer" data-sec="prayer" aria-selected="false">Prayer &amp; sun</button>
       <button role="tab" id="st-notes" data-sec="notes" aria-selected="false">Notes</button>
       <button role="tab" id="st-tools" data-sec="tools" aria-selected="false">Budget &amp; tools</button>
+      <button role="tab" id="st-money" data-sec="money" aria-selected="false">Expenses</button>
     </div>
   <section class="panel" id="p-stay" role="tabpanel" aria-labelledby="st-stay" hidden>
     <p class="panelintro">Where you sleep each night (2 Tashkent, 2 night trains, 1 Bukhara, 2 Samarkand), and the best affordable homestays.</p>
@@ -655,6 +686,37 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
       <ul class="checklist" id="packlist"></ul>
     </div>
 
+  </section>
+  <section class="panel" id="p-money" role="tabpanel" aria-labelledby="st-money" hidden>
+    <p class="panelintro">Each of you adds what you paid, under your own name. It syncs to all four phones, and the summary shows who owes whom.</p>
+    <div class="card" style="margin-top:16px">
+      <h3 class="sec">Add an expense</h3>
+      <div class="expform">
+        <label>Paid by<select id="x-who"></select></label>
+        <label>Day<select id="x-day"></select></label>
+        <label>Amount<input id="x-amt" type="number" min="0" step="any" inputmode="decimal" placeholder="0"></label>
+        <label>Currency<select id="x-cur"><option value="UZS">Som (UZS)</option><option value="AED">AED</option><option value="USD">USD</option></select></label>
+        <label class="wide">What for<input id="x-desc" type="text" maxlength="80" placeholder="e.g. Dinner at Lyabi-Hauz"></label>
+        <label>Category<select id="x-cat"><option>Food</option><option>Transport</option><option>Stay</option><option>Tickets</option><option>Shopping</option><option>Other</option></select></label>
+        <label>Who it was for<select id="x-split"><option value="all">Shared by all 4</option><option value="me">Just me</option></select></label>
+      </div>
+      <div class="copyrow" style="margin-top:12px"><button class="btn primary" type="button" id="x-add">Add expense</button><span class="small" id="x-msg" aria-live="polite"></span></div>
+    </div>
+    <div class="card">
+      <h3 class="sec">Summary</h3>
+      <div id="x-summary"></div>
+    </div>
+    <div class="card">
+      <h3 class="sec">All expenses</h3>
+      <div class="xfilter" id="x-filter" role="group" aria-label="Filter by person"></div>
+      <ul class="xlist" id="x-list"></ul>
+    </div>
+    <div class="card">
+      <h3 class="sec">Your four names</h3>
+      <p class="small" style="margin:0">Set these once. They update for everyone.</p>
+      <div class="xnames" id="x-names"></div>
+      <div class="copyrow" style="margin-top:10px"><button class="btn" type="button" id="x-savenames">Save names</button><span class="small" id="x-namemsg" aria-live="polite"></span></div>
+    </div>
   </section>
   <section class="panel" id="p-tools" role="tabpanel" aria-labelledby="st-tools" hidden>
     <p class="panelintro">Group budget in AED, a som ↔ AED converter, and your booking checklist.</p>
@@ -1177,7 +1239,7 @@ var SUPABASE_ANON_KEY = 'sb_publishable_LRcbCexl1_rsW2521uMoZg_dlDWtkuh';
   });
 
   // Section tabs
-  var SECS = ['stay','car','train','prayer','notes','tools'];
+  var SECS = ['stay','car','train','prayer','notes','tools','money'];
   var curSec = 'stay';
   function showSec(name, fromHash){
     if (SECS.indexOf(name) < 0) name = 'stay';
@@ -1202,6 +1264,130 @@ var SUPABASE_ANON_KEY = 'sb_publishable_LRcbCexl1_rsW2521uMoZg_dlDWtkuh';
   var start = fromHash(); current = start >= 0 ? start : 0;
   renderRail(); renderDay(); calc(); renderBook();
   showSec(SECS.indexOf(h0) >= 0 ? h0 : store.get('sec','stay'), true);
+  // ---- Shared expenses ----
+  var CURS = {UZS:1, AED:1, USD:1}, CATS = ['Food','Transport','Stay','Tickets','Shopping','Other'];
+  var USD_AED = 3.6725;
+  var PEOPLE = cleanPeople(store.get('people', null));
+  var EXP = store.get('expenses', {});
+  var xFilter = 'all', armed = null;
+  function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function cleanPeople(p){
+    var out = ['Person 1','Person 2','Person 3','Person 4'];
+    if (Array.isArray(p)) for (var i = 0; i < 4; i++){ if (typeof p[i] === 'string' && p[i].trim()) out[i] = p[i].trim().slice(0, 24); }
+    return out;
+  }
+  function cleanExp(v){
+    if (!v || typeof v !== 'object') return null;
+    var amt = parseFloat(v.amt), who = parseInt(v.who, 10);
+    if (!(amt > 0) || !(who >= 0 && who < 4) || !CURS[v.cur]) return null;
+    return {who: who, amt: amt, cur: v.cur, desc: String(v.desc || '').slice(0, 80), cat: CATS.indexOf(v.cat) >= 0 ? v.cat : 'Other',
+      day: String(v.day || '').slice(0, 12), split: v.split === 'me' ? 'me' : 'all', ts: +v.ts || 0, deleted: !!v.deleted};
+  }
+  function toAED(e){ return e.cur === 'AED' ? e.amt : e.cur === 'USD' ? e.amt * USD_AED : e.amt / rate; }
+  function money(a){ return 'AED ' + (Math.abs(a) < 10 ? a.toFixed(1) : fmt(a)); }
+  function origAmt(e){ return e.cur === 'UZS' ? fmt(e.amt) + ' som' : (e.cur === 'USD' ? 'USD ' : 'AED ') + (e.amt % 1 ? e.amt.toFixed(2) : fmt(e.amt)); }
+  function liveExp(){ var a = []; Object.keys(EXP).forEach(function(k){ var e = cleanExp(EXP[k]); if (e && !e.deleted){ e.id = k; a.push(e); } }); a.sort(function(x, y){ return y.ts - x.ts; }); return a; }
+
+  function renderPeopleUI(){
+    var me = store.get('me', 0);
+    var who = document.getElementById('x-who'); who.innerHTML = '';
+    PEOPLE.forEach(function(n, i){ var o = document.createElement('option'); o.value = i; o.textContent = n; who.appendChild(o); });
+    who.value = me;
+    var box = document.getElementById('x-names');
+    if (!box.dataset.built){
+      PEOPLE.forEach(function(n, i){ var inp = document.createElement('input'); inp.type = 'text'; inp.maxLength = 24; inp.id = 'xn-' + i; inp.setAttribute('aria-label', 'Name ' + (i + 1)); box.appendChild(inp); });
+      box.dataset.built = '1';
+    }
+    PEOPLE.forEach(function(n, i){ var inp = document.getElementById('xn-' + i); if (document.activeElement !== inp) inp.value = n; });
+  }
+  function renderMoney(){
+    var list = liveExp();
+    var paidAll = [0,0,0,0], paidMine = [0,0,0,0], sharedTotal = 0, total = 0;
+    list.forEach(function(e){ var a = toAED(e); total += a; if (e.split === 'all'){ paidAll[e.who] += a; sharedTotal += a; } else paidMine[e.who] += a; });
+    var share = sharedTotal / 4, bal = paidAll.map(function(p){ return p - share; });
+    var budgetTotal = parseFloat((document.getElementById('b-total').textContent || '').replace(/[^0-9.]/g, '')) || 0;
+    var h = '<div class="xstats"><div class="xstat"><b>Group spent</b><span class="n">' + money(total) + '</span></div>' +
+      '<div class="xstat"><b>Shared costs</b><span class="n">' + money(sharedTotal) + '</span></div>' +
+      '<div class="xstat"><b>Fair share each</b><span class="n">' + money(share) + '</span></div>' +
+      (budgetTotal ? '<div class="xstat"><b>Of the budget</b><span class="n">' + Math.round(total / budgetTotal * 100) + '%</span></div>' : '') + '</div>';
+    h += '<div class="tablewrap"><table class="xpeople"><thead><tr><th>Name</th><th>Paid (shared)</th><th>Just for self</th><th>Balance</th></tr></thead><tbody>';
+    PEOPLE.forEach(function(n, i){
+      var b = bal[i], cls = b > 0.5 ? 'xpos' : (b < -0.5 ? 'xneg' : '');
+      h += '<tr><td><b>' + esc(n) + '</b></td><td>' + money(paidAll[i]) + '</td><td>' + money(paidMine[i]) + '</td><td class="' + cls + '">' + (b > 0.5 ? 'gets ' : b < -0.5 ? 'owes ' : '') + money(Math.abs(b)) + '</td></tr>';
+    });
+    h += '</tbody></table></div>';
+    // settle up: greedy match debtors to creditors
+    var cr = [], dr = [];
+    bal.forEach(function(b, i){ if (b > 0.5) cr.push([i, b]); else if (b < -0.5) dr.push([i, -b]); });
+    cr.sort(function(a, b){ return b[1] - a[1]; }); dr.sort(function(a, b){ return b[1] - a[1]; });
+    var moves = [];
+    while (cr.length && dr.length){
+      var c = cr[0], d = dr[0], m = Math.min(c[1], d[1]);
+      moves.push(esc(PEOPLE[d[0]]) + ' pays ' + esc(PEOPLE[c[0]]) + ' <b>' + money(m) + '</b> (about ' + fmt(m * rate) + ' som)');
+      c[1] -= m; d[1] -= m; if (c[1] < 0.5) cr.shift(); if (d[1] < 0.5) dr.shift();
+    }
+    h += '<h4 style="margin:14px 0 0;font-family:var(--display);font-size:16px">Settle up</h4>' +
+      (moves.length ? '<ul class="xsettle"><li>' + moves.join('</li><li>') + '</li></ul>' : '<p class="small" style="margin:4px 0 0">Everyone is even.</p>') +
+      '<p class="small">Totals are in AED at your converter rate (' + fmt(rate) + ' som per AED) and USD at ' + USD_AED + '. Only costs marked “Shared by all 4” are split.</p>';
+    document.getElementById('x-summary').innerHTML = h;
+
+    var f = document.getElementById('x-filter');
+    f.innerHTML = '<button type="button" data-f="all" aria-pressed="' + (xFilter === 'all') + '">Everyone</button>' +
+      PEOPLE.map(function(n, i){ return '<button type="button" data-f="' + i + '" aria-pressed="' + (String(xFilter) === String(i)) + '">' + esc(n) + '</button>'; }).join('');
+    f.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ xFilter = b.dataset.f; renderMoney(); }); });
+
+    var ul = document.getElementById('x-list'); ul.innerHTML = '';
+    var shown = list.filter(function(e){ return xFilter === 'all' || String(e.who) === String(xFilter); });
+    if (!shown.length){ ul.innerHTML = '<li class="small" style="padding:8px 0">No expenses yet.</li>'; return; }
+    shown.forEach(function(e){
+      var li = document.createElement('li'); li.className = 'xitem';
+      li.innerHTML = '<div><div class="d"></div><div class="m"></div></div><div class="a"></div><button type="button" class="x"></button>';
+      li.querySelector('.d').textContent = e.desc || e.cat;
+      li.querySelector('.m').textContent = PEOPLE[e.who] + ' · ' + e.cat + (e.day ? ' · ' + e.day : '') + ' · ' + (e.split === 'all' ? 'shared' : 'just for self');
+      li.querySelector('.a').textContent = origAmt(e) + (e.cur !== 'AED' ? ' ≈ ' + money(toAED(e)) : '');
+      var x = li.querySelector('.x');
+      x.textContent = armed === e.id ? 'Tap again to delete' : 'Delete';
+      if (armed === e.id) x.classList.add('arm');
+      x.setAttribute('aria-label', 'Delete ' + (e.desc || e.cat));
+      x.addEventListener('click', function(){
+        if (armed !== e.id){ armed = e.id; renderMoney(); setTimeout(function(){ if (armed === e.id){ armed = null; renderMoney(); } }, 4000); return; }
+        armed = null;
+        var v = cleanExp(EXP[e.id]); v.deleted = true; EXP[e.id] = v; store.set('expenses', EXP); push(e.id, v); renderMoney();
+      });
+      ul.appendChild(li);
+    });
+  }
+  (function(){
+    var daySel = document.getElementById('x-day');
+    var opts = [['Before trip','Before trip']].concat([12,13,14,15,16,17,18].map(function(dn){ return [WD[dn] + ' ' + dn + ' Dec', WD[dn] + ' ' + dn + ' Dec']; }));
+    opts.forEach(function(o){ var el = document.createElement('option'); el.value = o[0]; el.textContent = o[1]; daySel.appendChild(el); });
+    var t = new Date(), y = t.getFullYear(), mo = t.getMonth(), d = t.getDate();
+    daySel.value = (y === 2026 && mo === 11 && d >= 12 && d <= 18) ? WD[d] + ' ' + d + ' Dec' : 'Before trip';
+    document.getElementById('x-who').addEventListener('change', function(e){ store.set('me', parseInt(e.target.value, 10) || 0); });
+    document.getElementById('x-add').addEventListener('click', function(){
+      var msg = document.getElementById('x-msg');
+      var amt = parseFloat(document.getElementById('x-amt').value);
+      if (!(amt > 0)){ msg.textContent = 'Enter an amount first.'; return; }
+      var v = cleanExp({who: document.getElementById('x-who').value, amt: amt, cur: document.getElementById('x-cur').value,
+        desc: document.getElementById('x-desc').value.trim(), cat: document.getElementById('x-cat').value,
+        day: daySel.value, split: document.getElementById('x-split').value, ts: Date.now()});
+      var id = 'exp:' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      EXP[id] = v; store.set('expenses', EXP); push(id, v);
+      store.set('me', v.who);
+      document.getElementById('x-amt').value = ''; document.getElementById('x-desc').value = '';
+      msg.textContent = 'Added: ' + origAmt(v) + ' by ' + PEOPLE[v.who] + '.';
+      renderMoney();
+    });
+    document.getElementById('x-savenames').addEventListener('click', function(){
+      PEOPLE = cleanPeople([0,1,2,3].map(function(i){ return document.getElementById('xn-' + i).value; }));
+      store.set('people', PEOPLE); push('people', PEOPLE);
+      document.getElementById('x-namemsg').textContent = 'Saved.';
+      renderPeopleUI(); renderMoney();
+    });
+    renderPeopleUI(); renderMoney();
+    rateEl.addEventListener('input', renderMoney);
+  })();
+
   // ---- Group sync (Supabase) ----
   var sb = null, syncEl = document.getElementById('sync-status'), timers = {}, redraw = null;
   function syncMsg(t){ if (syncEl) syncEl.textContent = t; }
@@ -1227,6 +1413,8 @@ var SUPABASE_ANON_KEY = 'sb_publishable_LRcbCexl1_rsW2521uMoZg_dlDWtkuh';
     else if (id.indexOf('booked:') === 0){ k = id.slice(7); booked[k] = !!v; store.set('booked', booked); scheduleRedraw(); }
     else if (id.indexOf('packed:') === 0){ k = id.slice(7); packed[k] = !!v; store.set('packed', packed); var pk = document.getElementById('pk-' + k); if (pk) pk.checked = !!v; }
     else if (id === 'budget' && v && typeof v === 'object'){ bIds.forEach(function(b){ if (v[b] !== undefined && document.activeElement !== document.getElementById(b)) document.getElementById(b).value = v[b]; }); calc(); }
+    else if (id.indexOf('exp:') === 0){ var ev = cleanExp(v); if (ev){ EXP[id] = ev; store.set('expenses', EXP); renderMoney(); } }
+    else if (id === 'people'){ PEOPLE = cleanPeople(v); store.set('people', PEOPLE); renderPeopleUI(); renderMoney(); }
     else if (id === 'rate'){ var n = parseFloat(v); if (n > 0 && document.activeElement !== rateEl){ rate = n; store.set('rate', n); rateEl.value = n; fromUzs(); renderTrainAED(); calc(); scheduleRedraw(); } }
   }
   if (window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase){
@@ -1235,7 +1423,15 @@ var SUPABASE_ANON_KEY = 'sb_publishable_LRcbCexl1_rsW2521uMoZg_dlDWtkuh';
       syncMsg('Connecting to the group…');
       sb.from('trip_state').select('id,value').then(function(res){
         if (res.error){ syncMsg('Sync error: showing this device only'); return; }
-        (res.data || []).forEach(applyRow);
+        var remote = {};
+        (res.data || []).forEach(function(row){ remote[row.id] = true; applyRow(row); });
+        // Upload anything saved on this device before sync was switched on
+        Object.keys(done).forEach(function(k){ if (done[k] && !remote['done:' + k]) push('done:' + k, true); });
+        Object.keys(booked).forEach(function(k){ if (booked[k] && !remote['booked:' + k]) push('booked:' + k, true); });
+        Object.keys(packed).forEach(function(k){ if (packed[k] && !remote['packed:' + k]) push('packed:' + k, true); });
+        Object.keys(EXP).forEach(function(k){ var e = cleanExp(EXP[k]); if (e && !remote[k]) push(k, e); });
+        if (!remote['budget'] && store.get('budget', null)) push('budget', store.get('budget', {}));
+        if (!remote['people'] && store.get('people', null)) push('people', PEOPLE);
         syncMsg('Synced with the group');
       });
       sb.channel('trip-state').on('postgres_changes', {event: '*', schema: 'public', table: 'trip_state'}, function(p){ applyRow(p.new); }).subscribe();
