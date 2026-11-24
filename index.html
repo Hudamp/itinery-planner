@@ -409,7 +409,7 @@ header.top{padding-bottom:18px}
       <li class="train"><strong>Bukhara</strong><small>Night train</small></li>
       <li><strong>Tashkent</strong><small>Drive ~300 km</small></li>
       <li><strong>Samarkand</strong><small>Drive ~300 km</small></li>
-      <li><strong>Tashkent</strong></li>
+      <li><strong>Tashkent</strong><small>+ Charvak Lake</small></li>
     </ol>
     </div>
     <div class="verdict">
@@ -422,7 +422,7 @@ header.top{padding-bottom:18px}
 
 <nav class="days" aria-label="Days">
   <div class="wrap">
-    <div class="railhead"><span class="eyebrow">Choose a day</span><span id="trip-progress" class="trip-progress" role="status"></span><a class="railjump" href="#rightcol">Trip details ↓</a></div>
+    <div class="railhead"><span class="eyebrow">Choose a day</span><span id="trip-progress" class="trip-progress" role="status"></span><span id="sync-status" class="trip-progress" style="margin-left:10px"></span><a class="railjump" href="#rightcol">Trip details ↓</a></div>
     <div class="dayrail" id="dayrail" role="tablist" aria-label="Days"></div>
   </div>
 </nav>
@@ -457,7 +457,7 @@ header.top{padding-bottom:18px}
           <tr><td>Sun 13 Dec</td><td>Bukhara (1 night)</td><td>Courtyard guesthouse near Lyabi-Hauz. Picks: Mahbubakhon, Nazira &amp; Azizbek, or Rahmat. You arrive at ~7:30 am, so ask for an early check-in (or book from the 12th). Bag storage until about 9 pm on the 14th. <a href="#stay" data-goto="stay">See homestays</a></td></tr>
           <tr><td>Mon 14 Dec</td><td>Night train</td><td>~22:40 sleeper, one 4-berth coupé compartment, Bukhara → Tashkent. Arrive ~06:34 on the 15th: collect suitcases and shower at your Tashkent hotel (ask for a day-use room), car delivered there at 8:30 am.</td></tr>
           <tr><td>Tue 15 – Wed 16 Dec</td><td>Samarkand (2 nights)</td><td>Walking distance of Registan, <b>with parking</b>. Picks: Rabat Boutique, Hanifa Boutique, or QAMAR (budget). <a href="#stay" data-goto="stay">See homestays</a></td></tr>
-          <tr><td>Thu 17 Dec</td><td>Tashkent (1 night)</td><td>Same hotel again. You arrive about 7:45 pm, so ask for parking overnight. The car is collected from the hotel at 8:30 am on the 18th.</td></tr>
+          <tr><td>Thu 17 Dec</td><td>Tashkent (1 night)</td><td>Same hotel again. You arrive about 7:45 pm, so ask for parking overnight. Keep the car for the Charvak Lake morning. It’s collected from the hotel at about 11:15 am on the 18th.</td></tr>
           <tr><td>Fri 18 Dec</td><td>Fly out</td><td>Ask for a late check-out or bag storage until the evening.</td></tr>
         </tbody>
       </table>
@@ -499,7 +499,7 @@ header.top{padding-bottom:18px}
 
     <div class="card" style="margin-top:16px" id="cars">
       <h3 class="sec">Car rental in Tashkent: who to contact</h3>
-      <p class="small" style="margin:0">You need: pickup in Tashkent on <b>15 Dec, 8:30 am</b> (hotel delivery, right after your night train), return at your <b>Tashkent hotel on 18 Dec, 8:30 am</b>, exactly 3 days. A simple round trip, so <b>no one-way fee</b>. About 650 km in total. Most local firms work over WhatsApp or Telegram. Phone numbers are as listed on their Google Maps pages. Message 2–3 of them and compare the full price.</p>
+      <p class="small" style="margin:0">You need: pickup in Tashkent on <b>15 Dec, 8:30 am</b> (hotel delivery, right after your night train), return at your <b>Tashkent hotel on 18 Dec, about 11:15 am</b>, after a morning trip to Charvak Lake (3 days plus a few hours). A simple round trip, so <b>no one-way fee</b>. About 650 km in total. Most local firms work over WhatsApp or Telegram. Phone numbers are as listed on their Google Maps pages. Message 2–3 of them and compare the full price.</p>
       <div class="cars">
         <div class="car pick"><div class="top"><h4>RentCar (rentcar.uz)</h4><span class="phone">+998 97 155 05 55</span></div>
           <div class="small">City Palace Hotel, Amir Temur Street 15 (next to Amir Timur Square) · Daily 9:00 am – 8:00 pm</div><div><span class="tag free">Top pick</span></div>
@@ -526,7 +526,7 @@ header.top{padding-bottom:18px}
       <h4 style="margin:16px 0 4px;font-family:var(--display);font-size:16px">Message to send (copy and paste)</h4>
       <textarea class="msg" id="carmsg" aria-label="Message to rental companies">Hello! We are 4 adults visiting from the UAE. We'd like a car (automatic, 5 seats, room for 4 suitcases):
 - Pickup: Tashkent, 15 December, 8:30 am, delivered to our hotel
-- Return: Tashkent, 18 December, 8:30 am, collected from our hotel (exactly 3 days)
+- Return: Tashkent, 18 December, around 11:15 am, collected from our hotel (we drive to Charvak Lake that morning)
 - Route: Tashkent - Samarkand - Tashkent, about 650 km total
 Please send: total price for 3 days, daily km limit, deposit amount and refund time, insurance excess, and whether winter tyres are fitted.
 Our drivers have UAE driving licences and International Driving Permits. Thank you!</textarea>
@@ -534,7 +534,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
       <ul class="asklist">
         <li><b>Get in writing:</b> total price, km limit (ask for 300 km/day or unlimited), deposit and refund time, insurance excess.</li>
         <li><b>Check at pickup:</b> tyres, spare wheel, fuel level. Take a video all round the car.</li>
-        <li><b>Ask:</b> can you collect the car from our hotel at 8:30 am on the 18th, and is the Amankutan mountain road allowed? Also ask the price of a Samarkand drop-off instead, as a backup.</li>
+        <li><b>Ask:</b> what do the extra hours to 11:15 am on the 18th cost, can you collect the car from our hotel, and are the Amankutan and Charvak mountain roads allowed? Also ask the price of a Samarkand drop-off instead, as a backup.</li>
       </ul>
     </div>
 
@@ -630,11 +630,12 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         <div class="row"><span class="pill good">OK</span><div><b>One Tashkent hotel for both Tashkent nights (11 and 17 Dec).</b><p>Leave suitcases there from the 12th to the 15th and take one small bag to Bukhara. On the 15th, ask for a day-use room or a shower after the train.</p></div></div>
         <div class="row"><span class="pill good">Better</span><div><b>Bukhara is now two full days.</b><p>The whole old town on the 13th. Bahauddin Naqshband, the summer palace, Chor Minor and shopping on the 14th, with Gijduvan ceramics as an option.</p></div></div>
         <div class="row"><span class="pill info">Check</span><div><b>15 Dec: you drive straight after a night train.</b><p>Car at 8:30, on the road by 9:00, Samarkand by about 2 pm. Make sure the drivers sleep on the train, and swap drivers at each stop.</p></div></div>
-        <div class="row"><span class="pill good">Better</span><div><b>Car is now 3 days (15 Dec 8:30 am – 18 Dec 8:30 am), round trip from Tashkent.</b><p>No one-way fee and about 650 km instead of 1,000 km.</p></div></div>
+        <div class="row"><span class="pill good">Better</span><div><b>Car: 15 Dec 8:30 am – 18 Dec ~11:15 am, round trip from Tashkent.</b><p>No one-way fee. About 800 km including Charvak, instead of 1,000 km.</p></div></div>
         <div class="row"><span class="pill warn">Your call</span><div><b>17 Dec: a full day in Samarkand, leaving at ~15:45.</b><p>You get the observatory, Afrasiyab Museum, Khoja Doniyor, Siab and Registan again, but about 2.5 h of the drive is after dark. Take it slow with your most rested driver. The no-night-driving backup is a Samarkand car drop-off plus an evening Afrosiyob train.</p></div></div>
         <div class="row"><span class="pill good">Better</span><div><b>Samarkand on Tue–Thu, so Siab Bazaar is open.</b><p>It's closed on Mondays. The Imam al-Bukhari complex is now a main stop on the 16th, with Amankutan gorge as the alternative.</p></div></div>
         <div class="row"><span class="pill good">Kept</span><div><b>Juma on Friday 18 Dec at Hazrati Imam, Tashkent.</b><p>Hazrati Imam is saved for Friday, so Day 1 uses the mosque beside Chorsu for Dhuhr and Asr.</p></div></div>
-        <div class="row"><span class="pill info">Check</span><div><b>18 Dec depends on your flight time.</b><p>The day plan assumes an evening flight. If you fly earlier, keep just the museum and Juma.</p></div></div>
+        <div class="row"><span class="pill good">Added</span><div><b>Charvak Lake on the morning of the 18th.</b><p>Leave at 07:40 in your rental car, about 50 minutes at the lake, and back by 11:15 for Juma. The Museum of Applied Arts is dropped to make room. Check for ice on the mountain road that morning.</p></div></div>
+        <div class="row"><span class="pill info">Check</span><div><b>18 Dec depends on your flight time.</b><p>The day plan assumes an evening flight. If you fly before about 4 pm, skip Charvak and keep Juma.</p></div></div>
       </div>
     </div>
 
@@ -670,8 +671,8 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         <div class="field"><label for="b-tas">Tashkent room / night (AED), 2 nights</label><input id="b-tas" type="number" min="0" value="300"></div>
         <div class="field"><label for="b-sam">Samarkand room / night (AED), 2 nights</label><input id="b-sam" type="number" min="0" value="200"></div>
         <div class="field"><label for="b-buk">Bukhara room / night (AED), 1 night</label><input id="b-buk" type="number" min="0" value="200"></div>
-        <div class="field"><label for="b-car">Car / day (AED), 3 days</label><input id="b-car" type="number" min="0" value="155"></div>
-        <div class="field"><label for="b-fuel">Fuel, whole drive (AED)</label><input id="b-fuel" type="number" min="0" value="170"></div>
+        <div class="field"><label for="b-car">Car / day (AED), 3 days (+ a few hours on the 18th)</label><input id="b-car" type="number" min="0" value="155"></div>
+        <div class="field"><label for="b-fuel">Fuel, whole drive (AED)</label><input id="b-fuel" type="number" min="0" value="210"></div>
         <div class="field"><label for="b-train">Night trains / person, both ways (AED)</label><input id="b-train" type="number" min="0" value="150"></div>
         <div class="field"><label for="b-food">Food / person / day (AED)</label><input id="b-food" type="number" min="0" value="50"></div>
         <div class="field"><label for="b-taxi">Taxis &amp; metro, group (AED)</label><input id="b-taxi" type="number" min="0" value="300"></div>
@@ -743,7 +744,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
       <h4>Remember</h4>
       <ul class="asklist" style="margin-top:0">
         <li>Night trains: Sat 12 (~22:34) to Bukhara, Mon 14 (~22:40) back.</li>
-        <li>Car 15 Dec 8:30 am to 18 Dec 8:30 am. On the 17th you leave Samarkand ~15:45 and arrive ~19:45: drive slowly after dark.</li>
+        <li>Car 15 Dec 8:30 am to 18 Dec ~11:15 am (Charvak Lake that morning). On the 17th you leave Samarkand ~15:45 and arrive ~19:45: drive slowly after dark.</li>
         <li>Speed cameras everywhere. Keep under the limit.</li>
         <li>Juma, Fri 18 Dec: be at Hazrati Imam by ~12:00.</li>
         <li>Carry your passport, IDP and cash in som.</li>
@@ -754,6 +755,13 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
 <footer>Prices and timetables change. Confirm train times on the official Uzbekistan Railways e-ticket site, and entry fees on the day. Ticks and budget numbers are saved in this browser only.</footer>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Group sync: paste your Supabase project's URL and anon public key here (Settings → API).
+// Leave both empty and the page saves ticks on this device only.
+var SUPABASE_URL = 'https://txfzshwrajsdmxdpjmyp.supabase.co';
+var SUPABASE_ANON_KEY = 'sb_publishable_LRcbCexl1_rsW2521uMoZg_dlDWtkuh';
+</script>
 <script>
 (function(){
   var store = {
@@ -859,7 +867,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
     { id:'day-6', date:'Thu 17 Dec', city:'Tashkent', title:'A full last day in Samarkand, evening drive to Tashkent',
       stay:'Tashkent hotel', move:'Car around Samarkand, then drive ~300 km (~4 h)',
       sunset:'~7:47 am – 5:09 pm',
-      note:{type:'warn', h:'You leave Samarkand after Asr (~15:45), so the last ~2.5 hours are after dark', t:'Sunset is ~5:09 pm in Samarkand and ~4:55 pm in Tashkent, so you arrive around 7:45 pm. The M39 is a major highway but mostly unlit outside towns. Your best-rested driver takes this leg. Keep well under the limit, don\u2019t overtake trucks in the dark, and watch for unlit carts and people near villages. Stop once at Jizzakh for fuel and Maghrib. The car goes back on the morning of the 18th, which is exactly 3 days. <b>Prefer no night driving?</b> Ask the rental company for a Samarkand drop-off and take an evening Afrosiyob to Tashkent (~2 h 10 min) instead. Expect a one-way fee.'},
+      note:{type:'warn', h:'You leave Samarkand after Asr (~15:45), so the last ~2.5 hours are after dark', t:'Sunset is ~5:09 pm in Samarkand and ~4:55 pm in Tashkent, so you arrive around 7:45 pm. The M39 is a major highway but mostly unlit outside towns. Your best-rested driver takes this leg. Keep well under the limit, don\u2019t overtake trucks in the dark, and watch for unlit carts and people near villages. Stop once at Jizzakh for fuel and Maghrib. You keep the car for the Charvak Lake trip on the morning of the 18th. <b>Prefer no night driving?</b> Ask the rental company for a Samarkand drop-off and take an evening Afrosiyob to Tashkent (~2 h 10 min) instead. Expect a one-way fee.'},
       places:["Samarkand", "Jizzakh", "Tashkent"], pray:"Fajr ~06:10 in Samarkand. Dhuhr ~12:30 at <b>Hazrat Khizr Mosque</b>. Asr ~15:29 in Samarkand or Konigil before you leave. Maghrib ~17:04 at a mosque or fuel stop in <b>Jizzakh</b>. Isha ~18:29 in Tashkent.",
       stops:[
         {time:'08:30', name:'Breakfast, check out, load the car', kind:'move'},
@@ -873,23 +881,26 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         {time:'15:30', name:'Asr, fill the tank', note:'Pray Asr (~15:29) before you leave.', kind:'move'},
         {time:'15:45', name:'Depart for Tashkent', note:'About 4 hours with one stop. Headlights on from dusk.', q:'Samarkand to Tashkent', kind:'move', dur:'~4 h'},
         {time:'17:05', name:'Jizzakh: Maghrib, fuel and tea', note:'A short break and a driver swap before the dark stretch.', q:'Jizzakh', kind:'move', dur:'30 min'},
-        {time:'19:45', name:'Arrive at the Tashkent hotel', note:'Park at the hotel. The car goes back tomorrow at 8:30 am.', kind:'move'},
+        {time:'19:45', name:'Arrive at the Tashkent hotel', note:'Park at the hotel. You keep the car for Charvak Lake tomorrow morning.', kind:'move'},
         {time:'20:15', name:'Late dinner near the hotel, Isha', note:'Seoul Mun food street or a plov centre if you have energy.'}
       ]},
-    { id:'day-7', date:'Fri 18 Dec', city:'Tashkent', title:'Juma, museums, plov and departure',
-      stay:'Fly out (or add a night)', move:'Metro + Yandex Go',
-      sunset:'',
-      note:{type:'tip', h:'Friday: Juma at Hazrati Imam', t:'The day is built around Friday prayer at Tashkent’s main Friday mosque. Museum in the morning, then plov and gifts after Juma. If your flight is before 4 pm, keep only the morning and Juma.'},
-      places:["Tashkent"], pray:"<b>Juma at Hazrati Imam (Khast Imam) Mosque</b>. Arrive by ~12:00. Asr ~15:14, Maghrib ~16:55 in Tashkent.",
+    { id:'day-7', date:'Fri 18 Dec', city:'Tashkent', title:'Charvak Lake at dawn, Juma, plov and departure',
+      stay:'Fly out (or add a night)', move:'Car to Charvak (~80 km each way), then Yandex Go',
+      sunset:'~7:43 am – 4:55 pm',
+      note:{type:'tip', h:'Charvak Lake in the morning, back in time for Juma', t:'Keep the car until about 11:15 today (ask the rental company in advance, and expect a few extra hours on the bill). Leave at first light, 07:40, and you\u2019ll be at the turquoise lake under the snowy Chatkal mountains by about 09:10. Most lakeside resorts are closed in winter, so this is a viewpoint and tea stop. Mountain roads can be icy in December: check the weather that morning, drive gently, and turn back by 10:00 whatever happens so you make Juma. <b>Rather not drive?</b> Ask your hotel for a car with a driver for the morning instead.'},
+      places:["Tashkent"], pray:"Fajr ~06:04 at the hotel before you leave. <b>Juma at Hazrati Imam (Khast Imam) Mosque</b>: arrive by ~12:00. Asr ~15:14, Maghrib ~16:55 in Tashkent.",
       stops:[
-        {time:'08:30', name:'Return the car at the hotel, check out', note:'Hand it back with a full tank. Photograph it, keep the fuel receipt, and ask when the deposit comes back. Ask the hotel to hold your bags until the evening.', kind:'move'},
-        {time:'09:30', name:'Museum of Applied Arts', note:'In a carved old mansion, with suzani, ceramics and woodwork. Near Kosmonavtlar metro.', q:'State Museum of Applied Arts Tashkent', fee:30000, dur:'1.5 h'},
-        {time:'11:15', name:'Taxi to Hazrati Imam, wudu', note:'Allow 20–30 min in Friday traffic. Separate wudu areas for men and women.', q:'Hazrati Imam Complex Tashkent', kind:'move'},
+        {time:'07:00', name:'Fajr, breakfast, check out, leave bags', note:'Ask the hotel to hold your bags until the evening.', kind:'move'},
+        {time:'07:40', name:'Drive to Charvak Reservoir', note:'About 80 km north-east via Gazalkent, around 1.5 h. Fill up first. Warm layers on: it\u2019s colder in the mountains.', q:'Charvak Reservoir', kind:'move', dur:'~1.5 h'},
+        {time:'09:10', name:'Charvak Lake viewpoints', note:'Turquoise water ringed by the Chatkal and Ugam ranges. Stop at the dam viewpoint and the lakeshore near Burchmulla for photos, then hot tea at an open caf\u00e9.', q:'Charvak Reservoir viewpoint', fee:0, dur:'~50 min'},
+        {time:'10:00', name:'Drive back to Tashkent', note:'Leave by 10:00 at the latest so you make Juma.', q:'Charvak to Tashkent', kind:'move', dur:'~1.5 h'},
+        {time:'11:15', name:'Return the car at the hotel', note:'Full tank, photos, keep the fuel receipt, and ask when the deposit comes back.', kind:'move'},
+        {time:'11:30', name:'Yandex Go to Hazrati Imam, wudu', note:'Allow 20\u201330 min in Friday traffic. Separate wudu areas for men and women.', q:'Hazrati Imam Complex Tashkent', kind:'move'},
         {time:'12:00', name:'Juma at Hazrati Imam Mosque', note:'Khutbah and prayer usually run from around Dhuhr (~12:21) for about an hour. Afterwards see the library said to hold the Uthman Quran.', q:'Hazrati Imam Mosque Tashkent', fee:50000, feeNote:'Quran library', dur:'~1.5 h'},
         {time:'13:45', name:'Lunch: plov at Besh Qozon', note:'By the TV Tower, 20 min by taxi. Go straight after Juma, because plov can sell out.', q:'Besh Qozon Tashkent', dur:'1 h'},
         {time:'15:00', name:'Amir Timur Museum', note:'The blue-domed museum by the square. Closes at 5 pm. Asr nearby at ~15:14.', q:'Amir Timur Museum Tashkent', fee:40000, feeNote:'approx.', dur:'1 h'},
-        {time:'16:15', name:'Alay Bazaar for food gifts', note:'Dried fruit, nuts and sweets to take home. Amir Timur Hiyoboni metro is close by.', q:'Alay Bazaar Tashkent', fee:0, dur:'45 min'},
-        {time:'Evening', name:'Collect bags, airport with a buffer', note:'Keep passports and cash handy. Or, if you fly tomorrow, book the Navoi Theatre.', q:'Tashkent International Airport', kind:'move'}
+        {time:'16:15', name:'Alay Bazaar for food gifts', note:'Dried fruit, nuts and sweets to take home.', q:'Alay Bazaar Tashkent', fee:0, dur:'45 min'},
+        {time:'Evening', name:'Collect bags, airport with a buffer', note:'Keep passports and cash handy.', q:'Tashkent International Airport', kind:'move'}
       ]}
   ];
 
@@ -899,7 +910,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   var BOOK = [
     {id:'trainOut', t:'Night sleeper Tashkent → Bukhara, Sat 12 Dec ~22:34 (one 4-berth coupé)', w:'Now. Sales are open on eticket.railway.uz. See the train section'},
     {id:'trainBack', t:'Night sleeper Bukhara → Tashkent, Mon 14 Dec ~22:40 (one 4-berth coupé)', w:'Now, same booking site'},
-    {id:'car', t:'Car 15 Dec 8:30 am to 18 Dec 8:30 am, Tashkent hotel pickup and return', w:'Now. Send the ready-made message to 2–3 companies in the car section'},
+    {id:'car', t:'Car 15 Dec 8:30 am to 18 Dec ~11:15 am, Tashkent hotel pickup and return', w:'Now. Send the ready-made message to 2–3 companies in the car section'},
     {id:'h1', t:'Tashkent hotel: nights of 11 and 17 Dec + 4 am airport pickup', w:'Now. Ask for a late check-out on the 12th, suitcase storage 12–15 Dec, a day-use room or shower on the 15th, car delivery at 8:30 am, and parking on the 17th'},
     {id:'h3', t:'Bukhara guesthouse, night of 13 Dec, early check-in ~7:30 am', w:'Now. Also bag storage until ~9 pm on the 14th and station taxis'},
     {id:'h2', t:'Samarkand hotel, nights of 15–16 Dec, with parking', w:'Now'},
@@ -1003,7 +1014,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
     card.innerHTML = html;
     card.querySelectorAll('input[type=checkbox]').forEach(function(cb){
       cb.addEventListener('change', function(){
-        done[cb.dataset.key] = cb.checked; store.set('done', done);
+        done[cb.dataset.key] = cb.checked; store.set('done', done); push('done:' + cb.dataset.key, cb.checked);
         cb.closest('.stop').classList.toggle('done', cb.checked);
         renderRail();
       });
@@ -1011,7 +1022,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
     document.getElementById('prev').addEventListener('click', function(){ go(current-1); });
     document.getElementById('next').addEventListener('click', function(){ go(current+1); });
     document.getElementById('resetday').addEventListener('click', function(){
-      d.stops.forEach(function(s, j){ delete done[d.id+'-'+j]; }); store.set('done', done); renderDay(); renderRail();
+      d.stops.forEach(function(s, j){ if (done[d.id+'-'+j]) push('done:' + d.id + '-' + j, false); delete done[d.id+'-'+j]; }); store.set('done', done); renderDay(); renderRail();
     });
   }
 
@@ -1036,7 +1047,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   // Budget
   var bIds = ['b-rooms','b-tas','b-sam','b-buk','b-car','b-fuel','b-train','b-food','b-taxi'];
   var saved = store.get('budget', {});
-  bIds.forEach(function(id){ var el = document.getElementById(id); if (saved[id] !== undefined) el.value = saved[id]; el.addEventListener('input', calc); });
+  bIds.forEach(function(id){ var el = document.getElementById(id); if (saved[id] !== undefined) el.value = saved[id]; el.addEventListener('input', function(){ calc(); pushLater('budget', function(){ var o = {}; bIds.forEach(function(k){ o[k] = document.getElementById(k).value; }); return o; }); }); });
   function v(id){ var n = parseFloat(document.getElementById(id).value); return isNaN(n) ? 0 : n; }
   function calc(){
     var s = {}; bIds.forEach(function(id){ s[id] = document.getElementById(id).value; }); store.set('budget', s);
@@ -1063,7 +1074,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   function fromAed(){ uzsEl.value = Math.round((parseFloat(aedEl.value)||0) * rate); }
   uzsEl.addEventListener('input', fromUzs);
   aedEl.addEventListener('input', fromAed);
-  rateEl.addEventListener('input', function(){ var r = parseFloat(rateEl.value); if (r > 0) { rate = r; store.set('rate', r); fromUzs(); renderDay(); calc(); } });
+  rateEl.addEventListener('input', function(){ var r = parseFloat(rateEl.value); if (r > 0) { rate = r; store.set('rate', r); pushLater('rate', function(){ return rate; }); fromUzs(); renderDay(); calc(); } });
   document.querySelectorAll('.quick button').forEach(function(b){ b.addEventListener('click', function(){ uzsEl.value = b.dataset.uzs; fromUzs(); }); });
   fromUzs();
 
@@ -1083,7 +1094,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
       if (booked[b.id]) c++;
       var li = document.createElement('li');
       li.innerHTML = '<label for="bk-' + b.id + '"><input type="checkbox" id="bk-' + b.id + '"' + (booked[b.id] ? ' checked' : '') + '><span>' + b.t + '<span class="when">' + b.w + '</span></span></label>';
-      li.querySelector('input').addEventListener('change', function(e){ booked[b.id] = e.target.checked; store.set('booked', booked); renderBook(); });
+      li.querySelector('input').addEventListener('change', function(e){ booked[b.id] = e.target.checked; store.set('booked', booked); push('booked:' + b.id, e.target.checked); renderBook(); });
       ul.appendChild(li);
     });
     document.getElementById('bookcount').textContent = c + ' of ' + BOOK.length + ' done';
@@ -1093,7 +1104,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   PACK.forEach(function(p, i){
     var li = document.createElement('li');
     li.innerHTML = '<label for="pk-' + i + '"><input type="checkbox" id="pk-' + i + '"' + (packed[i] ? ' checked' : '') + '><span>' + p + '</span></label>';
-    li.querySelector('input').addEventListener('change', function(e){ packed[i] = e.target.checked; store.set('packed', packed); });
+    li.querySelector('input').addEventListener('change', function(e){ packed[i] = e.target.checked; store.set('packed', packed); push('packed:' + i, e.target.checked); });
     pl.appendChild(li);
   });
 
@@ -1191,6 +1202,48 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   var start = fromHash(); current = start >= 0 ? start : 0;
   renderRail(); renderDay(); calc(); renderBook();
   showSec(SECS.indexOf(h0) >= 0 ? h0 : store.get('sec','stay'), true);
+  // ---- Group sync (Supabase) ----
+  var sb = null, syncEl = document.getElementById('sync-status'), timers = {}, redraw = null;
+  function syncMsg(t){ if (syncEl) syncEl.textContent = t; }
+  function push(id, value){
+    if (!sb) return;
+    sb.from('trip_state').upsert({id: id, value: value, updated_at: new Date().toISOString()}).then(function(res){
+      syncMsg(res.error ? 'Sync error: not saved for the group' : 'Synced with the group');
+    });
+  }
+  function pushLater(id, getValue){
+    if (!sb) return;
+    clearTimeout(timers[id]);
+    timers[id] = setTimeout(function(){ push(id, getValue()); }, 800);
+  }
+  function scheduleRedraw(){
+    if (redraw) return;
+    redraw = setTimeout(function(){ redraw = null; renderRail(); renderDay(); renderBook(); }, 60);
+  }
+  function applyRow(row){
+    if (!row || typeof row.id !== 'string') return;
+    var id = row.id, v = row.value, k;
+    if (id.indexOf('done:') === 0){ k = id.slice(5); if (v) done[k] = true; else delete done[k]; store.set('done', done); scheduleRedraw(); }
+    else if (id.indexOf('booked:') === 0){ k = id.slice(7); booked[k] = !!v; store.set('booked', booked); scheduleRedraw(); }
+    else if (id.indexOf('packed:') === 0){ k = id.slice(7); packed[k] = !!v; store.set('packed', packed); var pk = document.getElementById('pk-' + k); if (pk) pk.checked = !!v; }
+    else if (id === 'budget' && v && typeof v === 'object'){ bIds.forEach(function(b){ if (v[b] !== undefined && document.activeElement !== document.getElementById(b)) document.getElementById(b).value = v[b]; }); calc(); }
+    else if (id === 'rate'){ var n = parseFloat(v); if (n > 0 && document.activeElement !== rateEl){ rate = n; store.set('rate', n); rateEl.value = n; fromUzs(); renderTrainAED(); calc(); scheduleRedraw(); } }
+  }
+  if (window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase){
+    try {
+      sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+      syncMsg('Connecting to the group…');
+      sb.from('trip_state').select('id,value').then(function(res){
+        if (res.error){ syncMsg('Sync error: showing this device only'); return; }
+        (res.data || []).forEach(applyRow);
+        syncMsg('Synced with the group');
+      });
+      sb.channel('trip-state').on('postgres_changes', {event: '*', schema: 'public', table: 'trip_state'}, function(p){ applyRow(p.new); }).subscribe();
+    } catch(e){ sb = null; syncMsg('Sync unavailable: saved on this device'); }
+  } else {
+    syncMsg('Saved on this device only');
+  }
+
   function setNavH(){ var n = document.querySelector('nav.days'); document.documentElement.style.setProperty('--navh', (n.offsetHeight + 12) + 'px'); }
   setNavH(); window.addEventListener('resize', setNavH);
 })();
