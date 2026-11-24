@@ -85,7 +85,7 @@ main.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:
 .right .secbar{position:sticky;top:0;z-index:3;background:var(--bg);padding:12px 0 10px;margin-bottom:6px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .right .secbar button{font-size:14px;padding:7px 13px}
 .right .card{padding:16px}
-@media (max-width:960px){main.split{grid-template-columns:1fr}.right{position:static;max-height:none;overflow:visible}}
+@media (max-width:900px){main.split{grid-template-columns:1fr}.right{position:static;max-height:none;overflow:visible}}
 .panel > .card{margin-top:0 !important}
 .panelintro{margin:0;color:var(--muted)}
 .secbar{display:flex;gap:6px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:thin}
@@ -220,24 +220,201 @@ details.praybox .inner{padding:0 14px 12px}
 footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 @media (prefers-reduced-motion:no-preference){.stop{transition:opacity .2s}}
 @media (max-width:480px){.stop{grid-template-columns:52px 24px minmax(0,1fr)}.dayhead h2{font-size:24px}}
+/* Travel journal styling */
+:root{
+  --hero:#152b59;--hero-ink:#fff7e6;--hero-muted:#cbd8f5;--gold:#efc879;
+  --action:#244eaa;--on-action:#fff;--shadow:0 8px 28px #17295410;
+}
+:root:not([data-theme="dark"]){
+  --bg:#f1f4fb;--surface:#fffefd;--ink:#172747;--muted:#515e77;--line:#d7deec;
+  --lapis:#244994;--turq:#264b94;--saffron:#885617;
+  --lapis-soft:#e6edfc;--turq-soft:#e5edff;--saffron-soft:#f8edda;
+}
+:root[data-theme="dark"]{
+  --bg:#101a30;--surface:#192640;--ink:#eef2ff;--muted:#bac8e2;--line:#394b6d;
+  --lapis:#afc7ff;--turq:#afc7ff;--lapis-soft:#273b60;--turq-soft:#23395e;
+  --action:#afc7ff;--on-action:#142548;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101a30;--surface:#192640;--ink:#eef2ff;--muted:#bac8e2;--line:#394b6d;
+    --lapis:#afc7ff;--turq:#afc7ff;--lapis-soft:#273b60;--turq-soft:#23395e;
+    --action:#afc7ff;--on-action:#142548;
+  }
+}
+.wrap{max-width:1264px;padding-inline:clamp(16px,4vw,56px)}
+header.top{padding:0;background:var(--hero);color:var(--hero-ink);border:0}
+.mast{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #c0cff332}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.74rem;color:var(--hero-ink)}
+.brand span{color:var(--gold);font-size:1.3rem;line-height:1}
+.sitenav{margin:0;gap:4px}
+.sitenav a{color:var(--hero-muted);background:transparent;border-color:transparent;border-radius:8px}
+.sitenav a[aria-current="page"]{color:var(--hero-ink);background:#ffffff12;border-color:#ffffff25}
+.sitenav a:hover{color:var(--hero-ink);border-color:#ffffff45}
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(25px,4vw,52px) 0 30px}
+.hero-art{position:absolute;z-index:-1;right:0;top:50%;transform:translateY(-50%);width:min(35%,380px);height:auto;color:var(--gold);opacity:.66;pointer-events:none}
+.top .kicker{color:var(--gold);font-size:.78rem;letter-spacing:.13em}
+.top h1{font:400 clamp(3.25rem,7vw,6.75rem)/.99 Georgia,serif;letter-spacing:-.07em;text-wrap:initial;margin:7px 0 10px}
+.hero-sub{margin:0;color:var(--hero-muted);font-size:clamp(1rem,2vw,1.35rem);max-width:60%}
+.route{margin-top:24px;gap:8px 11px;max-width:66%}
+.route .city{padding:3px 10px;color:var(--hero-ink);background:#ffffff10;border:1px solid #ffffff28;font-size:.88rem}
+.route .leg{color:var(--hero-muted);font-size:.8rem}
+.route .leg::after{content:" →";color:var(--gold)}
+.verdict{margin:0;padding:13px 0 15px;gap:6px;border-top:1px solid #c0cff332}
+.verdict .pill{background:#ffffff0e;color:#e5edff;font-weight:600}
+.verdict .warn{color:#ffdb9d;background:#efc8791b}
+nav.days{background:var(--bg);box-shadow:0 4px 15px #14295410}
+.railhead{display:flex;align-items:center;justify-content:space-between;padding-top:10px;gap:10px}
+.eyebrow,.dayhead .small{color:var(--turq);font-size:.72rem;text-transform:uppercase;letter-spacing:.13em;font-weight:700}
+.railjump{display:none;font-size:.83rem;font-weight:700;text-underline-offset:3px}
+.dayrail{gap:8px;padding:7px 3px 10px;margin-inline:-3px}
+.dayrail button{flex:1 0 107px;min-width:0;border-radius:11px;padding:7px 11px}
+.dayrail button:hover{border-color:var(--lapis)}
+.dayrail button[aria-selected="true"],.btn.primary,.citytabs button[aria-pressed="true"],.fab{
+  background:var(--action);border-color:var(--action);color:var(--on-action)
+}
+.dayrail button[aria-selected="true"] .d{color:inherit;opacity:.9}
+.dayrail button[aria-selected="true"] .bar{background:color-mix(in srgb,var(--on-action) 24%,transparent)}
+.dayrail button[aria-selected="true"] .bar i{background:var(--gold)}
+main{padding-top:24px}
+main.split{grid-template-columns:minmax(0,1.48fr) minmax(0,1fr);gap:21px}
+.card,.right{border-radius:17px;box-shadow:var(--shadow)}
+.card{padding:clamp(15px,2.4vw,28px)}
+.right{background:var(--surface);padding:0 12px 14px;scroll-margin-top:var(--navh,118px)}
+.right .secbar{background:var(--surface);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;overflow:visible;padding:11px 0}
+.right .secbar button{border-radius:8px;padding:6px 4px;min-height:37px;line-height:1.15;font-size:.84rem;background:var(--bg)}
+.right .secbar button[aria-selected="true"]{background:var(--action);color:var(--on-action);border-color:var(--action)}
+.right .card{box-shadow:none}
+.sideheading{grid-column:1/-1;padding:0 3px 4px}
+.dayhead{align-items:start}
+.dayhead>div{flex:1;min-width:min(100%,210px)}
+.dayhead h2{font:400 clamp(1.75rem,3.1vw,2.65rem)/1.08 Georgia,serif;letter-spacing:-.04em;margin-top:5px}
+.dayhead .sub{font-weight:600;margin-top:6px}
+#resetday{font-size:.81rem;padding:6px 10px;color:var(--muted)}
+.facts{grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr));gap:8px}
+.fact,.praybox,.stay,.car,.opt{background:var(--bg)}
+.fact b{margin-bottom:3px}
+.callout{font-size:.94rem}
+.timeline-title{margin:22px 0 0 !important;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.timeline{margin-top:0}
+.stop{grid-template-columns:minmax(53px,73px) 22px minmax(0,1fr);gap:9px;border-top-style:solid;padding:14px 0}
+.stop .time{font-size:.88rem}
+.stop .name{cursor:pointer}
+.stop input[type=checkbox]{margin-inline:0}
+.stop .meta:empty{display:none}
+.stop a.map{text-underline-offset:3px}
+.daynav{border-top:1px solid var(--line);padding-top:16px}
+.btn,.citytabs button{min-height:36px}
+.citytabs{flex-wrap:wrap}
+.fab{bottom:max(16px,env(safe-area-inset-bottom));right:max(16px,env(safe-area-inset-right))}
+footer{border-top:1px solid var(--line);padding-top:14px;padding-bottom:70px}
+@media(max-width:900px){
+  main.split{grid-template-columns:minmax(0,1fr)}
+  .right{position:static;max-height:none;overflow:visible}
+  .right .secbar{top:calc(var(--navh,118px) - 12px)}
+  .railjump{display:inline}
+}
+@media(max-width:620px){
+  .mast{gap:6px}
+  .brand{font-size:.65rem;letter-spacing:.07em;gap:5px}
+  .sitenav a{font-size:.79rem;padding:6px 8px}
+  .hero-art{right:-34px;top:26px;transform:none;width:175px;opacity:.31}
+  .hero-sub{max-width:100%;font-size:.98rem}
+  .route{max-width:none;column-gap:6px;margin-top:18px}
+  .hero{padding-bottom:20px}
+  .verdict .pill{font-size:.74rem}
+  main{padding-top:14px}
+  .stop{grid-template-columns:49px 20px minmax(0,1fr);gap:7px}
+  .stop .time{font-size:.82rem}
+  details.praybox summary .more{white-space:normal;text-align:right}
+  .stays-grid,.trainopts{grid-template-columns:minmax(0,1fr)}
+}
+/* Trip ticket and itinerary */
+header.top{padding-bottom:18px}
+.hero{margin-top:17px;padding:clamp(19px,3.2vw,39px) clamp(18px,3.6vw,40px);background:#1c386f;border:1px solid #cbd8f554;border-radius:15px}
+.hero-art{right:2%;top:48%}
+.rail-route{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;padding:0;margin:25px 0 0;width:min(100%,700px)}
+.rail-route li{position:relative;min-width:0;padding:16px 4px 0 0}
+.rail-route li::before{content:"";position:absolute;top:4px;left:5px;width:100%;border-top:1px solid #cbd8f58c}
+.rail-route li.train::before{border-top-style:dashed}
+.rail-route li:last-child::before{content:none}
+.rail-route li::after{content:"";position:absolute;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px #1c386f}
+.rail-route strong,.rail-route small{display:block}
+.rail-route strong{font-size:clamp(.77rem,1.65vw,1rem)}
+.rail-route small{font-size:clamp(.67rem,1.4vw,.82rem);color:var(--hero-muted)}
+.verdict{border-top:0;padding:11px 0 0}
+.trip-progress{color:var(--muted);font-size:.79rem;font-variant-numeric:tabular-nums;margin-left:auto}
+.dayrail button{position:relative;padding-right:19px;background:var(--surface)}
+.dayrail button::after{content:"";position:absolute;top:calc(50% - 6px);right:-1px;width:7px;height:12px;border-radius:9px 0 0 9px;background:var(--bg);border:1px solid var(--line);border-right:0}
+.dayrail button[aria-selected="true"]::after{border-color:var(--action)}
+#daycard{border-top:4px solid var(--action)}
+.facts{gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+.fact{border:0;border-radius:0;padding:10px;border-inline-end:1px dashed var(--line)}
+.fact:last-child{border-inline-end:0}
+.timeline-title{display:flex;align-items:center;gap:8px}
+.timeline-title::before{content:"";width:8px;height:8px;background:var(--turq);border-radius:50%}
+.stop{position:relative;border-top-style:dashed}
+.stop::before{content:"";position:absolute;top:0;bottom:0;left:calc(clamp(53px,100%,73px) + 19px);border-left:2px solid var(--line)}
+.stop:first-child::before{top:24px}
+.stop:last-child::before{bottom:auto;height:24px}
+.stop input[type=checkbox]{position:relative;z-index:1;background:var(--surface)}
+.stop .time{font-family:ui-monospace,monospace;font-size:.78rem;line-height:1.35;padding-top:5px}
+.stop.done::before{border-color:var(--turq)}
+@media(max-width:620px){
+  .hero-art{right:-28px;top:0}
+  .stop::before{left:65px}
+  .rail-route{margin-top:18px}
+  .rail-route li{padding-right:6px}
+  .rail-route strong{font-size:.68rem;letter-spacing:-.01em}
+  .rail-route small{font-size:.62rem}
+  .facts{grid-template-columns:1fr}
+  .fact,.fact:last-child{border-inline-end:0}
+  .fact+.fact{border-top:1px dashed var(--line)}
+}
+@media(max-width:440px){.rail-route{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:12px}.rail-route li:nth-child(3)::before{content:none}.rail-route strong{font-size:.72rem}.rail-route small{font-size:.68rem}.rail-route li{padding-right:8px}}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="wrap">
-    <nav class="sitenav" aria-label="Pages"><a href="index.html" aria-current="page">Trip planner</a><a href="compare.html">Plan vs package</a></nav>
+    <div class="mast">
+      <div class="brand"><span aria-hidden="true">✦</span> Winter itinerary</div>
+      <nav class="sitenav" aria-label="Pages"><a href="index.html" aria-current="page">Trip planner</a><a href="compare.html">Plan vs package</a></nav>
+    </div>
+    <div class="hero">
+<svg class="hero-art" viewBox="0 0 400 240" aria-hidden="true" fill="none">
+  <defs>
+    <pattern id="tile" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M20 1l5 11 12-9-9 12 11 5-11 5 9 12-12-9-5 11-5-11L3 37l9-12-11-5 11-5L3 3l12 9z" stroke="currentColor" stroke-width=".65"/>
+      <circle cx="20" cy="20" r="4" stroke="#a7c8ff"/>
+    </pattern>
+    <path id="arch" d="M111 236V118c0-46 41-69 89-111 48 42 89 65 89 111v118z"/>
+  </defs>
+  <use href="#arch" fill="#2c5191" stroke="currentColor" stroke-width="2"/>
+  <use href="#arch" fill="url(#tile)" stroke="currentColor" stroke-width="1"/>
+  <path d="M128 236V122c0-35 33-59 72-93 39 34 72 58 72 93v114z" fill="#1a376c" stroke="currentColor"/>
+  <path d="M141 236V126c0-33 32-52 59-79 27 27 59 46 59 79v110z" stroke="#a7c8ff"/>
+  <path d="M200 83l15 39 37-10-21 34 21 35-37-11-15 37-15-37-37 11 21-35-21-34 37 10z" stroke="currentColor" stroke-width="1.3"/>
+  <path d="M200 115l31 31-31 31-31-31z" fill="#507acd" stroke="currentColor"/>
+  <circle cx="200" cy="146" r="10" stroke="currentColor"/>
+  <path d="M97 229H16V103h81m206 0h81v126h-81M16 113h81m206 0h81M16 218h81m206 0h81" stroke="currentColor"/>
+  <path d="M20 117h77v97H20zm283 0h77v97h-77z" fill="url(#tile)"/>
+  <path d="M0 236h400M68 91l10-10 10 10-10 10zm244 0 10-10 10 10-10 10z" stroke="currentColor"/>
+</svg>
     <div class="kicker">2 couples · 4 adults · 12–18 December 2026</div>
-    <h1>Uzbekistan: Tashkent, Samarkand, Bukhara</h1>
-    <div class="route" aria-label="Route">
-      <span class="city">Tashkent</span><span class="leg">drive ~290 km</span>
-      <span class="city">Samarkand</span><span class="leg">drive ~280 km</span>
-      <span class="city">Bukhara</span><span class="leg">night train</span>
-      <span class="city">Tashkent</span>
+    <h1>Uzbekistan</h1>
+    <p class="hero-sub">Seven days: Tashkent by metro, Bukhara by night train, Samarkand by car</p>
+    <ol class="rail-route" aria-label="Trip route">
+      <li class="train"><strong>Tashkent</strong><small>Night train</small></li>
+      <li class="train"><strong>Bukhara</strong><small>Night train</small></li>
+      <li><strong>Tashkent</strong><small>Drive ~300 km</small></li>
+      <li><strong>Samarkand</strong><small>Drive ~300 km</small></li>
+      <li><strong>Tashkent</strong></li>
+    </ol>
     </div>
     <div class="verdict">
-      <span class="pill good">Plan works</span>
-      <span class="pill warn">Daylight-only driving</span><span class="pill info">2 canyon stops</span>
-      <span class="pill info">Prices in som and AED (editable rate)</span>
+      <span class="pill info">Night trains: to Bukhara on the 12th, back on the 14th</span>
+      <span class="pill warn">Car 15–18 Dec · evening drive back on the 17th</span>
       <span class="pill good">Prayer times every day · Juma on Fri 18 Dec</span>
     </div>
   </div>
@@ -245,6 +422,7 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 
 <nav class="days" aria-label="Days">
   <div class="wrap">
+    <div class="railhead"><span class="eyebrow">Choose a day</span><span id="trip-progress" class="trip-progress" role="status"></span><a class="railjump" href="#rightcol">Trip details ↓</a></div>
     <div class="dayrail" id="dayrail" role="tablist" aria-label="Days"></div>
   </div>
 </nav>
@@ -253,12 +431,12 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 <main class="split">
   <div class="left">
   <section class="panel" id="p-day" aria-label="Day plan">
-    <p class="panelintro">Your day-by-day plan. Pick a day above. Stays, car, train, prayer times and budget open on the right.</p>
     <article class="card" id="daycard" aria-live="polite"></article>
   </section>
   </div>
-  <div class="right" id="rightcol">
+  <aside class="right" id="rightcol" aria-label="Trip details" tabindex="-1">
     <div class="secbar" role="tablist" aria-label="Sections" id="secbar">
+      <div class="eyebrow sideheading" aria-hidden="true">Trip details</div>
       <button role="tab" id="st-stay" data-sec="stay" aria-selected="true">Stay</button>
       <button role="tab" id="st-car" data-sec="car" aria-selected="false">Car rental</button>
       <button role="tab" id="st-train" data-sec="train" aria-selected="false">Train</button>
@@ -267,18 +445,20 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
       <button role="tab" id="st-tools" data-sec="tools" aria-selected="false">Budget &amp; tools</button>
     </div>
   <section class="panel" id="p-stay" role="tabpanel" aria-labelledby="st-stay" hidden>
-    <p class="panelintro">Where you sleep each night, and the best affordable homestays in Samarkand and Bukhara.</p>
+    <p class="panelintro">Where you sleep each night (2 Tashkent, 2 night trains, 1 Bukhara, 2 Samarkand), and the best affordable homestays.</p>
     <div class="card" style="margin-top:16px">
       <h3 style="font-size:20px;margin-bottom:12px">Where you sleep</h3>
       <div class="tablewrap">
       <table class="stays">
         <thead><tr><th>Night of</th><th>Where</th><th>Suggested area / type</th></tr></thead>
         <tbody>
-          <tr><td>Fri 11 – Sat 12 Dec</td><td>Tashkent (2 nights)</td><td><b>Book from the night of 11 Dec</b>, since you land at 2 am on the 12th. Near Kosmonavtlar metro or Amir Timur Square. Ask for an airport pickup and car delivery on the 13th.</td></tr>
-          <tr><td>Sun 13 – Mon 14 Dec</td><td>Samarkand (2 nights)</td><td>Walking distance of Registan, with parking. Picks: Rabat Boutique, Hanifa Boutique, or QAMAR (budget). <a href="#stay" data-goto="stay">See homestays</a></td></tr>
-          <tr><td>Tue 15 – Wed 16 Dec</td><td>Bukhara (2 nights)</td><td>Courtyard guesthouse near Lyabi-Hauz. Picks: Mahbubakhon, Nazira &amp; Azizbek, or Rahmat. Ask to keep bags until the evening of the 17th. <a href="#stay" data-goto="stay">See homestays</a></td></tr>
-          <tr><td>Thu 17 Dec</td><td>Night train</td><td>4-berth coupé, Bukhara → Tashkent.</td></tr>
-          <tr><td>Fri 18 Dec</td><td>Tashkent / fly out</td><td>Book a day-use room or early check-in if you want a shower after the train.</td></tr>
+          <tr><td>Fri 11 Dec</td><td>Tashkent (1 night)</td><td><b>Book the night of 11 Dec</b>, since you land at 4 am on the 12th, and ask for a <b>late check-out</b> on the 12th and suitcase storage until the morning of the 15th. Near Amir Timur Square or the railway station. Ask for a 4 am airport pickup.</td></tr>
+          <tr><td>Sat 12 Dec</td><td>Night train</td><td>22:34 sleeper, one 4-berth coupé compartment, Tashkent → Bukhara.</td></tr>
+          <tr><td>Sun 13 Dec</td><td>Bukhara (1 night)</td><td>Courtyard guesthouse near Lyabi-Hauz. Picks: Mahbubakhon, Nazira &amp; Azizbek, or Rahmat. You arrive at ~7:30 am, so ask for an early check-in (or book from the 12th). Bag storage until about 9 pm on the 14th. <a href="#stay" data-goto="stay">See homestays</a></td></tr>
+          <tr><td>Mon 14 Dec</td><td>Night train</td><td>~22:40 sleeper, one 4-berth coupé compartment, Bukhara → Tashkent. Arrive ~06:34 on the 15th: collect suitcases and shower at your Tashkent hotel (ask for a day-use room), car delivered there at 8:30 am.</td></tr>
+          <tr><td>Tue 15 – Wed 16 Dec</td><td>Samarkand (2 nights)</td><td>Walking distance of Registan, <b>with parking</b>. Picks: Rabat Boutique, Hanifa Boutique, or QAMAR (budget). <a href="#stay" data-goto="stay">See homestays</a></td></tr>
+          <tr><td>Thu 17 Dec</td><td>Tashkent (1 night)</td><td>Same hotel again. You arrive about 7:45 pm, so ask for parking overnight. The car is collected from the hotel at 8:30 am on the 18th.</td></tr>
+          <tr><td>Fri 18 Dec</td><td>Fly out</td><td>Ask for a late check-out or bag storage until the evening.</td></tr>
         </tbody>
       </table>
       </div>
@@ -288,8 +468,8 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
       <h3 style="font-size:20px;margin-bottom:6px">Homestays: best and affordable</h3>
       <p class="small" style="margin:0">Family-run guesthouses in the old towns, walking distance to the sights, with home-cooked breakfast. Most guesthouse doubles run about USD 30–70 a night (about AED 110–260). Check your dates on Booking.com or by WhatsApp.</p>
       <div class="citytabs" role="group" aria-label="City">
-        <button type="button" data-city="sam" aria-pressed="true">Samarkand, 13–14 Dec</button>
-        <button type="button" data-city="buk" aria-pressed="false">Bukhara, 15–16 Dec</button>
+        <button type="button" data-city="sam" aria-pressed="true">Samarkand, 15–16 Dec</button>
+        <button type="button" data-city="buk" aria-pressed="false">Bukhara, 13 Dec</button>
       </div>
       <div class="stays-grid" id="stays-sam">
         <div class="stay pick"><h4>Rabat Boutique</h4><p>A historic courtyard house with only about 8 rooms, a few minutes’ walk from Registan. Personal breakfasts that change daily, and tea in the courtyard at night.</p><div class="tags"><span class="tag">Best atmosphere</span><span class="tag fee">Mid-range</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Rabat%20Boutique%20Samarkand" target="_blank" rel="noopener">Open in Maps</a></div>
@@ -298,17 +478,17 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
         <div class="stay"><h4>Sole Family Guesthouse</h4><p>Warm hosts, spacious clean rooms, simple breakfast. About 15 min on foot to Registan and Shah-i-Zinda. The hosts help arrange tours.</p><div class="tags"><span class="tag free">Budget</span><span class="tag">Quiet</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Sole%20Family%20Guesthouse%20Samarkand" target="_blank" rel="noopener">Open in Maps</a></div>
       </div>
       <div class="stays-grid" id="stays-buk" hidden>
-        <div class="stay pick"><h4>Mahbubakhon family guest house</h4><p>Family-run, with big clean rooms and generous breakfasts in the courtyard. About 4 min walk to Lyabi-Hauz. The lane is narrow, so car drop-off is 1–2 min away.</p><div class="tags"><span class="tag free">Best value</span><span class="tag">Good with a car</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Mahbubakhon%20family%20guest%20house%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
+        <div class="stay pick"><h4>Mahbubakhon family guest house</h4><p>Family-run, with big clean rooms and generous breakfasts in the courtyard. About 4 min walk to Lyabi-Hauz. Easy for a taxi from the station.</p><div class="tags"><span class="tag free">Best value</span><span class="tag">Near Lyabi-Hauz</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Mahbubakhon%20family%20guest%20house%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
         <div class="stay"><h4>Hotel Nazira &amp; Azizbek</h4><p>A rustic courtyard house a few steps from the old-city sights. Quiet, friendly hosts, fruit-filled breakfasts, and hot showers.</p><div class="tags"><span class="tag">Courtyard charm</span><span class="tag free">Affordable</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Hotel%20Nazira%20Azizbek%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
         <div class="stay"><h4>Family guest house Rahmat</h4><p>Authentic decor and an old-town balcony view, right in the centre. Known to keep bags after check-out, which is handy before your night train.</p><div class="tags"><span class="tag">Bag storage</span><span class="tag free">Affordable</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Family%20guest%20house%20Rahmat%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
         <div class="stay"><h4>Uzbegim Family guest house</h4><p>Good value, one street from the centre, with freshly cooked breakfast. A guest fitted four people in one room, so ask about a family room.</p><div class="tags"><span class="tag free">Budget</span><span class="tag">Family rooms</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Uzbegim%20Family%20guest%20house%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
         <div class="stay"><h4>Lyabi House Hotel (splurge)</h4><p>A 19th-century house right on Lyabi-Hauz, with a beautiful dining hall. Pricier, and rooms beside the restaurant can be noisy.</p><div class="tags"><span class="tag fee">Upper mid-range</span></div><a class="map" href="https://www.google.com/maps/search/?api=1&query=Lyabi%20House%20Hotel%20Bukhara" target="_blank" rel="noopener">Open in Maps</a></div>
       </div>
       <ul class="asklist">
-        <li><b>Parking:</b> you have a car, and old-town lanes are narrow. Ask where to park overnight.</li>
+        <li><b>Samarkand parking:</b> you have the car there, and old-town lanes are narrow. Ask where to park overnight. Bukhara needs no parking: you arrive by train.</li>
         <li><b>Heating and hot water:</b> confirm both for December.</li>
         <li><b>Two rooms</b> for two couples, or one family room.</li>
-        <li><b>Bukhara:</b> late bag pickup on the 17th, and help booking the station taxi.</li>
+        <li><b>Bukhara:</b> early check-in at ~7:30 am on the 13th (you arrive on the night train), bag storage until about 9 pm on the 14th, and a station taxi both ways (Kogon is ~15 km out).</li>
         <li><b>Payment:</b> some take only cash in som or USD.</li>
       </ul>
     </div>
@@ -319,17 +499,17 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 
     <div class="card" style="margin-top:16px" id="cars">
       <h3 class="sec">Car rental in Tashkent: who to contact</h3>
-      <p class="small" style="margin:0">You need: pickup in Tashkent on <b>13 Dec, 7:30 am</b> (hotel delivery), drop in <b>Bukhara on 17 Dec by about 4:30 pm</b>, about 1,000 km in total. Most local firms work over WhatsApp or Telegram. Phone numbers are as listed on their Google Maps pages. Message 2–3 of them and compare the full price.</p>
+      <p class="small" style="margin:0">You need: pickup in Tashkent on <b>15 Dec, 8:30 am</b> (hotel delivery, right after your night train), return at your <b>Tashkent hotel on 18 Dec, 8:30 am</b>, exactly 3 days. A simple round trip, so <b>no one-way fee</b>. About 650 km in total. Most local firms work over WhatsApp or Telegram. Phone numbers are as listed on their Google Maps pages. Message 2–3 of them and compare the full price.</p>
       <div class="cars">
         <div class="car pick"><div class="top"><h4>RentCar (rentcar.uz)</h4><span class="phone">+998 97 155 05 55</span></div>
           <div class="small">City Palace Hotel, Amir Temur Street 15 (next to Amir Timur Square) · Daily 9:00 am – 8:00 pm</div><div><span class="tag free">Top pick</span></div>
-          <ul><li>Most central office, a short walk from Amir Timur Square.</li><li>Reviewers say pickup takes about 10 minutes and the cars are new.</li><li>Card deposit about USD 320–350, held for a week to check for speeding fines.</li><li>They have delivered cars to Bukhara before, so ask for a one-way drop there.</li></ul><div class="links"><a href="https://wa.me/998971550555" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=RentCar%20City%20Palace%20Hotel%20Tashkent" target="_blank" rel="noopener">Open in Maps</a><a href="https://rentcar.uz" target="_blank" rel="noopener">Website</a></div></div>
+          <ul><li>Most central office, a short walk from Amir Timur Square.</li><li>Reviewers say pickup takes about 10 minutes and the cars are new.</li><li>Card deposit about USD 320–350, held for a week to check for speeding fines.</li><li>Central office, so a Tashkent round trip is easy to arrange.</li></ul><div class="links"><a href="https://wa.me/998971550555" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=RentCar%20City%20Palace%20Hotel%20Tashkent" target="_blank" rel="noopener">Open in Maps</a><a href="https://rentcar.uz" target="_blank" rel="noopener">Website</a></div></div>
         <div class="car pick"><div class="top"><h4>Avtouzbegim</h4><span class="phone">+998 93 574 45 45</span></div>
           <div class="small">Amir Temur Street 99a, Tashkent · Open 24 hours</div><div><span class="tag free">Top pick</span></div>
-          <ul><li>Reviewers praise fast WhatsApp replies in good English.</li><li>Fines are shown with proof from the official ticket, and deposits come back promptly to a foreign bank account.</li><li>One renter had the daily km limit raised from 250 to 300 km on request. You need about 300 km on the 13th and the 15th.</li></ul><div class="links"><a href="https://wa.me/998935744545" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=Avtouzbegim%20car%20rental%20Tashkent" target="_blank" rel="noopener">Open in Maps</a></div></div>
+          <ul><li>Reviewers praise fast WhatsApp replies in good English.</li><li>Fines are shown with proof from the official ticket, and deposits come back promptly to a foreign bank account.</li><li>One renter had the daily km limit raised from 250 to 300 km on request. You need about 300 km on the 15th and the 17th.</li></ul><div class="links"><a href="https://wa.me/998935744545" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=Avtouzbegim%20car%20rental%20Tashkent" target="_blank" rel="noopener">Open in Maps</a></div></div>
         <div class="car"><div class="top"><h4>GO RENTY</h4><span class="phone">+998 90 111 34 44</span></div>
           <div class="small">Osiyo Street 21, Tashkent · Open 24 hours</div>
-          <ul><li>Delivers the car to your hotel, which suits your 7:30 am handover on the 13th.</li><li>Reviewers drove to Samarkand, Bukhara and Khiva. Rent paid in cash, deposit left on a Visa card.</li><li>Deposit refunded within about 2 weeks. One reviewer was charged a car-wash fee.</li></ul><div class="links"><a href="https://wa.me/998901113444" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=GO%20RENTY%20Tashkent" target="_blank" rel="noopener">Open in Maps</a></div></div>
+          <ul><li>Delivers the car to your hotel, which suits your 8:30 am handover on the 15th.</li><li>Reviewers drove to Samarkand, Bukhara and Khiva. Rent paid in cash, deposit left on a Visa card.</li><li>Deposit refunded within about 2 weeks. One reviewer was charged a car-wash fee.</li></ul><div class="links"><a href="https://wa.me/998901113444" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=GO%20RENTY%20Tashkent" target="_blank" rel="noopener">Open in Maps</a></div></div>
         <div class="car"><div class="top"><h4>CityRentCar</h4><span class="phone">+998 99 910 03 00</span></div>
           <div class="small">Saykhun Street 170a (also an office at Borovskiy Street 6) · Open 24 hours (Borovskiy office 9:00 am – 9:00 pm)</div>
           <ul><li>Reviewers who compared several agencies found it the cheapest.</li><li>English-speaking staff. An Indian reviewer recommends bringing your IDP.</li><li>Deposit returned a few days after the car is checked for fines.</li></ul><div class="links"><a href="https://wa.me/998999100300" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=CityRentCar%20Tashkent" target="_blank" rel="noopener">Open in Maps</a></div></div>
@@ -338,49 +518,55 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
           <ul><li>Book on Telegram, where they send models and a clear price list.</li><li>Deposit about 2,000,000 som (about USD 200) on top of the rent.</li><li>Offers full (KASKO) insurance at a low rate, and delivers to the airport.</li></ul><div class="links"><a href="https://wa.me/998712006050" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=Car24%20rental%20Tashkent" target="_blank" rel="noopener">Open in Maps</a></div></div>
         <div class="car"><div class="top"><h4>Sixt (international brand)</h4><span class="phone">Online booking</span></div>
           <div class="small">Tashkent Downtown (Kichik Beshagach Street 104A), Airport, Hyatt Regency and Wyndham desks. Bukhara Downtown and Bukhara Airport. · Book online</div>
-          <ul><li>The easiest official one-way option: Tashkent pickup, Bukhara drop between Sixt branches.</li><li>Choose ‘Different return location’ so the one-way fee shows before you pay.</li><li>A government road tax per km is added at return (since 1 Jan 2026).</li></ul><div class="links"><a href="https://www.google.com/maps/search/?api=1&query=Sixt%20Tashkent%20Downtown" target="_blank" rel="noopener">Open in Maps</a><a href="https://www.sixt.com/car-rental/uzbekistan/" target="_blank" rel="noopener">Website</a></div></div>
+          <ul><li>Official option with online booking and clear terms. Pick up and return at Tashkent Downtown.</li><li>Usually pricier than local firms, but simpler to book.</li><li>A government road tax per km is added at return (since 1 Jan 2026).</li></ul><div class="links"><a href="https://www.google.com/maps/search/?api=1&query=Sixt%20Tashkent%20Downtown" target="_blank" rel="noopener">Open in Maps</a><a href="https://www.sixt.com/car-rental/uzbekistan/" target="_blank" rel="noopener">Website</a></div></div>
         <div class="car"><div class="top"><h4>Hertz, Tashkent Airport</h4><span class="phone">+998 33 084 08 08</span></div>
           <div class="small">Kumarik Street 13 (airport) · Open 24 hours</div>
           <ul><li>International brand at the airport, with English-speaking staff.</li><li>The deposit is on the high side.</li><li>One reviewer was shown a speeding fine only as a PDF on a staff phone. Ask to see the official record before paying any fine.</li></ul><div class="links"><a href="https://wa.me/998330840808" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.google.com/maps/search/?api=1&query=Hertz%20Tashkent%20International%20Airport" target="_blank" rel="noopener">Open in Maps</a></div></div>
       </div>
       <h4 style="margin:16px 0 4px;font-family:var(--display);font-size:16px">Message to send (copy and paste)</h4>
       <textarea class="msg" id="carmsg" aria-label="Message to rental companies">Hello! We are 4 adults visiting from the UAE. We'd like a car (automatic, 5 seats, room for 4 suitcases):
-- Pickup: Tashkent, 13 December, 7:30 am, delivered to our hotel
-- Drop-off: Bukhara, 17 December, around 4:30 pm (one-way)
-- Route: Tashkent - Samarkand - Bukhara, about 1,000 km total
-Please send: total price, one-way fee, daily km limit, deposit amount and refund time, insurance excess, and whether winter tyres are fitted.
+- Pickup: Tashkent, 15 December, 8:30 am, delivered to our hotel
+- Return: Tashkent, 18 December, 8:30 am, collected from our hotel (exactly 3 days)
+- Route: Tashkent - Samarkand - Tashkent, about 650 km total
+Please send: total price for 3 days, daily km limit, deposit amount and refund time, insurance excess, and whether winter tyres are fitted.
 Our drivers have UAE driving licences and International Driving Permits. Thank you!</textarea>
       <div class="copyrow"><button class="btn primary" type="button" id="copymsg">Copy message</button><span class="small" id="copystatus" aria-live="polite"></span></div>
       <ul class="asklist">
-        <li><b>Get in writing:</b> total price, one-way fee, km limit (ask for 300 km/day or unlimited), deposit and refund time, insurance excess.</li>
+        <li><b>Get in writing:</b> total price, km limit (ask for 300 km/day or unlimited), deposit and refund time, insurance excess.</li>
         <li><b>Check at pickup:</b> tyres, spare wheel, fuel level. Take a video all round the car.</li>
-        <li><b>Ask:</b> are dirt roads allowed (Sarmishsay), and exactly where in Bukhara do you hand the car back?</li>
+        <li><b>Ask:</b> can you collect the car from our hotel at 8:30 am on the 18th, and is the Amankutan mountain road allowed? Also ask the price of a Samarkand drop-off instead, as a backup.</li>
       </ul>
     </div>
 
   </section>
   <section class="panel" id="p-train" role="tabpanel" aria-labelledby="st-train" hidden>
-    <p class="panelintro">How to book the night train on 17 Dec, which train to pick, and what you’ll see.</p>
+    <p class="panelintro">How to book the two night trains, Tashkent ⇄ Bukhara, which trains to pick, and what to expect.</p>
 
     <div class="card" style="margin-top:16px" id="train">
-      <h3 class="sec">Night train booking: Bukhara → Tashkent, Thu 17 Dec</h3>
-      <div class="callout"><strong>Book now: sales for 17 Dec are already open</strong>Tickets usually go on sale about 45 days before departure (some sources say 60), and popular trains sell out.</div>
+      <h3 class="sec">Night trains: Tashkent → Bukhara (Sat 12 Dec) and Bukhara → Tashkent (Mon 14 Dec)</h3>
+      <div class="callout"><strong>Book both now: sales for these dates are open</strong>Tickets go on sale about 45 days ahead. On each train, take all 4 berths of one coupé compartment so it’s just the four of you. Popular trains sell out.</div>
       <h4 style="margin:12px 0 4px;font-family:var(--display);font-size:16px">How to book, step by step</h4>
       <ol class="steps">
         <li>Open <a href="https://eticket.railway.uz/en/home" target="_blank" rel="noopener">eticket.railway.uz</a> or the <b>Uzrailway tickets</b> app, and switch the language to <b>EN</b> at the top right.</li>
-        <li>Search <b>Bukhara → Tashkent</b> on <b>17.12.2026</b>. Bukhara’s station (Bukhara-1) is in Kogon, about 15 km from the old town.</li>
-        <li>Pick a night train and the <b>Coupé (4-berth)</b> class. Choose all 4 berths in the <b>same compartment</b> on the seat map.</li>
+        <li>Search <b>Tashkent → Bukhara</b> on <b>12.12.2026</b> and pick the late-evening sleeper in <b>Coupé (4-berth)</b>. Choose all 4 berths in the <b>same compartment</b> on the seat map.</li>
+        <li>Then search <b>Bukhara → Tashkent</b> on <b>14.12.2026</b> and do the same with the late-evening sleeper.</li>
         <li>Enter each passenger’s passport name, number, nationality, date of birth and gender <b>exactly as in the passport</b>.</li>
-        <li>Pay by card. The railway lists Mastercard, American Express, Discover, Diners Club and JCB. If your card fails, try another, or ask your Bukhara guesthouse to help.</li>
-        <li>Save the e-tickets offline. On the night, arrive <b>30–45 minutes early</b>: there’s a security scan and a passport check, so carry the same passport you booked with.</li>
+        <li>Pay by card. If a card fails, try another, or ask your Tashkent hotel to help.</li>
+        <li>Save the e-tickets offline. Arrive <b>40 minutes early</b>: there’s a security scan and a passport check, so carry the same passport you booked with.</li>
       </ol>
-      <h4 style="margin:14px 0 4px;font-family:var(--display);font-size:16px">Which train</h4>
+      <h4 style="margin:14px 0 4px;font-family:var(--display);font-size:16px">Out, Sat 12 Dec: Tashkent → Bukhara</h4>
       <div class="trainopts">
-        <div class="opt pick"><b>Night train ~22:40 → ~06:34</b><span class="small">Leave after dinner and wake up in Tashkent. Gives you the most time for Friday on the 18th.</span></div>
-        <div class="opt"><b>Sleeper ~00:05 → ~08:52</b><span class="small">Later departure and a later arrival. You get about an hour of daylight before Tashkent (sunrise ~07:43).</span></div>
+        <div class="opt pick"><b>Sleeper ~22:34 → ~07:18 (recommended)</b><span class="small">A full night’s sleep after your 4 am landing, and you arrive just as Bukhara wakes up.</span></div>
+        <div class="opt"><b>Sleeper ~21:45 → ~05:02</b><span class="small">Arrives too early: you’d wait in the dark for the guesthouse.</span></div>
+        <div class="opt"><b>Afrosiyob ~19:48 → ~00:06</b><span class="small">Fast seated train, then a real bed. Book the guesthouse from the 12th and arrange a midnight pickup.</span></div>
       </div>
-      <p class="small">Times come from published timetables and can change, so confirm on the booking site.</p>
-      <h4 style="margin:14px 0 4px;font-family:var(--display);font-size:16px">Classes and prices (Tashkent–Bukhara, January 2026 fares)</h4>
+      <h4 style="margin:14px 0 4px;font-family:var(--display);font-size:16px">Back, Mon 14 Dec: Bukhara → Tashkent</h4>
+      <div class="trainopts">
+        <div class="opt pick"><b>Sleeper ~22:40 → ~06:34 (recommended)</b><span class="small">A full day in Bukhara, then you wake up in Tashkent with time for breakfast and a shower before the 8:30 car handover.</span></div>
+        <div class="opt"><b>Sleeper ~00:05 → ~08:52</b><span class="small">More sleep on board, but the car and the drive start later. Leave Tashkent by about 10:30 to reach Samarkand in daylight.</span></div>
+      </div>
+      <p class="small">Timetables differ between sources and can change, so confirm the exact times on the booking site.</p>
+      <h4 style="margin:14px 0 4px;font-family:var(--display);font-size:16px">Fares, Tashkent–Bukhara, one way (January 2026)</h4>
       <div class="tablewrap"><table class="ptable">
         <thead><tr><th>Class</th><th>Layout</th><th>Per person</th><th>AED approx.</th></tr></thead>
         <tbody>
@@ -389,10 +575,10 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
           <tr><td>SV (first class)</td><td>2-berth compartment, so 2 compartments for 4</td><td>~431,000 som</td><td data-som="430580"></td></tr>
         </tbody>
       </table></div>
+      <p class="small">Coupé both ways is about 487,500 som per person. Fares may have risen since January, so check when booking.</p>
       <h4 style="margin:14px 0 4px;font-family:var(--display);font-size:16px">Will you see scenery from the train?</h4>
-      <p style="margin:0">Not much on this one. The sun sets in Bukhara at about 5:19 pm and rises in Tashkent at about 7:43 am, so the whole ride is in the dark. Treat it as a moving hotel that saves you a night’s cost. If you take the 00:05 sleeper, you’ll get about an hour of morning light over the flat Syrdarya farmland before Tashkent.</p>
-      <p style="margin:8px 0 0">The scenic parts of your trip are the <b>drives</b>: the Hungry Steppe and Tamerlane’s Gate canyon on the 13th, the Amankutan gorge on the 14th, and the Zarafshan valley farmland between Samarkand and Bukhara on the 15th.</p>
-      <ul class="asklist"><li>Bring snacks and water, and a warm layer for the night.</li><li>Bedding is usually provided in sleeper classes.</li><li>The Tashkent railway information line is <b>1005</b>.</li></ul>
+      <p style="margin:0">Not much: both trains run in the dark (sunset ~5 pm, sunrise ~7:45 am). Treat them as moving hotels that save you two nights’ cost. The scenic parts are the <b>drives</b> to and from Samarkand: the Hungry Steppe and Tamerlane’s Gate canyon.</p>
+      <ul class="asklist"><li>Bring snacks, water and a warm layer. Bedding is provided in sleeper classes.</li><li>Take one small bag each. Leave suitcases at your Tashkent hotel.</li><li>The Tashkent railway information line is <b>1005</b>.</li></ul>
     </div>
 
   </section>
@@ -406,9 +592,9 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         <thead><tr><th>City</th><th>Mosques for daily prayer</th></tr></thead>
         <tbody>
           <tr><td><b>Tashkent</b></td><td>Hazrati Imam (Khast Imam) Mosque, the city’s main Friday mosque. Minor (White) Mosque by the Ankhor canal. Khoja Akhrar Vali Juma Mosque beside Chorsu Bazaar.</td></tr>
-          <tr><td><b>Samarkand</b></td><td>Hazrat Khizr Mosque, next to Siab Bazaar. The Imam al-Bukhari complex, about 25 km north, is an optional visit on the 14th.</td></tr>
-          <tr><td><b>Bukhara</b></td><td>Kalon (Poi-Kalyan) Mosque, the main mosque in the old town. Bolo-Hauz Mosque opposite the Ark.</td></tr>
-          <tr><td><b>On the road</b></td><td>Towns along the M39 (Gulistan, Jizzakh, Navoi) have mosques. Plan Dhuhr around your Jizzakh or Samarkand stop.</td></tr>
+          <tr><td><b>Samarkand</b></td><td>Hazrat Khizr Mosque, next to Siab Bazaar. The Imam al-Bukhari complex, about 25 km north, is planned for the afternoon of the 16th.</td></tr>
+          <tr><td><b>Bukhara</b></td><td>Kalon (Poi-Kalyan) Mosque, the main mosque in the old town. Bolo-Hauz Mosque opposite the Ark. On the 14th you pray all of Dhuhr to Isha in Bukhara before the night train.</td></tr>
+          <tr><td><b>On the road</b></td><td>Towns along the M39 (Gulistan, Jizzakh) have mosques. Dhuhr around Jizzakh on the 15th, Maghrib in Jizzakh on the 17th.</td></tr>
         </tbody>
       </table></div>
       <ul class="asklist">
@@ -417,7 +603,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         <li><b>Women:</b> many large mosques have a women’s section and separate wudu areas (Hazrati Imam does), but smaller ones may not, so ask at the door.</li>
         <li><b>Qibla:</b> roughly <b>south-west</b> from all three cities. A qibla app on your phone works offline.</li>
         <li><b>Halal food:</b> Uzbek dishes (plov, samsa, shashlik, lagman) are normally made with lamb, beef or chicken. Some restaurants serve alcohol, and pork is uncommon. If in doubt, ask <i>“halol?”</i>.</li>
-        <li><b>Pack:</b> a light travel prayer mat helps for Dhuhr and Asr on the long driving days.</li>
+        <li><b>Pack:</b> a light travel prayer mat helps on the driving days and the train back from Bukhara.</li>
       </ul>
     </div>
 
@@ -435,18 +621,20 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
 
   </section>
   <section class="panel" id="p-notes" role="tabpanel" aria-labelledby="st-notes" hidden>
-    <p class="panelintro">What changed in your plan, driving rules, and a packing list.</p>
+    <p class="panelintro">What changed with the new route, driving rules, and a packing list.</p>
     <div class="card" style="margin-top:16px">
       <h3 style="font-size:20px;margin-bottom:12px">What I changed in your plan, and why</h3>
       <div class="plancheck">
-        <div class="row"><span class="pill warn">Fix</span><div><b>15 Dec: leave Samarkand at 10 am, not in the evening.</b><p>Daylight in mid-December is only about 7:40 am to 5:10 pm, and the highway outside cities is unlit. All driving now fits in daylight, and you reach Bukhara around 2 pm.</p></div></div>
-        <div class="row"><span class="pill warn">Fix</span><div><b>Siab Bazaar moved from 14 Dec to 15 Dec morning.</b><p>14 Dec is a Monday, and Siab Bazaar is closed on Mondays.</p></div></div>
-        <div class="row"><span class="pill warn">Fix</span><div><b>You land at 2 am on 12 Dec: book the Tashkent hotel from the night of 11 Dec.</b><p>Otherwise you'd wait until about 2 pm for a room. Day 1 now starts late, around 10–11 am.</p></div></div>
-        <div class="row"><span class="pill good">OK</span><div><b>Canyons added.</b><p>Tamerlane’s Gate (Sanzar Gorge) on the 13th drive, and the Amankutan gorge on the afternoon of the 14th. The Sarmishsay petroglyph gorge near Navoi is an option on the 15th if you leave early.</p></div></div>
-        <div class="row"><span class="pill good">OK</span><div><b>17 Dec night train saves a hotel night.</b><p>Book one 4-berth coupé compartment, so the four of you have it to yourselves. You arrive in Tashkent early on the 18th.</p></div></div>
-        <div class="row"><span class="pill info">Check</span><div><b>Car 13–17 Dec: Tashkent pickup, Bukhara drop on the 17th before dark.</b><p>Get the one-way fee, the daily km limit (about 300 km on each long driving day), the drop-off point, whether dirt roads are allowed, the deposit and the refund timing in writing.</p></div></div>
-        <div class="row"><span class="pill good">Added</span><div><b>Juma on Friday 18 Dec in Tashkent.</b><p>Day 7 is now built around Friday prayer at the Hazrati Imam (Khast Imam) mosque, with museums before and plov after. Every day also shows the five prayer times for the city you’re in.</p></div></div>
-        <div class="row"><span class="pill info">Check</span><div><b>18 Dec depends on your flight time.</b><p>The day plan assumes an evening flight. If you fly earlier, keep just the morning stops.</p></div></div>
+        <div class="row"><span class="pill good">New</span><div><b>New route: Tashkent → night train to Bukhara on the 12th → night train back on the 14th → car to Samarkand → back.</b><p>Your updated order. The two sleepers save two hotel nights and give you two full days in Bukhara. The car is only for the Samarkand loop.</p></div></div>
+        <div class="row"><span class="pill warn">Fix</span><div><b>You land at 4 am on 12 Dec: book the Tashkent hotel for the night of 11 Dec, with a late check-out.</b><p>You sleep straight away, and can rest and shower before the 22:34 train. A long day: keep the afternoon easy if you're tired.</p></div></div>
+        <div class="row"><span class="pill good">OK</span><div><b>One Tashkent hotel for both Tashkent nights (11 and 17 Dec).</b><p>Leave suitcases there from the 12th to the 15th and take one small bag to Bukhara. On the 15th, ask for a day-use room or a shower after the train.</p></div></div>
+        <div class="row"><span class="pill good">Better</span><div><b>Bukhara is now two full days.</b><p>The whole old town on the 13th. Bahauddin Naqshband, the summer palace, Chor Minor and shopping on the 14th, with Gijduvan ceramics as an option.</p></div></div>
+        <div class="row"><span class="pill info">Check</span><div><b>15 Dec: you drive straight after a night train.</b><p>Car at 8:30, on the road by 9:00, Samarkand by about 2 pm. Make sure the drivers sleep on the train, and swap drivers at each stop.</p></div></div>
+        <div class="row"><span class="pill good">Better</span><div><b>Car is now 3 days (15 Dec 8:30 am – 18 Dec 8:30 am), round trip from Tashkent.</b><p>No one-way fee and about 650 km instead of 1,000 km.</p></div></div>
+        <div class="row"><span class="pill warn">Your call</span><div><b>17 Dec: a full day in Samarkand, leaving at ~15:45.</b><p>You get the observatory, Afrasiyab Museum, Khoja Doniyor, Siab and Registan again, but about 2.5 h of the drive is after dark. Take it slow with your most rested driver. The no-night-driving backup is a Samarkand car drop-off plus an evening Afrosiyob train.</p></div></div>
+        <div class="row"><span class="pill good">Better</span><div><b>Samarkand on Tue–Thu, so Siab Bazaar is open.</b><p>It's closed on Mondays. The Imam al-Bukhari complex is now a main stop on the 16th, with Amankutan gorge as the alternative.</p></div></div>
+        <div class="row"><span class="pill good">Kept</span><div><b>Juma on Friday 18 Dec at Hazrati Imam, Tashkent.</b><p>Hazrati Imam is saved for Friday, so Day 1 uses the mosque beside Chorsu for Dhuhr and Asr.</p></div></div>
+        <div class="row"><span class="pill info">Check</span><div><b>18 Dec depends on your flight time.</b><p>The day plan assumes an evening flight. If you fly earlier, keep just the museum and Juma.</p></div></div>
       </div>
     </div>
 
@@ -456,7 +644,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         <li>Carry your licence, <b>International Driving Permit</b>, passport and rental papers. Police checkpoints are common.</li>
         <li>Speed cameras are strict. One renter got four tickets of 412,000 som (about AED 127) each.</li>
         <li>Zero alcohol. The legal limit is 0.0%.</li>
-        <li>Drive only in daylight outside cities. Fill up before long stretches.</li>
+        <li>Drive in daylight outside cities where you can. On the evening of the 17th, slow down, use high beams carefully, and watch for unlit vehicles, carts and people. Fill up before long stretches.</li>
         <li>Photograph and video the car at pickup and drop-off.</li>
       </ul>
     </div>
@@ -480,12 +668,11 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
         <h3>Group budget estimate</h3>
         <div class="field"><label for="b-rooms">Rooms per night</label><input id="b-rooms" type="number" min="1" value="2"></div>
         <div class="field"><label for="b-tas">Tashkent room / night (AED), 2 nights</label><input id="b-tas" type="number" min="0" value="300"></div>
-        <div class="field"><label for="b-sam">Samarkand room / night (AED)</label><input id="b-sam" type="number" min="0" value="200"></div>
-        <div class="field"><label for="b-buk">Bukhara room / night (AED)</label><input id="b-buk" type="number" min="0" value="200"></div>
-        <div class="field"><label for="b-car">Car / day (AED), 5 days</label><input id="b-car" type="number" min="0" value="155"></div>
-        <div class="field"><label for="b-oneway">One-way drop fee (AED)</label><input id="b-oneway" type="number" min="0" value="200"></div>
-        <div class="field"><label for="b-fuel">Fuel, whole drive (AED)</label><input id="b-fuel" type="number" min="0" value="250"></div>
-        <div class="field"><label for="b-train">Night train / person (AED)</label><input id="b-train" type="number" min="0" value="75"></div>
+        <div class="field"><label for="b-sam">Samarkand room / night (AED), 2 nights</label><input id="b-sam" type="number" min="0" value="200"></div>
+        <div class="field"><label for="b-buk">Bukhara room / night (AED), 1 night</label><input id="b-buk" type="number" min="0" value="200"></div>
+        <div class="field"><label for="b-car">Car / day (AED), 3 days</label><input id="b-car" type="number" min="0" value="155"></div>
+        <div class="field"><label for="b-fuel">Fuel, whole drive (AED)</label><input id="b-fuel" type="number" min="0" value="170"></div>
+        <div class="field"><label for="b-train">Night trains / person, both ways (AED)</label><input id="b-train" type="number" min="0" value="150"></div>
         <div class="field"><label for="b-food">Food / person / day (AED)</label><input id="b-food" type="number" min="0" value="50"></div>
         <div class="field"><label for="b-taxi">Taxis &amp; metro, group (AED)</label><input id="b-taxi" type="number" min="0" value="300"></div>
         <div class="rows" id="b-rows" style="margin-top:12px"></div>
@@ -525,7 +712,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
 
 
   </section>
-  </div>
+  </aside>
 </main>
 <button class="fab" type="button" id="fab" aria-haspopup="dialog" aria-controls="drawer">Quick info</button>
 <div class="scrim" id="scrim" hidden></div>
@@ -555,7 +742,8 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
     <div>
       <h4>Remember</h4>
       <ul class="asklist" style="margin-top:0">
-        <li>Drive only in daylight, about 7:40 am to 5:10 pm.</li>
+        <li>Night trains: Sat 12 (~22:34) to Bukhara, Mon 14 (~22:40) back.</li>
+        <li>Car 15 Dec 8:30 am to 18 Dec 8:30 am. On the 17th you leave Samarkand ~15:45 and arrive ~19:45: drive slowly after dark.</li>
         <li>Speed cameras everywhere. Keep under the limit.</li>
         <li>Juma, Fri 18 Dec: be at Hazrati Imam by ~12:00.</li>
         <li>Carry your passport, IDP and cash in som.</li>
@@ -569,8 +757,8 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
 <script>
 (function(){
   var store = {
-    get: function(k, d){ try { var v = localStorage.getItem('uzb-plan-'+k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
-    set: function(k, v){ try { localStorage.setItem('uzb-plan-'+k, JSON.stringify(v)); } catch(e){} }
+    get: function(k, d){ try { var v = localStorage.getItem('uzb-plan2-'+k); return v === null ? d : JSON.parse(v); } catch(e){ return d; } },
+    set: function(k, v){ try { localStorage.setItem('uzb-plan2-'+k, JSON.stringify(v)); } catch(e){} }
   };
   var rate = store.get('rate', 3250);
 
@@ -579,122 +767,129 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   function aed(som){ var v = som / rate; return v < 10 ? v.toFixed(1) : fmt(v); }
 
   var DAYS = [
-    { id:'day-1', date:'Sat 12 Dec', city:'Tashkent', title:'Arrive and see the old city',
-      stay:'Tashkent hotel (booked from the night of 11 Dec)', move:'Taxi + metro',
-      sunset:'~7:50 am – 5:00 pm',
-      note:{type:'warn', h:'You land at 2 am, so book the hotel from 11 Dec', t:'A room booked only for the 12th is usually not ready until 2 pm. Booking the night of the 11th means you can go straight to bed. Pre-arrange the airport pickup with the hotel. The day starts late, around 10:30.'},
-      places:["Tashkent"], pray:"Dhuhr and Asr at <b>Hazrati Imam</b>, which is on today\u2019s route at 2 pm. Maghrib at <b>Minor Mosque</b> in the evening.",
+    { id:'day-1', date:'Sat 12 Dec', city:'Tashkent', title:'Land at 4 am, Tashkent by metro, night train',
+      stay:'Night train to Bukhara (4-berth coupé)', move:'Metro + Yandex Go, then sleeper train',
+      sunset:'~7:40 am – 4:55 pm',
+      note:{type:'warn', h:'Book the Tashkent room for the night of 11 Dec, with a late check-out', t:'You land at 4 am, sleep until about 10, and keep the room (or at least your bags) until the evening, so you can rest and shower before the train. Tonight you sleep on the 22:34 sleeper to Bukhara. Pack one small bag for Bukhara and leave the suitcases at this hotel until you’re back on the morning of the 15th.'},
+      places:["Tashkent"], pray:"Dhuhr ~12:18 and Asr ~15:13 at <b>Khoja Akhrar Vali Juma Mosque</b>, right beside Chorsu Bazaar. Maghrib ~16:54 at <b>Minor Mosque</b>. Isha ~18:28 at the hotel before the train. Hazrati Imam is saved for Juma on Friday.",
       stops:[
-        {time:'02:00', name:'Land at Tashkent airport', note:'Hotel pickup or Yandex Go (install it before you fly). Change a little cash if a bank desk is open. Otherwise use an ATM or exchange in the morning.', q:'Tashkent International Airport', kind:'move'},
-        {time:'03:00', name:'Check in and sleep', note:'Possible only if the room is booked from the night of 11 Dec.', kind:'move'},
-        {time:'10:00', name:'Late breakfast, buy a SIM', note:'Mobile shops are easy to find in the centre. Have your passport with you.'},
-        {time:'11:00', name:'Chorsu Bazaar', note:'The domed main market. Try fresh non bread, samsa, dried fruit and nuts. Ceramics upstairs.', q:'Chorsu Bazaar Tashkent', fee:0, dur:'1.5–2 h'},
-        {time:'12:30', name:'Kukeldash Madrasa', note:'16th-century madrasa right beside Chorsu.', q:'Kukeldash Madrasa Tashkent', fee:0, dur:'20 min'},
-        {time:'13:00', name:'Lunch at the bazaar', note:'Plov, shurpa or samsa at a busy stall.', q:'Chorsu Bazaar food Tashkent', dur:'45 min'},
-        {time:'14:00', name:'Hazrati Imam complex', note:'Mosques, madrasas and the library said to hold the Uthman Quran. Short taxi ride from Chorsu. Cover your head and shoulders.', q:'Hazrati Imam Complex Tashkent', fee:50000, feeNote:'Quran madrasa', dur:'1.5–2 h'},
-        {time:'16:00', name:'Metro station hop', note:'Taxi to Alisher Navoi station, then ride to Kosmonavtlar and Mustaqillik Maydoni. Each station has its own decor.', q:'Kosmonavtlar metro station Tashkent', fee:2500, feeNote:'per ride', dur:'1 h'},
-        {time:'17:30', name:'Amir Timur Square and Broadway', note:'The central square and the pedestrian street, lively in the evening.', q:'Amir Timur Square Tashkent', fee:0, dur:'1 h'},
-        {time:'19:00', name:'Dinner, then Minor Mosque lit up', note:'The white marble mosque by the canal is prettiest after dark.', q:'Minor Mosque Tashkent', fee:0},
-        {time:'Tonight', name:'Confirm car delivery for 8:00 am', note:'Send the hotel address. Confirm the one-way Bukhara drop, the km limit and the deposit on WhatsApp.', kind:'move'}
+        {time:'04:00', name:'Land at Tashkent airport', note:'Hotel pickup or Yandex Go (install it before you fly). Change a little cash at the airport bank desk or ATM.', q:'Tashkent International Airport', kind:'move'},
+        {time:'05:00', name:'Check in and sleep', note:'Possible only if the room is booked from the night of 11 Dec.', kind:'move'},
+        {time:'10:00', name:'Late breakfast, SIM card, metro card', note:'Carry your passport for the SIM. Metro rides are about 2,500 som each.'},
+        {time:'11:00', name:'Metro to Chorsu Bazaar', note:'The domed main market: fresh non bread, samsa, dried fruit and nuts. Buy snacks for the train here.', q:'Chorsu Bazaar Tashkent', fee:0, dur:'1.5 h'},
+        {time:'12:30', name:'Kukeldash Madrasa, Dhuhr nearby', note:'16th-century madrasa beside Chorsu. Pray at Khoja Akhrar Vali Juma Mosque next door.', q:'Kukeldash Madrasa Tashkent', fee:0, dur:'45 min'},
+        {time:'13:15', name:'Lunch at the bazaar', note:'Plov, shurpa or samsa at a busy stall.', q:'Chorsu Bazaar food Tashkent', dur:'45 min'},
+        {time:'14:15', name:'Metro station hop', note:'Chorsu → Alisher Navoi, change to Kosmonavtlar, then Mustaqillik Maydoni. Each station has its own decor.', q:'Kosmonavtlar metro station Tashkent', fee:2500, feeNote:'per ride', dur:'1.5 h'},
+        {time:'15:45', name:'Independence Square and Amir Timur Square', note:'Walk from Mustaqillik Maydoni station to the central squares.', q:'Amir Timur Square Tashkent', fee:0, dur:'1 h'},
+        {time:'17:00', name:'Broadway (Sayilgoh) and Minor Mosque lit up', note:'The pedestrian street at dusk, then a short taxi to the white marble mosque for Maghrib.', q:'Minor Mosque Tashkent', fee:0},
+        {time:'18:30', name:'Dinner, back to the hotel, rest and shower', note:'Leave suitcases with the hotel. Take one small bag each, water and a warm layer.'},
+        {time:'21:45', name:'Yandex Go to Tashkent railway station', note:'Be there 40 minutes early for the security scan and passport check.', q:'Tashkent railway station', kind:'move'},
+        {time:'22:34', name:'Sleeper train to Bukhara', note:'4-berth coupé: one compartment for the four of you. Bedding is provided. Arrives about 07:18. Confirm the time when you book.', kind:'move', dur:'~8.5 h'}
       ]},
-    { id:'day-2', date:'Sun 13 Dec', city:'Samarkand', title:'Drive to Samarkand, Registan at sunset',
-      stay:'Samarkand, night 1 of 2', move:'Drive ~290 km, 4–5 h',
-      sunset:'~7:55 am – 5:10 pm',
-      note:{type:'warn', h:'Leave at first light, 8:00 am', t:'All the driving fits in daylight, and you arrive around 2 pm with three hours of light left for Gur-e-Amir and Registan. Canyon stop today: Tamerlane\u2019s Gate in the Sanzar Gorge. Keep under the speed limit everywhere, because cameras are frequent.'},
-      places:["Tashkent", "Jizzakh", "Samarkand"], pray:"Fajr at the hotel before the 8:00 start. <b>Dhuhr (~12:24 in Jizzakh area)</b>: pray at a town mosque near Jizzakh or Tamerlane\u2019s Gate, or on arrival in Samarkand at 2 pm. Asr ~15:28 before Registan.",
+    { id:'day-2', date:'Sun 13 Dec', city:'Bukhara', title:'Wake up in Bukhara: a full day in the old town',
+      stay:'Bukhara guesthouse, 1 night', move:'On foot',
+      sunset:'~7:55 am – 5:18 pm',
+      note:{type:'tip', h:'Arrive about 07:18, with the whole day ahead', t:'Ask the guesthouse for a station taxi and an early check-in (or book the room from the night of the 12th so it’s ready). Breakfast, freshen up, then outdoor sights in the morning light and the domes in the afternoon. Bukhara station is in Kogon, about 15 km (25 min) from the old town.'},
+      places:["Bukhara"], pray:"Fajr ~06:18 on the train (it ends at sunrise, ~07:55). Dhuhr ~12:38 at <b>Kalon Mosque</b>. Asr ~15:38 at <b>Bolo-Hauz Mosque</b> or Kalon. Maghrib ~17:18 at Kalon after the sunset.",
       stops:[
-        {time:'07:30', name:'Car handover at the hotel', note:'Video the car all round, check the tyres, fuel level and spare, and save the company\u2019s WhatsApp.', kind:'move'},
-        {time:'08:00', name:'Depart on the M39 highway', note:'Fill up before leaving the city. Keep strictly to the speed limits.', q:'Tashkent to Samarkand', kind:'move', dur:'4–5 h with stops'},
-        {time:'09:15', name:'Pass Gulistan and the Hungry Steppe', note:'Flat, wide-open steppe scenery. No need to stop unless you want a break.', q:'Gulistan Uzbekistan', kind:'move'},
-        {time:'10:45', name:'Jizzakh: samsa lunch', note:'Try the local Jizzakh samsa. Tea and restroom break, and top up fuel here.', q:'Jizzakh samsa', kind:'move', dur:'45–60 min'},
-        {time:'12:00', name:'Canyon stop: Tamerlane\u2019s Gate, Sanzar Gorge', note:'The highway squeezes through a narrow rocky gorge. Stop only at a safe pull-off for photos.', q:'Tamerlane Gate Jizzakh', kind:'move', dur:'20–30 min'},
-        {time:'12:30', name:'Continue to Samarkand', kind:'move', dur:'~1.5 h'},
-        {time:'14:00', name:'Arrive in Samarkand, check in, rest', note:'Park at the hotel. The car stays with you until Bukhara.', kind:'move'},
-        {time:'15:00', name:'Gur-e-Amir Mausoleum', note:'Timur\u2019s tomb, with a fluted turquoise dome and a gold-leaf interior.', q:'Gur-e-Amir Mausoleum Samarkand', fee:75000, dur:'45 min'},
-        {time:'16:00', name:'Registan Square', note:'Three madrasas: Ulugh Beg, Sher-Dor and Tilya-Kori. Go in while it\u2019s light, watch the sunset at ~5:10, then stay to see it lit up.', q:'Registan Samarkand', fee:100000, dur:'2 h'},
-        {time:'19:00', name:'Dinner: Samarkand plov or manti', note:'Ask your hotel for a busy local place.'}
-      ]},
-    { id:'day-3', date:'Mon 14 Dec', city:'Samarkand', title:'Tilework, then a mountain gorge',
-      stay:'Samarkand, night 2 of 2', move:'Walk in the morning, car in the afternoon',
-      sunset:'~7:55 am – 5:10 pm',
-      note:{type:'warn', h:'Monday: Siab Bazaar is closed, and a canyon afternoon', t:'Siab moves to tomorrow morning. In the afternoon, drive about 40 km south to the Amankutan gorge. In winter it\u2019s open on weekdays from 12:00 to 17:00. Mountain roads can have snow or ice in December, so ask your hotel about conditions that morning and turn back if the road looks bad.'},
-      places:["Samarkand"], pray:"Dhuhr ~12:28 near Bibi-Khanym, at <b>Hazrat Khizr Mosque</b> by Siab Bazaar. Asr ~15:28 in Amankutan or back in town. Maghrib ~17:08.",
-      stops:[
-        {time:'08:30', name:'Shah-i-Zinda necropolis', note:'An avenue of tiled mausoleums, quietest early. It\u2019s an active shrine, so cover your knees and shoulders.', q:'Shah-i-Zinda Samarkand', fee:80000, dur:'1.5 h'},
-        {time:'10:15', name:'Bibi-Khanym Mosque', note:'Timur\u2019s giant mosque, a 10-minute walk away.', q:'Bibi-Khanym Mosque Samarkand', fee:65000, dur:'45 min'},
-        {time:'11:15', name:'Drive: Ulugh Beg Observatory', note:'Remains of the 15th-century observatory, plus a small museum. About 10 min by car.', q:'Ulugh Beg Observatory Samarkand', fee:75000, dur:'45 min'},
-        {time:'12:15', name:'Lunch, then fill up', note:'Quick lunch before the mountain drive.'},
-        {time:'13:00', name:'Canyon drive: Amankutan gorge', note:'Juniper-covered gorge in the hills south of Samarkand, about 40 km away on the road toward Kitab. A national park with tea houses. Weekday winter hours 12:00–17:00.', q:'Amankutan Samarkand', kind:'move', dur:'~1 h each way'},
-        {time:'14:00', name:'Walk and tea in the gorge', note:'Short walks only, in warm layers. Leave by 15:30 so you are back before dark.', q:'Amankutan National Park', dur:'1.5 h'},
-        {time:'16:30', name:'Back in Samarkand', note:'Optional instead of the gorge: the Meros paper workshop in Konigil, about 10 km out.', q:'Meros paper mill Konigil Samarkand', kind:'move'},
-        {time:'Option', name:'Instead of the gorge: Imam al-Bukhari complex', note:'The memorial complex and mausoleum of Imam al-Bukhari, compiler of Sahih al-Bukhari, about 25 km north of Samarkand. It has a large mosque, so you can pray Asr there. Dress modestly.', q:'Imam al-Bukhari complex Samarkand', kind:'move', dur:'~2.5 h incl. drive'},
-        {time:'17:15', name:'Registan after dark', note:'The square is free to see from outside at night.', q:'Registan Samarkand', fee:0},
-        {time:'19:00', name:'Dinner', note:'Fuel the car tonight for an easy start tomorrow.'}
-      ]},
-    { id:'day-4', date:'Tue 15 Dec', city:'Bukhara', title:'Bazaar morning, drive to Bukhara',
-      stay:'Bukhara, night 1 of 2', move:'Drive ~280 km, about 4 h',
-      sunset:'~8:05 am – 5:20 pm',
-      note:{type:'warn', h:'Changed: leave Samarkand at 10:00, not in the evening', t:'An evening start would mean 4–5 hours of driving in the dark on unlit roads. Leaving at 10 gets you to Bukhara around 2 pm, with three hours of daylight to start exploring. Gijduvan moves to the 17th, when the car is free.'},
-      places:["Samarkand", "Bukhara"], pray:"Fajr ~06:07 in Samarkand. Dhuhr ~12:38 and Asr ~15:38 on arrival in Bukhara (around 2:15 pm). Maghrib ~17:19 at <b>Kalon Mosque</b> after the sunset.",
-      stops:[
-        {time:'07:45', name:'Siab Bazaar', note:'Samarkand\u2019s main market beside Bibi-Khanym. Fresh non bread, dried fruit, halva and spices.', q:'Siab Bazaar Samarkand', fee:0, dur:'1 h'},
-        {time:'09:00', name:'Check out, last photos', note:'Optional: Hazrat Khizr Mosque next to the bazaar, with a city view.', q:'Hazrat Khizr Mosque Samarkand'},
-        {time:'10:00', name:'Depart for Bukhara', note:'Fill up before you go. Keep to the limits. Tea break near Navoi, about halfway.', q:'Samarkand to Bukhara', kind:'move', dur:'~4 h'},
-        {time:'Option', name:'Canyon detour: Sarmishsay gorge (only if you leave by 8:00)', note:'A rocky gorge with thousands of ancient petroglyphs, about 30–45 km north-east of Navoi. The last stretch is a dirt road and a riverbed track, so check your rental rules allow it. It adds about 3 hours, so skip Siab Bazaar and leave Samarkand at 8:00 to stay in daylight.', q:'Sarmishsay petroglyphs', kind:'move', dur:'+3 h'},
-        {time:'14:15', name:'Arrive in Bukhara, park at the guesthouse', note:'Keep the car until the 17th. Old-town lanes are narrow and some are closed to cars, so ask the guesthouse where to park before you arrive.', kind:'move'},
-        {time:'15:00', name:'Lyabi-Hauz and Nodir Devonbegi Madrasa', note:'The pool square with madrasas and teahouses, plus the Afandi statue.', q:'Lyabi-Hauz Bukhara', fee:0, dur:'45 min'},
-        {time:'16:00', name:'Trading domes, first look', note:'Toqi Sarrofon, Telpak Furushon and Zargaron. Browse today and buy tomorrow.', q:'Toqi Zargaron Bukhara', fee:0, dur:'1 h'},
-        {time:'17:00', name:'Sunset at Po-i-Kalyan', note:'Walk to the Kalon Minaret for the last light.', q:'Kalon Minaret Bukhara', fee:0},
-        {time:'19:00', name:'Dinner at Lyabi-Hauz', note:'Plov, dimlama or shurpa.'}
-  ]},
-    { id:'day-5', date:'Wed 16 Dec', city:'Bukhara', title:'Old town: domes, minaret and fortress',
-      stay:'Bukhara, night 2 of 2', move:'On foot',
-      sunset:'~8:05 am – 5:20 pm',
-      note:{type:'tip', h:'On foot today, the car stays parked', t:'Outdoor sights in the morning light, shopping in the afternoon. Bargain politely, and ask for documentation for anything sold as antique.'},
-      places:["Bukhara"], pray:"Dhuhr and Asr at <b>Kalon Mosque</b> or <b>Bolo-Hauz Mosque</b>, both on today\u2019s walking route.",
-      stops:[
-        {time:'08:45', name:'Po-i-Kalyan complex in morning light', note:'The 47 m Kalon Minaret from 1127, Kalon Mosque, and the Mir-i-Arab Madrasa (outside only, it\u2019s an active seminary).', q:'Po-i-Kalyan Bukhara', dur:'1 h'},
-        {time:'10:00', name:'Ark Fortress', note:'The emirs\u2019 citadel, with museums inside.', q:'Ark of Bukhara', fee:60000, dur:'1.5 h'},
+        {time:'07:18', name:'Arrive Bukhara (Kogon), taxi to the guesthouse', q:'Bukhara railway station Kogon', kind:'move'},
+        {time:'08:00', name:'Breakfast, drop bags, freshen up', kind:'move'},
+        {time:'09:15', name:'Po-i-Kalyan complex in morning light', note:'The 47 m Kalon Minaret from 1127, Kalon Mosque, and the Mir-i-Arab Madrasa (outside only, it’s an active seminary).', q:'Po-i-Kalyan Bukhara', dur:'1 h'},
+        {time:'10:15', name:'Ark Fortress', note:'The emirs’ citadel, with museums inside.', q:'Ark of Bukhara', fee:60000, dur:'1.5 h'},
         {time:'11:45', name:'Bolo-Hauz Mosque', note:'Tall carved wooden columns by the pool, opposite the Ark.', q:'Bolo Hauz Mosque Bukhara', fee:0, dur:'20 min'},
-        {time:'12:15', name:'Samanid Mausoleum and Chashma-Ayub', note:'A short walk west of the Ark. The 9th–10th century brick mausoleum is the oldest Islamic monument in Central Asia.', q:'Samanid Mausoleum Bukhara', fee:20000, dur:'45 min'},
-        {time:'13:15', name:'Lunch'},
+        {time:'12:15', name:'Samanid Mausoleum and Chashma-Ayub', note:'A short walk west. The 9th–10th century brick mausoleum is the oldest Islamic monument in Central Asia.', q:'Samanid Mausoleum Bukhara', fee:20000, dur:'45 min'},
+        {time:'13:15', name:'Lunch and Dhuhr', note:'Back towards Kalon Mosque.'},
         {time:'14:30', name:'Magoki-Attori Mosque', note:'One of the oldest mosques in Central Asia, sunk below street level.', q:'Magoki Attori Mosque Bukhara', dur:'20 min'},
-        {time:'15:00', name:'Shopping in the trading domes', note:'Suzani, miniature paintings, ceramics, knives and scarves.', q:'Toqi Sarrofon Bukhara', fee:0, dur:'1.5 h'},
-        {time:'16:45', name:'Sunset from a rooftop caf\u00e9 near Po-i-Kalyan', note:'Ask your guesthouse which terrace is open in winter.', q:'Kalon Minaret Bukhara', fee:0},
-        {time:'19:00', name:'Dinner and lit-up old town walk'}
-  ]},
-    { id:'day-6', date:'Thu 17 Dec', city:'Bukhara', title:'Palace, pottery town, night train',
-      stay:'Night train to Tashkent', move:'Car until ~4:30 pm, then taxi',
-      sunset:'~8:05 am – 5:20 pm',
-      note:{type:'warn', h:'Last car day: return it before dark, around 4:30 pm', t:'Use the daylight for the sights outside town. Agree in advance where you hand the car back (guesthouse pickup, the company\u2019s Bukhara office or the station). Keep your bags at the guesthouse and take a taxi to Kogon station, about 15 km out, in the evening.'},
-      places:["Bukhara"], pray:"Dhuhr ~12:38 at the <b>Bahauddin Naqshband complex</b> or in Gijduvan. Asr ~15:38 before returning the car. Maghrib and Isha in town before the train.",
+        {time:'15:00', name:'Trading domes and Lyabi-Hauz', note:'Toqi Sarrofon, Telpak Furushon and Zargaron: suzani, miniatures, ceramics, knives and scarves. Then the pool square and Nodir Devonbegi Madrasa.', q:'Lyabi-Hauz Bukhara', fee:0, dur:'1.5 h'},
+        {time:'16:45', name:'Sunset from a rooftop café near Po-i-Kalyan', note:'Ask your guesthouse which terrace is open in winter.', q:'Kalon Minaret Bukhara', fee:0},
+        {time:'19:00', name:'Dinner and lit-up old town walk', note:'Ask the guesthouse to book a taxi for tomorrow morning and the station run.'}
+      ]},
+    { id:'day-3', date:'Mon 14 Dec', city:'Bukhara', title:'Sufi shrine, summer palace, night train back',
+      stay:'Night train to Tashkent (4-berth coupé)', move:'Taxi and on foot, then sleeper train',
+      sunset:'~7:55 am – 5:18 pm',
+      note:{type:'tip', h:'A second full day in Bukhara, then the ~22:40 sleeper', t:'Check out in the morning and leave your bag at the guesthouse until the evening. Hire one taxi for the morning loop: palace, shrine, Chor Minor. The afternoon is free for shopping and tea. Taxi to Kogon station (~15 km) at about 21:30.'},
+      places:["Bukhara"], pray:"Dhuhr ~12:39 at the <b>Bahauddin Naqshband complex</b> or back in town. Asr ~15:38 at <b>Kalon Mosque</b>. Maghrib ~17:18 and Isha ~18:50 in town before the train. Fajr ~06:01 on the train as you reach Tashkent.",
       stops:[
-        {time:'08:30', name:'Check out, leave bags at the guesthouse', kind:'move'},
-        {time:'08:45', name:'Drive: Sitorai Mohi-Khosa Palace', note:'The last emir\u2019s summer palace, a mix of Russian and Oriental styles. About 15 min north.', q:'Sitorai Mohi Khosa Bukhara', dur:'1 h'},
-        {time:'10:15', name:'Drive: Bahauddin Naqshband complex', note:'A major Sufi pilgrimage site with peaceful courtyards. Dress modestly.', q:'Bahauddin Naqshband Mausoleum Bukhara', fee:0, dur:'1 h'},
-        {time:'11:45', name:'Drive: Gijduvan ceramics (optional)', note:'A well-known pottery town about 45 km away. Lunch there, and be back in Bukhara by 3 pm.', q:'Gijduvan ceramics', kind:'move', dur:'3 h round trip'},
-        {time:'15:00', name:'Chor Minor', note:'The four-domed gatehouse in a residential lane. Park nearby and walk in. Small fee for the roof.', q:'Chor Minor Bukhara', fee:0, dur:'30 min'},
-        {time:'16:00', name:'Refuel and return the car', note:'Hand it back before sunset (~5:20) with a full tank. Photograph it at drop-off and keep the fuel receipt.', kind:'move'},
-        {time:'17:00', name:'Rest or final shopping in the domes'},
-        {time:'19:00', name:'Farewell dinner, collect bags'},
+        {time:'08:00', name:'Breakfast, check out, leave bag at the guesthouse', kind:'move'},
+        {time:'08:45', name:'Taxi: Sitorai Mohi-Khosa Palace', note:'The last emir’s summer palace, a mix of Russian and Oriental styles. About 15 min north. Agree a price for the whole loop.', q:'Sitorai Mohi Khosa Bukhara', dur:'1 h'},
+        {time:'10:00', name:'Bahauddin Naqshband complex', note:'A major Sufi pilgrimage site with peaceful courtyards. Dress modestly.', q:'Bahauddin Naqshband Mausoleum Bukhara', fee:0, dur:'1 h'},
+        {time:'11:30', name:'Chor Minor', note:'The four-domed gatehouse in a residential lane. Small fee for the roof.', q:'Chor Minor Bukhara', fee:0, dur:'20 min'},
+        {time:'12:15', name:'Lunch and Dhuhr', note:'Plov or dimlama near Lyabi-Hauz.'},
+        {time:'Option', name:'Gijduvan ceramics town', note:'A famous pottery workshop about 45 km away (~1 h by taxi each way). Do it in place of the shopping afternoon.', q:'Gijduvan ceramics', kind:'move', dur:'~3.5 h'},
+        {time:'14:00', name:'Shopping in the trading domes', note:'Buy what you browsed yesterday: suzani, miniatures, ceramics, knives and scarves. Bargain politely.', q:'Toqi Sarrofon Bukhara', fee:0, dur:'2 h'},
+        {time:'16:30', name:'Tea at Lyabi-Hauz, sunset walk', note:'Sunset ~5:18. Maghrib at Kalon Mosque.', q:'Lyabi-Hauz Bukhara', fee:0},
+        {time:'19:00', name:'Farewell dinner, collect bag', note:'Buy water and snacks for the train.'},
         {time:'21:30', name:'Taxi to Bukhara station (Kogon)', q:'Bukhara railway station Kogon', kind:'move'},
-        {time:'22:40', name:'Night train to Tashkent', note:'Timetables list a 22:40 departure arriving ~06:34, and a later sleeper at 00:05 arriving ~08:52. Check on the official site and book a 4-berth coupé.', kind:'move', dur:'~8 h'}
+        {time:'22:40', name:'Sleeper train to Tashkent', note:'4-berth coupé, one compartment for the four of you. Arrives about 06:34. Confirm the time when you book.', kind:'move', dur:'~8 h'}
+      ]},
+    { id:'day-4', date:'Tue 15 Dec', city:'Samarkand', title:'Off the train, pick up the car, drive to Samarkand',
+      stay:'Samarkand, night 1 of 2', move:'Drive ~300 km, 4–5 h',
+      sunset:'~7:45 am – 5:09 pm',
+      note:{type:'warn', h:'Off the night train at ~06:34, car at 8:30, on the road by 9:00', t:'Taxi to your Tashkent hotel, collect the suitcases, have breakfast and freshen up (ask for a day-use room or shower). Leaving at 9 still gets you to Samarkand around 2 pm, in daylight. If a driver slept badly, swap drivers often and take the breaks. Keep under the speed limit everywhere, because cameras are frequent.'},
+      places:["Tashkent", "Jizzakh", "Samarkand"], pray:"Fajr ~06:02 on the train or at the station (it ends at sunrise, ~07:41). <b>Dhuhr (~12:26 around Jizzakh)</b> at a town mosque near Jizzakh or Tamerlane’s Gate. Asr ~15:29 before Registan. Maghrib ~17:09.",
+      stops:[
+        {time:'06:34', name:'Arrive Tashkent, pray Fajr, taxi to the hotel', note:'Collect your suitcases. Breakfast and a shower.', q:'Tashkent railway station', kind:'move'},
+        {time:'08:30', name:'Car handover at the hotel', note:'Video the car all round, check the tyres, fuel and spare, and save the company’s WhatsApp.', kind:'move'},
+        {time:'09:00', name:'Depart on the M39 highway', note:'Fill up before leaving the city.', q:'Tashkent to Samarkand', kind:'move', dur:'4–5 h with stops'},
+        {time:'10:15', name:'Gulistan and the Hungry Steppe', note:'Flat, wide-open steppe. Stop only if you need a break.', q:'Gulistan Uzbekistan', kind:'move'},
+        {time:'11:30', name:'Jizzakh: samsa and fuel', note:'Try the famous Jizzakh samsa. Tea, restroom and fuel.', q:'Jizzakh samsa', kind:'move', dur:'45 min'},
+        {time:'12:30', name:'Canyon stop: Tamerlane’s Gate, Sanzar Gorge', note:'The highway squeezes through a narrow rocky gorge. Stop only at a safe pull-off. Dhuhr nearby.', q:'Tamerlane Gate Jizzakh', kind:'move', dur:'30 min'},
+        {time:'14:15', name:'Arrive in Samarkand, check in, rest', note:'Park at the hotel.', kind:'move'},
+        {time:'15:15', name:'Gur-e-Amir Mausoleum', note:'Timur’s tomb, with a fluted turquoise dome and a gold-leaf interior.', q:'Gur-e-Amir Mausoleum Samarkand', fee:75000, dur:'45 min'},
+        {time:'16:15', name:'Registan Square', note:'Ulugh Beg, Sher-Dor and Tilya-Kori madrasas. Go inside while it’s light, watch the sunset (~5:09), then stay for the lights.', q:'Registan Samarkand', fee:100000, dur:'2 h'},
+        {time:'19:00', name:'Dinner, early night', note:'Samarkand plov or manti. Sleep well after the train.'}
+      ]},
+    { id:'day-5', date:'Wed 16 Dec', city:'Samarkand', title:'Shah-i-Zinda, Siab Bazaar, Imam al-Bukhari',
+      stay:'Samarkand, night 2 of 2', move:'Walk in the morning, car in the afternoon',
+      sunset:'~7:46 am – 5:09 pm',
+      note:{type:'tip', h:'Wednesday: Siab Bazaar is open', t:'Tiles in the morning, the bazaar at midday, then the car for the Imam al-Bukhari complex, about 25 km north. Amankutan gorge is the alternative if you’d rather see mountains. Its winter weekday hours are 12:00–17:00, and ask about snow and ice that morning.'},
+      places:["Samarkand"], pray:"Dhuhr ~12:30 at <b>Hazrat Khizr Mosque</b> by Siab Bazaar. Asr ~15:29 at the <b>Imam al-Bukhari complex</b> mosque. Maghrib ~17:09 back in town.",
+      stops:[
+        {time:'08:30', name:'Shah-i-Zinda necropolis', note:'An avenue of tiled mausoleums, quietest early. Active shrine: cover knees and shoulders.', q:'Shah-i-Zinda Samarkand', fee:80000, dur:'1.5 h'},
+        {time:'10:15', name:'Bibi-Khanym Mosque', note:'Timur’s giant mosque, a 10-minute walk away.', q:'Bibi-Khanym Mosque Samarkand', fee:65000, dur:'45 min'},
+        {time:'11:15', name:'Siab Bazaar', note:'Right beside Bibi-Khanym. Fresh non bread, dried fruit, halva and spices.', q:'Siab Bazaar Samarkand', fee:0, dur:'1 h'},
+        {time:'12:20', name:'Hazrat Khizr Mosque, Dhuhr', note:'On the hill next to the bazaar, with a city view.', q:'Hazrat Khizr Mosque Samarkand', dur:'30 min'},
+        {time:'13:00', name:'Lunch, then fetch the car'},
+        {time:'14:00', name:'Drive: Imam al-Bukhari complex', note:'The memorial complex and mausoleum of the compiler of Sahih al-Bukhari, about 25 km north (~40 min). Large mosque for Asr. Dress modestly.', q:'Imam al-Bukhari complex Samarkand', kind:'move', dur:'~2.5 h incl. drive'},
+        {time:'Option', name:'Instead: Amankutan gorge', note:'Juniper gorge about 40 km south on the road toward Kitab, with tea houses. Leave by 15:30 to be back before dark.', q:'Amankutan Samarkand', kind:'move', dur:'~3 h'},
+        {time:'16:45', name:'Back in Samarkand before dark', kind:'move'},
+        {time:'17:30', name:'Registan after dark', note:'Free to see from outside at night.', q:'Registan Samarkand', fee:0},
+        {time:'19:00', name:'Dinner, fill the tank', note:'A full tank tonight means an easy start tomorrow.'}
+      ]},
+    { id:'day-6', date:'Thu 17 Dec', city:'Tashkent', title:'A full last day in Samarkand, evening drive to Tashkent',
+      stay:'Tashkent hotel', move:'Car around Samarkand, then drive ~300 km (~4 h)',
+      sunset:'~7:47 am – 5:09 pm',
+      note:{type:'warn', h:'You leave Samarkand after Asr (~15:45), so the last ~2.5 hours are after dark', t:'Sunset is ~5:09 pm in Samarkand and ~4:55 pm in Tashkent, so you arrive around 7:45 pm. The M39 is a major highway but mostly unlit outside towns. Your best-rested driver takes this leg. Keep well under the limit, don\u2019t overtake trucks in the dark, and watch for unlit carts and people near villages. Stop once at Jizzakh for fuel and Maghrib. The car goes back on the morning of the 18th, which is exactly 3 days. <b>Prefer no night driving?</b> Ask the rental company for a Samarkand drop-off and take an evening Afrosiyob to Tashkent (~2 h 10 min) instead. Expect a one-way fee.'},
+      places:["Samarkand", "Jizzakh", "Tashkent"], pray:"Fajr ~06:10 in Samarkand. Dhuhr ~12:30 at <b>Hazrat Khizr Mosque</b>. Asr ~15:29 in Samarkand or Konigil before you leave. Maghrib ~17:04 at a mosque or fuel stop in <b>Jizzakh</b>. Isha ~18:29 in Tashkent.",
+      stops:[
+        {time:'08:30', name:'Breakfast, check out, load the car', kind:'move'},
+        {time:'09:00', name:'Ulugh Beg Observatory', note:'Remains of the 15th-century observatory plus a small museum.', q:'Ulugh Beg Observatory Samarkand', fee:75000, dur:'45 min'},
+        {time:'10:00', name:'Afrasiyab Museum', note:'On the ancient city mound next door, with 7th-century Sogdian wall paintings of ambassadors and royal processions.', q:'Afrasiyab Museum Samarkand', dur:'45 min'},
+        {time:'11:00', name:'Khoja Doniyor (Prophet Daniel) mausoleum', note:'A long tomb on a quiet riverside slope, with a sacred spring below. A peaceful place for dua. Dress modestly.', q:'Mausoleum of Saint Daniel Samarkand', fee:0, dur:'45 min'},
+        {time:'12:00', name:'Siab Bazaar: last shopping', note:'Dried fruit, nuts, halva and spices to take home.', q:'Siab Bazaar Samarkand', fee:0, dur:'45 min'},
+        {time:'12:45', name:'Dhuhr at Hazrat Khizr, then lunch', note:'Last Samarkand plov.', q:'Hazrat Khizr Mosque Samarkand', dur:'1 h'},
+        {time:'14:00', name:'Registan: a last look in daylight', note:'For the photos you missed. Park nearby.', q:'Registan Samarkand', fee:0, dur:'45 min'},
+        {time:'Option', name:'Instead of the second Registan visit: Meros paper workshop, Konigil', note:'Silk paper made the old way by a mill stream, about 10 km out and on your way out of town.', q:'Meros paper mill Konigil Samarkand', dur:'1 h'},
+        {time:'15:30', name:'Asr, fill the tank', note:'Pray Asr (~15:29) before you leave.', kind:'move'},
+        {time:'15:45', name:'Depart for Tashkent', note:'About 4 hours with one stop. Headlights on from dusk.', q:'Samarkand to Tashkent', kind:'move', dur:'~4 h'},
+        {time:'17:05', name:'Jizzakh: Maghrib, fuel and tea', note:'A short break and a driver swap before the dark stretch.', q:'Jizzakh', kind:'move', dur:'30 min'},
+        {time:'19:45', name:'Arrive at the Tashkent hotel', note:'Park at the hotel. The car goes back tomorrow at 8:30 am.', kind:'move'},
+        {time:'20:15', name:'Late dinner near the hotel, Isha', note:'Seoul Mun food street or a plov centre if you have energy.'}
       ]},
     { id:'day-7', date:'Fri 18 Dec', city:'Tashkent', title:'Juma, museums, plov and departure',
-      stay:'Fly out (or add a night)', move:'Taxi + metro',
+      stay:'Fly out (or add a night)', move:'Metro + Yandex Go',
       sunset:'',
-      note:{type:'tip', h:'Friday: Juma at Hazrati Imam', t:'The day is built around Friday prayer at Tashkent\u2019s main Friday mosque. Museums in the morning, then plov and gifts after Juma. If your flight is before 4 pm, keep only the morning and Juma.'},
+      note:{type:'tip', h:'Friday: Juma at Hazrati Imam', t:'The day is built around Friday prayer at Tashkent’s main Friday mosque. Museum in the morning, then plov and gifts after Juma. If your flight is before 4 pm, keep only the morning and Juma.'},
       places:["Tashkent"], pray:"<b>Juma at Hazrati Imam (Khast Imam) Mosque</b>. Arrive by ~12:00. Asr ~15:14, Maghrib ~16:55 in Tashkent.",
       stops:[
-        {time:'06:30', name:'Arrive in Tashkent, pray Fajr', note:'Fajr ends at sunrise (~07:43). Taxi to your hotel for luggage storage, early check-in or a day room, then breakfast.', kind:'move'},
-        {time:'09:30', name:'Museum of Applied Arts', note:'In a carved old mansion, with suzani, ceramics and woodwork. Near Kosmonavtlar metro.', q:'State Museum of Applied Arts Tashkent', fee:30000, feeNote:'~USD 2.5', dur:'1.5 h'},
+        {time:'08:30', name:'Return the car at the hotel, check out', note:'Hand it back with a full tank. Photograph it, keep the fuel receipt, and ask when the deposit comes back. Ask the hotel to hold your bags until the evening.', kind:'move'},
+        {time:'09:30', name:'Museum of Applied Arts', note:'In a carved old mansion, with suzani, ceramics and woodwork. Near Kosmonavtlar metro.', q:'State Museum of Applied Arts Tashkent', fee:30000, dur:'1.5 h'},
         {time:'11:15', name:'Taxi to Hazrati Imam, wudu', note:'Allow 20–30 min in Friday traffic. Separate wudu areas for men and women.', q:'Hazrati Imam Complex Tashkent', kind:'move'},
-        {time:'12:00', name:'Juma at Hazrati Imam Mosque', note:'Tashkent\u2019s main Friday mosque. Khutbah and prayer usually run from around Dhuhr (~12:22) for about an hour. Confirm the time with your hotel.', q:'Hazrati Imam Mosque Tashkent', fee:0, dur:'~1–1.5 h'},
-        {time:'13:30', name:'Lunch: plov', note:'Besh Qozon (by the TV Tower) is a 20-minute taxi ride. Go straight after Juma, because plov can sell out in the afternoon. Or eat at a plov centre near the old city.', q:'Besh Qozon Tashkent', dur:'1 h'},
-        {time:'15:00', name:'Amir Timur Museum and Square', note:'The blue-domed museum, with film of Timur\u2019s tomb being opened. It closes at 5 pm. Asr nearby at ~15:14.', q:'Amir Timur Museum Tashkent', fee:40000, feeNote:'approx.', dur:'1 h'},
-        {time:'16:15', name:'Alay Bazaar for food gifts', note:'Dried fruit, nuts and sweets to take home.', q:'Alay Bazaar Tashkent', fee:0, dur:'45 min'},
-        {time:'16:55', name:'Maghrib at Minor Mosque', note:'The white marble mosque is lovely when it\u2019s lit at dusk.', q:'Minor Mosque Tashkent', fee:0},
-        {time:'Evening', name:'Airport, with a generous buffer', note:'Keep passports and cash handy. Or, if you fly tomorrow, book an opera or ballet at the Navoi Theatre.', q:'Tashkent International Airport', kind:'move'}
+        {time:'12:00', name:'Juma at Hazrati Imam Mosque', note:'Khutbah and prayer usually run from around Dhuhr (~12:21) for about an hour. Afterwards see the library said to hold the Uthman Quran.', q:'Hazrati Imam Mosque Tashkent', fee:50000, feeNote:'Quran library', dur:'~1.5 h'},
+        {time:'13:45', name:'Lunch: plov at Besh Qozon', note:'By the TV Tower, 20 min by taxi. Go straight after Juma, because plov can sell out.', q:'Besh Qozon Tashkent', dur:'1 h'},
+        {time:'15:00', name:'Amir Timur Museum', note:'The blue-domed museum by the square. Closes at 5 pm. Asr nearby at ~15:14.', q:'Amir Timur Museum Tashkent', fee:40000, feeNote:'approx.', dur:'1 h'},
+        {time:'16:15', name:'Alay Bazaar for food gifts', note:'Dried fruit, nuts and sweets to take home. Amir Timur Hiyoboni metro is close by.', q:'Alay Bazaar Tashkent', fee:0, dur:'45 min'},
+        {time:'Evening', name:'Collect bags, airport with a buffer', note:'Keep passports and cash handy. Or, if you fly tomorrow, book the Navoi Theatre.', q:'Tashkent International Airport', kind:'move'}
       ]}
   ];
 
@@ -702,18 +897,18 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   var DAYNUM = {'day-1':12,'day-2':13,'day-3':14,'day-4':15,'day-5':16,'day-6':17,'day-7':18};
 
   var BOOK = [
-    {id:'trainN', t:'Night train Bukhara → Tashkent, 17 Dec (4-berth coupé)', w:'Now. Sales are already open on eticket.railway.uz. See the train section'},
-    {id:'car', t:'Car 13–17 Dec, Tashkent pickup, Bukhara drop on the 17th', w:'Now. Send the ready-made message to 2–3 companies in the car section'},
-    {id:'juma', t:'Confirm the Juma time at Hazrati Imam for Fri 18 Dec', w:'Ask your Tashkent hotel on arrival'},
+    {id:'trainOut', t:'Night sleeper Tashkent → Bukhara, Sat 12 Dec ~22:34 (one 4-berth coupé)', w:'Now. Sales are open on eticket.railway.uz. See the train section'},
+    {id:'trainBack', t:'Night sleeper Bukhara → Tashkent, Mon 14 Dec ~22:40 (one 4-berth coupé)', w:'Now, same booking site'},
+    {id:'car', t:'Car 15 Dec 8:30 am to 18 Dec 8:30 am, Tashkent hotel pickup and return', w:'Now. Send the ready-made message to 2–3 companies in the car section'},
+    {id:'h1', t:'Tashkent hotel: nights of 11 and 17 Dec + 4 am airport pickup', w:'Now. Ask for a late check-out on the 12th, suitcase storage 12–15 Dec, a day-use room or shower on the 15th, car delivery at 8:30 am, and parking on the 17th'},
+    {id:'h3', t:'Bukhara guesthouse, night of 13 Dec, early check-in ~7:30 am', w:'Now. Also bag storage until ~9 pm on the 14th and station taxis'},
+    {id:'h2', t:'Samarkand hotel, nights of 15–16 Dec, with parking', w:'Now'},
+    {id:'juma', t:'Confirm the Juma time at Hazrati Imam for Fri 18 Dec', w:'Ask your Tashkent hotel'},
     {id:'idp', t:'International Driving Permit for each driver', w:'Before you fly (MOI UAE app)'},
-    {id:'h1', t:'Tashkent hotel from 11 Dec (2 nights) + 2 am airport pickup', w:'Now. Also ask about car delivery at 8 am on the 13th'},
-    {id:'h2', t:'Samarkand hotel, 13–14 Dec, with parking', w:'Now'},
-    {id:'h3', t:'Bukhara guesthouse, 15–16 Dec, late bag pickup on 17th', w:'Now'},
-    {id:'h4', t:'Tashkent day room or early check-in, 18 Dec', w:'Once your flight time is fixed'},
     {id:'visa', t:'Check entry rules for your passports', w:'Official sources, before booking'},
     {id:'ins', t:'Travel insurance covering self-drive', w:'Before you fly'},
     {id:'cash', t:'Clean US dollars plus some som on arrival', w:'Before you fly'},
-    {id:'apps', t:'Install Yandex Go and offline maps', w:'Before you fly'}
+    {id:'apps', t:'Install Yandex Go, the Uzrailway app and offline maps', w:'Before you fly'}
   ];
   var PACK = ['Light travel prayer mat and a qibla app','Thermal layers and a warm jacket','Gloves, hat and scarf (also for mosque visits)','Comfortable walking shoes with grip','Power bank and car phone charger','Headscarf, and clothes covering knees and shoulders','Small daypack and a reusable water bottle'];
 
@@ -754,6 +949,18 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   function renderRail(){
     var rail = document.getElementById('dayrail');
     rail.innerHTML = '';
+    var totalStops = 0;
+    var completedStops = 0;
+    DAYS.forEach(function(day){
+      totalStops += day.stops.length;
+      day.stops.forEach(function(stop, index){
+        if (done[day.id + '-' + index]) completedStops++;
+      });
+    });
+    var progress = document.getElementById('trip-progress');
+    var nextProgress = completedStops + ' / ' + totalStops + ' stops done';
+    if (progress.textContent !== nextProgress) progress.textContent = nextProgress;
+
     DAYS.forEach(function(d, i){
       var b = document.createElement('button');
       b.setAttribute('role','tab');
@@ -777,7 +984,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
       '</div>';
     if (d.note) html += '<div class="callout ' + (d.note.type === 'tip' ? 'tip' : '') + '"><strong>' + d.note.h + '</strong>' + d.note.t + '</div>';
     html += prayBox(d);
-    html += '<ol class="timeline">';
+    html += '<h3 class="timeline-title">Schedule</h3><ol class="timeline">';
     d.stops.forEach(function(s, j){
       var key = d.id + '-' + j, isDone = !!done[key], cid = 'chk-' + key;
       html += '<li class="stop' + (isDone ? ' done' : '') + (s.kind === 'move' ? ' kind-move' : '') + '">' +
@@ -813,7 +1020,11 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
     current = i; renderRail(); renderDay();
     var navEl = document.querySelector('nav.days'); if (navEl && window.scrollY > navEl.offsetTop) window.scrollTo({top: navEl.offsetTop});
     if (!fromHash) { try { history.replaceState(null, '', '#' + DAYS[i].id); } catch(e){ location.hash = DAYS[i].id; } }
-    var t = document.getElementById('tab-' + DAYS[i].id); if (t && t.scrollIntoView) t.scrollIntoView({block:'nearest', inline:'center'});
+    var t = document.getElementById('tab-' + DAYS[i].id);
+    if (t) {
+      t.scrollIntoView({block:'nearest', inline:'center'});
+      if (!fromHash) t.focus({preventScroll:true});
+    }
   }
 
   function fromHash(){
@@ -823,23 +1034,23 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   }
 
   // Budget
-  var bIds = ['b-rooms','b-tas','b-sam','b-buk','b-car','b-oneway','b-fuel','b-train','b-food','b-taxi'];
+  var bIds = ['b-rooms','b-tas','b-sam','b-buk','b-car','b-fuel','b-train','b-food','b-taxi'];
   var saved = store.get('budget', {});
   bIds.forEach(function(id){ var el = document.getElementById(id); if (saved[id] !== undefined) el.value = saved[id]; el.addEventListener('input', calc); });
   function v(id){ var n = parseFloat(document.getElementById(id).value); return isNaN(n) ? 0 : n; }
   function calc(){
     var s = {}; bIds.forEach(function(id){ s[id] = document.getElementById(id).value; }); store.set('budget', s);
     var rooms = v('b-rooms'), people = 4;
-    var hotels = rooms * (v('b-tas')*2 + v('b-sam')*2 + v('b-buk')*2);
-    var car = v('b-car')*5 + v('b-oneway') + v('b-fuel');
+    var hotels = rooms * (v('b-tas')*2 + v('b-sam')*2 + v('b-buk')*1);
+    var car = v('b-car')*3 + v('b-fuel');
     var train = v('b-train') * people;
     var food = v('b-food') * people * 7;
     var taxi = v('b-taxi');
     var feesSom = 0; DAYS.forEach(function(d){ d.stops.forEach(function(st){ if (st.fee && st.feeNote !== 'per ride') feesSom += st.fee; }); });
     var fees = feesSom / rate * people;
-    var taxSom = 56250 * people * 6; var tax = taxSom / rate;
+    var taxSom = 56250 * people * 5; var tax = taxSom / rate;
     var total = hotels + car + train + food + taxi + fees + tax;
-    var rows = [['Hotels (6 nights)', hotels],['Car, one-way fee, fuel', car],['Night train', train],['Food (7 days)', food],['Taxis & metro', taxi],['Entry fees', fees],['City tourist tax', tax]];
+    var rows = [['Hotels (5 nights)', hotels],['Car (3 days) and fuel', car],['Night trains to Bukhara and back', train],['Food (7 days)', food],['Taxis & metro', taxi],['Entry fees', fees],['City tourist tax', tax]];
     document.getElementById('b-rows').innerHTML = rows.map(function(r){ return '<div><span>' + r[0] + '</span><span>AED ' + fmt(r[1]) + '</span></div>'; }).join('');
     document.getElementById('b-total').textContent = 'AED ' + fmt(total);
     document.getElementById('b-pp').textContent = 'AED ' + fmt(total/people);
@@ -887,7 +1098,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
   });
 
   // Full timetable
-  var STAY = {Tashkent:[12,18], Samarkand:[13,14,15], Bukhara:[15,16,17]};
+  var STAY = {Tashkent:[12,15,17,18], Samarkand:[15,16,17], Bukhara:[13,14]};
   var WD = {12:'Sat',13:'Sun',14:'Mon',15:'Tue',16:'Wed',17:'Thu',18:'Fri'};
   function renderTT(city){
     var h = '<thead><tr><th>Date</th><th>Fajr</th><th>Sunrise</th><th>Dhuhr</th><th>Asr</th><th>Sunset / Maghrib</th><th>Isha</th></tr></thead><tbody>';
@@ -920,7 +1131,7 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
 
   // Quick info drawer
   var drawer = document.getElementById('drawer'), scrim = document.getElementById('scrim'), fab = document.getElementById('fab');
-  var CITYOF = {12:'Tashkent',13:'Samarkand',14:'Samarkand',15:'Bukhara',16:'Bukhara',17:'Bukhara',18:'Tashkent'};
+  var CITYOF = {12:'Tashkent',13:'Bukhara',14:'Bukhara',15:'Samarkand',16:'Samarkand',17:'Samarkand',18:'Tashkent'};
   var qDay = document.getElementById('q-day'), qCity = document.getElementById('q-city');
   for (var dn = 12; dn <= 18; dn++){ var o = document.createElement('option'); o.value = dn; o.textContent = WD[dn] + ' ' + dn + ' Dec'; qDay.appendChild(o); }
   function renderQ(){
@@ -966,10 +1177,9 @@ Our drivers have UAE driving licences and International Driving Permits. Thank y
     });
     store.set('sec', name);
     var rc = document.getElementById('rightcol'); if (rc) rc.scrollTop = 0;
-    if (!fromHash && window.innerWidth <= 960) { var sb = document.getElementById('secbar'); if (sb) sb.scrollIntoView({block:'start'}); }
   }
   document.querySelectorAll('#secbar button').forEach(function(b){ b.addEventListener('click', function(){ showSec(b.dataset.sec); }); });
-  document.querySelectorAll('[data-goto]').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showSec(a.dataset.goto); }); });
+  document.querySelectorAll('[data-goto]').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); showSec(a.dataset.goto); if (window.innerWidth <= 900) document.getElementById('rightcol').scrollIntoView({block:'start'}); }); });
 
   window.addEventListener('hashchange', function(){
     var h = (location.hash || '').replace('#','');
